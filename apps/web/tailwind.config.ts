@@ -10,11 +10,13 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Leadity Primary Colors
+        // Leadity Primary Colors - Extended scale
         primary: {
           DEFAULT: "#8bef2b",
           dark: "#5eb10e",
           hover: "#7dd625",
+          soft: "#9ce052",
+          muted: "#a8d774",
           50: "#f0fdf4",
           100: "#dcfce7",
           200: "#bbf7d0",
@@ -31,10 +33,34 @@ const config: Config = {
           DEFAULT: "#1e1e1e",
           darker: "#151313",
         },
-        // Leadity Gray Scale
+        // Improved Leadity Gray Scale (WCAG AA compliant)
         leadity: {
-          gray: "#6b6b6b",
-          "gray-light": "#d3d3d3",
+          gray: "#525252",
+          "gray-muted": "#737373",
+          "gray-light": "#a3a3a3",
+          "gray-lighter": "#d4d4d4",
+        },
+        // Semantic status colors
+        status: {
+          success: "#22c55e",
+          "success-light": "#dcfce7",
+          "success-dark": "#166534",
+          warning: "#f59e0b",
+          "warning-light": "#fef3c7",
+          "warning-dark": "#92400e",
+          error: "#ef4444",
+          "error-light": "#fee2e2",
+          "error-dark": "#991b1b",
+          info: "#3b82f6",
+          "info-light": "#dbeafe",
+          "info-dark": "#1e40af",
+        },
+        // Text color scale for proper contrast
+        text: {
+          primary: "#171717",
+          secondary: "#525252",
+          muted: "#737373",
+          disabled: "#a3a3a3",
         },
         // Legacy support
         background: "var(--background)",
@@ -50,10 +76,15 @@ const config: Config = {
         "leadity-lg": "0.875rem",
       },
       boxShadow: {
-        leadity: "-10px -10px 30px 0px rgba(213, 213, 213, 0.25), 10px 10px 30px 0px rgba(0, 0, 0, 0.25)",
-        "leadity-lg": "-20px -20px 59.5px 0px rgba(213, 213, 213, 0.25), 20px 20px 60px 0px rgba(0, 0, 0, 0.25)",
-        "leadity-button": "10px 10px 30px 0px rgba(0, 0, 0, 0.25), -10px -10px 20px 0px rgba(255, 255, 255, 0.25)",
-        "leadity-header": "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+        // Modern, lighter shadows for reduced visual fatigue
+        leadity: "0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.08)",
+        "leadity-lg": "0 4px 12px rgba(0, 0, 0, 0.06), 0 16px 32px rgba(0, 0, 0, 0.1)",
+        "leadity-button": "0 2px 4px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.06)",
+        "leadity-button-hover": "0 4px 8px rgba(0, 0, 0, 0.1), 0 8px 24px rgba(0, 0, 0, 0.08)",
+        "leadity-header": "0 1px 3px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04)",
+        // Additional utility shadows
+        "leadity-xs": "0 1px 2px rgba(0, 0, 0, 0.04)",
+        "leadity-focus": "0 0 0 3px rgba(139, 239, 43, 0.25)",
       },
       spacing: {
         18: "4.5rem",

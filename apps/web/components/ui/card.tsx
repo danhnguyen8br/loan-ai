@@ -8,15 +8,15 @@ export interface CardProps extends HTMLAttributes<HTMLDivElement> {
 const Card = forwardRef<HTMLDivElement, CardProps>(
   ({ className = '', variant = 'default', hover = false, children, ...props }, ref) => {
     const variantStyles = {
-      default: 'bg-white rounded-leadity shadow-leadity',
-      bordered: 'bg-white rounded-leadity border-2 border-gray-100 hover:border-primary/30',
-      elevated: 'bg-white rounded-leadity shadow-leadity-lg',
-      leadity: 'bg-white rounded-leadity shadow-leadity',
+      default: 'bg-white rounded-leadity shadow-leadity border border-gray-100',
+      bordered: 'bg-white rounded-leadity border border-gray-200 hover:border-gray-300',
+      elevated: 'bg-white rounded-leadity shadow-leadity-lg border border-gray-100',
+      leadity: 'bg-white rounded-leadity shadow-leadity border border-gray-100',
     };
 
     const hoverStyles = hover 
-      ? 'transition-all duration-300 hover:shadow-leadity-lg hover:-translate-y-1' 
-      : '';
+      ? 'transition-all duration-200 hover:shadow-leadity-lg hover:-translate-y-1 hover:border-gray-200' 
+      : 'transition-colors duration-200';
 
     return (
       <div
@@ -59,7 +59,7 @@ CardBody.displayName = 'CardBody';
 const CardFooter = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   ({ className = '', children, ...props }, ref) => {
     return (
-      <div ref={ref} className={`p-6 pt-4 border-t border-gray-100 ${className}`} {...props}>
+      <div ref={ref} className={`p-6 pt-4 border-t border-gray-200 bg-gray-50/50 ${className}`} {...props}>
         {children}
       </div>
     );

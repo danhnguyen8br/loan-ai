@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "railway:build": "npm install && npm run build",
+    "railway:start": "npm start"
+  }
+}

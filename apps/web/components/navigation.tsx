@@ -8,7 +8,7 @@ export function Navigation() {
   const pathname = usePathname();
 
   return (
-    <nav className="bg-white shadow-leadity-header sticky top-0 z-50">
+    <nav className="bg-white shadow-leadity-header sticky top-0 z-50 border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
@@ -29,14 +29,14 @@ export function Navigation() {
                   relative px-4 py-2 text-base font-medium rounded-leadity-md
                   transition-all duration-200
                   ${pathname === '/simulator'
-                    ? 'text-dark bg-primary/10'
-                    : 'text-dark-darker bg-primary hover:bg-primary-hover'
+                    ? 'text-gray-900 bg-primary/15 border border-primary/30'
+                    : 'text-gray-900 bg-primary hover:bg-primary-dark hover:text-white shadow-sm'
                   }
                 `}
               >
                 Mô Phỏng Chi Phí
                 {pathname === '/simulator' && (
-                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-0.5 bg-primary rounded-full" />
+                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-primary-500 rounded-full" />
                 )}
               </Link>
             </div>

@@ -48,10 +48,10 @@ export function InfoTooltip({
               inline-flex items-center justify-center
               ${containerSize}
               rounded-full
-              bg-primary/20 hover:bg-primary/30
-              text-primary-dark
-              transition-all duration-200
-              focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-1
+              bg-primary/15 hover:bg-primary/25 active:bg-primary/35
+              text-primary-700 hover:text-primary-800
+              transition-all duration-150
+              focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-1
               cursor-help
               ${className}
             `}

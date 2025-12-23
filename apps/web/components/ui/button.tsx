@@ -10,39 +10,53 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className = '', variant = 'primary', size = 'md', isLoading, disabled, children, ...props }, ref) => {
     const baseStyles = `
       inline-flex items-center justify-center font-semibold
-      transition-all duration-300 ease-out
-      focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary
-      disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none
+      transition-all duration-200 ease-out
+      focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary-500
+      disabled:opacity-70 disabled:saturate-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none
       active:scale-[0.98]
     `;
 
     const variantStyles = {
       primary: `
-        bg-primary text-dark-darker hover:bg-primary-hover
-        shadow-leadity-button hover:shadow-leadity-lg
-        hover:-translate-y-0.5
+        bg-primary text-gray-900 
+        hover:bg-primary-dark hover:text-white
+        active:bg-primary-700
+        shadow-md hover:shadow-lg active:shadow-sm
+        hover:-translate-y-0.5 active:translate-y-0
         rounded-leadity-lg
       `,
       secondary: `
-        bg-gray-100 text-dark hover:bg-gray-200
+        bg-gray-100 text-gray-700 
+        hover:bg-gray-200 hover:text-gray-900
+        active:bg-gray-300
+        border border-gray-200 hover:border-gray-300
         rounded-leadity-lg
       `,
       outline: `
-        border-2 border-primary text-dark bg-transparent
-        hover:bg-primary hover:text-dark-darker
+        border-2 border-primary text-gray-800 bg-transparent
+        hover:bg-primary hover:text-gray-900
+        active:bg-primary-dark active:border-primary-dark active:text-white
         rounded-leadity-lg
       `,
       danger: `
-        bg-red-600 text-white hover:bg-red-700
-        focus:ring-red-500
+        bg-red-600 text-white 
+        hover:bg-red-700 
+        active:bg-red-800
+        focus-visible:ring-red-500
+        shadow-sm hover:shadow-md
         rounded-leadity-lg
       `,
       dark: `
-        bg-dark text-white hover:bg-dark-darker
+        bg-dark text-white 
+        hover:bg-dark-darker
+        active:bg-black
+        shadow-sm hover:shadow-md
         rounded-leadity-lg
       `,
       ghost: `
-        bg-transparent text-dark hover:bg-gray-100
+        bg-transparent text-gray-700 
+        hover:bg-gray-100 hover:text-gray-900
+        active:bg-gray-200
         rounded-leadity-lg
       `,
     };

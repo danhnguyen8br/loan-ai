@@ -9,30 +9,58 @@
   --primary: #8bef2b;
   --primary-dark: #5eb10e;
   --primary-hover: #7dd625;
+  --primary-soft: #9ce052;
+  --primary-muted: #a8d774;
   
   --dark: #1e1e1e;
   --darker: #151313;
   --black: #000000;
   --white: #ffffff;
   
-  --gray: #6b6b6b;
-  --gray-light: #d3d3d3;
-  --gray-50: #f9fafb;
-  --gray-100: #f3f4f6;
-  --gray-200: #e5e7eb;
-  --gray-900: #111827;
+  /* Improved gray scale for better contrast (WCAG AA compliant) */
+  --gray: #525252;
+  --gray-muted: #737373;
+  --gray-light: #a3a3a3;
+  --gray-lighter: #d4d4d4;
+  --gray-50: #fafafa;
+  --gray-100: #f5f5f5;
+  --gray-200: #e5e5e5;
+  --gray-300: #d4d4d4;
+  --gray-400: #a3a3a3;
+  --gray-500: #737373;
+  --gray-600: #525252;
+  --gray-700: #404040;
+  --gray-800: #262626;
+  --gray-900: #171717;
   
+  /* Semantic status colors */
+  --success: #22c55e;
+  --success-light: #dcfce7;
+  --success-dark: #166534;
+  --warning: #f59e0b;
+  --warning-light: #fef3c7;
+  --warning-dark: #92400e;
+  --error: #ef4444;
+  --error-light: #fee2e2;
+  --error-dark: #991b1b;
+  --info: #3b82f6;
+  --info-light: #dbeafe;
+  --info-dark: #1e40af;
+  
+  /* Legacy semantic colors */
   --green-100: #dcfce7;
   --green-800: #166534;
   --red-100: #fee2e2;
   --red-800: #991b1b;
   
-  /* Shadows */
-  --shadow-card: -10px -10px 30px 0px rgba(213, 213, 213, 0.25), 10px 10px 30px 0px rgba(0, 0, 0, 0.25);
-  --shadow-card-lg: -20px -20px 59.5px 0px rgba(213, 213, 213, 0.25), 20px 20px 60px 0px rgba(0, 0, 0, 0.25);
-  --shadow-button: 10px 10px 30px 0px rgba(0, 0, 0, 0.25), -10px -10px 20px 0px rgba(255, 255, 255, 0.25);
-  --shadow-header: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-  --shadow-text: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  /* Modern, lighter shadows for less visual fatigue */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-card-lg: 0 4px 12px rgba(0, 0, 0, 0.06), 0 16px 32px rgba(0, 0, 0, 0.1);
+  --shadow-button: 0 2px 4px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.06);
+  --shadow-button-hover: 0 4px 8px rgba(0, 0, 0, 0.1), 0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-header: 0 1px 3px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-text: 0 1px 2px rgba(0, 0, 0, 0.15);
   
   /* Spacing */
   --spacing-xs: 0.25rem;
@@ -112,10 +140,10 @@ body {
   scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
 }
 
-/* Selection */
+/* Selection - improved contrast */
 ::selection {
   background: var(--primary);
-  color: var(--darker);
+  color: var(--black);
 }
 
 @layer base {
@@ -171,11 +199,13 @@ body {
     background: var(--white);
     border-radius: var(--radius-xl);
     box-shadow: var(--shadow-card);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid var(--gray-200);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
   .leadity-card:hover {
     box-shadow: var(--shadow-card-lg);
+    border-color: var(--gray-300);
     transform: translateY(-2px);
   }
   
@@ -195,13 +225,20 @@ body {
   
   .leadity-btn-primary {
     background: var(--primary);
-    color: var(--darker);
+    color: var(--black);
     box-shadow: var(--shadow-button);
   }
   
   .leadity-btn-primary:hover {
-    background: var(--primary-hover);
+    background: var(--primary-dark);
+    box-shadow: var(--shadow-button-hover);
     transform: translateY(-1px);
+  }
+  
+  .leadity-btn-primary:active {
+    background: #4a9a0a;
+    transform: translateY(0);
+    box-shadow: var(--shadow-xs);
   }
   
   .leadity-btn-outline {
