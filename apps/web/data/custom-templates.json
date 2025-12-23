@@ -1,0 +1,68 @@
+[
+  {
+    "id": "re_long_fixed_36m",
+    "name": "Vay Mua Nhà Cố Định Dài Hạn (36T)",
+    "category": "MORTGAGE_RE",
+    "description": "Gói vay với 36 tháng lãi suất cố định, ổn định chi phí hàng tháng trong thời gian dài.",
+    "loan_limits": {
+      "max_ltv_pct": 65,
+      "max_dti_pct": 45
+    },
+    "term_rules": {
+      "min_term_months": 60,
+      "max_term_months": 240
+    },
+    "repayment_defaults": {
+      "repayment_method_default": "annuity",
+      "payment_recalc_rule": "on_rate_reset"
+    },
+    "grace": {
+      "grace_principal_months": 0
+    },
+    "rates": {
+      "promo_fixed_months": 36,
+      "promo_fixed_rate_pct": 8.8,
+      "floating_reference_assumption_pct": 6.5,
+      "floating_margin_pct": 2.5,
+      "reset_frequency_months": 6
+    },
+    "fees": {
+      "origination_fee_pct": 0.8,
+      "appraisal_fee_vnd": 3500000,
+      "insurance": {
+        "enabled_default": true,
+        "mandatory": false,
+        "annual_pct": 0.08,
+        "basis": "on_balance"
+      }
+    },
+    "prepayment_penalty": {
+      "schedule": [
+        {
+          "from_month_inclusive": 0,
+          "to_month_exclusive": 24,
+          "fee_pct": 2
+        },
+        {
+          "from_month_inclusive": 24,
+          "to_month_exclusive": 36,
+          "fee_pct": 1
+        },
+        {
+          "from_month_inclusive": 36,
+          "to_month_exclusive": null,
+          "fee_pct": 0
+        }
+      ],
+      "allow_partial_prepay": true,
+      "partial_prepay_min_vnd": 20000000
+    },
+    "assumptions": {
+      "reference_rate_note": "Lãi suất cố định cao hơn bù đắp rủi ro cho ngân hàng",
+      "fee_notes": "Bảo hiểm được khuyến nghị nhưng không bắt buộc"
+    },
+    "data_confidence_score": 100,
+    "is_custom": false,
+    "is_builtin": true
+  }
+]

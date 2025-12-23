@@ -1,0 +1,30 @@
+# Loan AI - Weekly Mortgage Products Sync Cronjob
+#
+# This cron configuration file can be copied to /etc/cron.d/
+# or the content can be added to user crontab using: crontab -e
+#
+# Adjust paths and user as needed for your environment.
+
+# Environment variables
+SHELL=/bin/bash
+PATH=/usr/local/bin:/usr/bin:/bin
+MAILTO=""
+
+# Weekly sync of mortgage products and banks from Vietnam
+# Runs every Sunday at 2:00 AM server time
+#
+# Format: minute hour day-of-month month day-of-week user command
+# 0 2 * * 0 = At 02:00 on Sunday
+
+# For system cron (/etc/cron.d/) - specify user:
+# 0 2 * * 0 loan-ai /opt/loan-ai/apps/api/scripts/run_mortgage_cron.sh >> /var/log/loan-ai/mortgage_cron.log 2>&1
+
+# For user crontab (crontab -e) - no user needed:
+# 0 2 * * 0 /path/to/loan-ai/apps/api/scripts/run_mortgage_cron.sh >> /var/log/loan-ai/mortgage_cron.log 2>&1
+
+# Alternative schedules:
+# Every day at 3 AM:     0 3 * * *
+# Every Monday at 1 AM:  0 1 * * 1
+# Every 6 hours:         0 */6 * * *
+# First Sunday of month: 0 2 1-7 * 0
+
