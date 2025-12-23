@@ -30,9 +30,9 @@ Deploy your entire loan-ai app in ~15 minutes!
 + New → GitHub Repo → loan-ai
 ```
 
-**Settings:**
-- Root Directory: `apps/api`
-- Start Command: `alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+**IMPORTANT - Settings (Required for Monorepo):**
+- **Root Directory**: `apps/api` ⚠️ MUST SET THIS FIRST!
+- **Start Command**: (auto-detected from railway.json)
 
 **Variables:**
 ```bash
@@ -51,10 +51,10 @@ PYTHONUNBUFFERED=1
 + New → GitHub Repo → loan-ai
 ```
 
-**Settings:**
-- Root Directory: `apps/web`
-- Build Command: `npm install && npm run build`
-- Start Command: `npm start`
+**IMPORTANT - Settings (Required for Monorepo):**
+- **Root Directory**: `apps/web` ⚠️ MUST SET THIS FIRST!
+- **Build Command**: (auto-detected from nixpacks.toml)
+- **Start Command**: (auto-detected from railway.json)
 
 **Variables:**
 ```bash
@@ -85,6 +85,30 @@ railway link
 railway service  # Select loan-ai-api
 railway run python -m scripts.seed_data
 ```
+
+## Troubleshooting
+
+### "Nixpacks was unable to generate a build plan"
+
+**Fix:** You MUST set the Root Directory for each service:
+1. Go to service Settings
+2. Find "Source" or "Service" section
+3. Set **Root Directory** to `apps/api` or `apps/web`
+4. Click "Redeploy"
+
+### Backend build fails
+
+**Check:**
+- Root Directory is set to `apps/api`
+- DATABASE_URL references PostgreSQL service
+- pgvector extension is enabled in database
+
+### Frontend build fails
+
+**Check:**
+- Root Directory is set to `apps/web`
+- NEXT_PUBLIC_API_URL is configured
+- Node.js version (should auto-detect 20.x)
 
 ## Cost
 
