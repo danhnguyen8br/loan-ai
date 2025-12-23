@@ -51,8 +51,10 @@ export async function GET(request: Request) {
     let templates: ProductTemplate[] = [];
     
     if (includeBuiltIn) {
-      // Combine built-in and custom templates
-      templates = [...PRODUCT_TEMPLATES, ...customTemplates];
+      // Combine built-in and custom templates, with custom overriding built-in by ID
+      const customIds = new Set(customTemplates.map(t => t.id));
+      const builtInFiltered = PRODUCT_TEMPLATES.filter(t => !customIds.has(t.id));
+      templates = [...builtInFiltered, ...customTemplates];
     } else {
       templates = customTemplates;
     }

@@ -18,6 +18,7 @@ export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
+  params?: Promise<Record<string, string>>;
 }) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [username, setUsername] = useState('');
@@ -67,7 +68,7 @@ export default function AdminLayout({
   // Show login form if not authenticated
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center px-4">
         <div className="w-full max-w-md">
           {/* Logo */}
           <div className="text-center mb-8">
@@ -88,7 +89,7 @@ export default function AdminLayout({
             <CardBody className="p-8">
               <form onSubmit={handleLogin} className="space-y-6">
                 <div>
-                  <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2 mt-3 pt-3 pb-3">
+                  <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2 mt-3">
                     Username
                   </label>
                   <Input

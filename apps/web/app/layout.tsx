@@ -19,6 +19,7 @@ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
+  params?: Promise<Record<string, string>>;
 }>) {
   return (
     <html lang="vi" className={afacad.variable}>

@@ -66,7 +66,10 @@ const DEFAULT_REFINANCE_FORM: Partial<RefinanceForm> & { type: 'REFINANCE' } = {
   objective: 'MAX_NET_SAVING',
 };
 
-export default function SimulatorPage() {
+export default function SimulatorPage(_props: {
+  params?: Promise<Record<string, string>>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+}) {
   const [currentStep, setCurrentStep] = useState<Step>('category');
   const [category, setCategory] = useState<'MORTGAGE_RE' | 'REFINANCE' | null>(null);
   const [formData, setFormData] = useState<SimulatorFormData>(DEFAULT_MORTGAGE_FORM);

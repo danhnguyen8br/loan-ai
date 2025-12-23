@@ -4,6 +4,7 @@ export default function MainLayout({
   children,
 }: {
   children: React.ReactNode;
+  params?: Promise<Record<string, string>>;
 }) {
   return (
     <>

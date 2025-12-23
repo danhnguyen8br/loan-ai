@@ -26,7 +26,10 @@ const CATEGORY_LABELS: Record<ProductCategory, string> = {
   REFINANCE: 'Tái Tài Trợ',
 };
 
-export default function AdminTemplatesPage() {
+export default function AdminTemplatesPage(_props: {
+  params?: Promise<Record<string, string>>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+}) {
   const { data, isLoading, refetch } = useAdminTemplates();
   
   const createMutation = useCreateTemplate();
@@ -241,7 +244,7 @@ export default function AdminTemplatesPage() {
               placeholder="Search templates..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="text-sm"
+              className="text-sm my-3"
             />
             <Select
               options={[
