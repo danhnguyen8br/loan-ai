@@ -1,0 +1,37 @@
+# Dependencies - will be installed fresh in Docker
+node_modules
+**/node_modules
+
+# Build outputs
+.next
+**/dist
+**/.next
+
+# Development files
+.git
+.gitignore
+*.md
+.env*
+.vscode
+.idea
+
+# Test files
+**/tests
+**/*.test.ts
+**/*.spec.ts
+**/vitest.config.ts
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Misc
+.dockerignore
+fly.toml
+vercel.json
+railway.json
+
