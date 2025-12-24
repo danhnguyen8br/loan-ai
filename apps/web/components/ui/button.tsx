@@ -8,63 +8,66 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className = '', variant = 'primary', size = 'md', isLoading, disabled, children, ...props }, ref) => {
+    // Standardized focus ring: 3px width, primary color with 30% opacity
     const baseStyles = `
       inline-flex items-center justify-center font-semibold
       transition-all duration-200 ease-out
-      focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary-500
+      focus:outline-none focus-visible:ring-[3px] focus-visible:ring-primary/30 focus-visible:ring-offset-2
       disabled:opacity-70 disabled:saturate-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none
       active:scale-[0.98]
+      touch-manipulation select-none
     `;
 
+    // Using design tokens for consistent colors
     const variantStyles = {
       primary: `
-        bg-primary text-gray-900 
-        hover:bg-primary-dark hover:text-white
+        bg-primary text-dark-darker 
+        hover:bg-primary-dark hover:text-text-inverse
         active:bg-primary-700
         shadow-md hover:shadow-lg active:shadow-sm
         hover:-translate-y-0.5 active:translate-y-0
         rounded-leadity-lg
       `,
       secondary: `
-        bg-gray-100 text-gray-700 
-        hover:bg-gray-200 hover:text-gray-900
-        active:bg-gray-300
-        border border-gray-200 hover:border-gray-300
+        bg-leadity-gray-lighter text-leadity-gray 
+        hover:bg-leadity-gray-light hover:text-dark-darker
+        active:bg-leadity-gray-light
+        border border-leadity-gray-light hover:border-leadity-gray
         rounded-leadity-lg
       `,
       outline: `
-        border-2 border-primary text-gray-800 bg-transparent
-        hover:bg-primary hover:text-gray-900
-        active:bg-primary-dark active:border-primary-dark active:text-white
+        border-2 border-primary text-dark bg-transparent
+        hover:bg-primary hover:text-dark-darker
+        active:bg-primary-dark active:border-primary-dark active:text-text-inverse
         rounded-leadity-lg
       `,
       danger: `
-        bg-red-600 text-white 
-        hover:bg-red-700 
-        active:bg-red-800
-        focus-visible:ring-red-500
+        bg-status-error text-text-inverse 
+        hover:bg-status-error-dark 
+        active:bg-red-900
+        focus-visible:ring-status-error/30
         shadow-sm hover:shadow-md
         rounded-leadity-lg
       `,
       dark: `
-        bg-dark text-white 
+        bg-dark text-text-inverse 
         hover:bg-dark-darker
         active:bg-black
         shadow-sm hover:shadow-md
         rounded-leadity-lg
       `,
       ghost: `
-        bg-transparent text-gray-700 
-        hover:bg-gray-100 hover:text-gray-900
-        active:bg-gray-200
+        bg-transparent text-leadity-gray 
+        hover:bg-leadity-gray-lighter hover:text-dark-darker
+        active:bg-leadity-gray-light
         rounded-leadity-lg
       `,
     };
 
     const sizeStyles = {
-      sm: 'px-4 py-2 text-sm rounded-leadity-md',
-      md: 'px-6 py-2.5 text-base',
-      lg: 'px-8 py-3.5 text-lg',
+      sm: 'px-4 py-2 text-sm rounded-leadity-md min-h-[36px]',
+      md: 'px-6 py-2.5 text-base min-h-[44px]',
+      lg: 'px-8 py-3.5 text-lg min-h-[52px]',
     };
 
     return (

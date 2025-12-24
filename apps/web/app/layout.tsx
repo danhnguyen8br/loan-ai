@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Afacad } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
@@ -10,9 +10,26 @@ const afacad = Afacad({
   variable: "--font-afacad",
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: "cover",
+  themeColor: "#ffffff",
+};
+
 export const metadata: Metadata = {
   title: "Leadity - Giải Pháp Vay Thông Minh",
   description: "Nền tảng đề xuất vay dựa trên AI, kết nối bạn với các sản phẩm thế chấp tốt nhất từ các ngân hàng hàng đầu Việt Nam",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Leadity",
+  },
+  formatDetection: {
+    telephone: false,
+  },
 };
 
 export default function RootLayout({

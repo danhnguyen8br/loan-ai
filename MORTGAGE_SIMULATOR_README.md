@@ -5,7 +5,7 @@
 The Mortgage Cost Simulator supports two distinct scenario types:
 
 1. **MORTGAGE PURCHASE (Vay mua BĐS)** - Compute payment schedule and total cost for a NEW loan used to buy property
-2. **REFINANCE (Tái tài trợ / Chuyển khoản vay)** - Model switching from an existing loan to a new one
+2. **REFINANCE (Chuyển ngân hàng / Chuyển khoản vay)** - Model switching from an existing loan to a new one
 
 ## Scenario Types
 

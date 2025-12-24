@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "railway:build": "npm install && npm run build",
+    "railway:build": "npm install && npm --prefix ../../packages/loan-engine run build && npm run build",
     "railway:start": "npm start"
   }
 }

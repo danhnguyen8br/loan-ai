@@ -4,199 +4,130 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-AI-powered loan product recommendation system using **deterministic rules + calculators** for recommendations, with LLM assistance for intake UX and explanations. This is a monorepo with FastAPI backend and Next.js frontend.
+Mortgage simulator and cost comparison tool for Vietnam. This is a **frontend-only** project using Next.js with a local TypeScript calculation engine.
 
 ## Architecture
 
-### Monorepo Structure
-- `apps/api/` - FastAPI backend with PostgreSQL + pgvector
+### Project Structure
 - `apps/web/` - Next.js 15 frontend (App Router)
-- `packages/shared/` - Shared types (optional)
-- `infra/docker/` - Docker Compose for PostgreSQL
-- `docs/` - Product catalog and API contracts documentation
-
-### Backend Architecture (FastAPI)
-- `app/core/` - Configuration, database setup
-- `app/models/` - SQLAlchemy models (database tables)
-- `app/schemas/` - Pydantic schemas (API validation)
-- `app/routers/` - API endpoint handlers
-- `app/services/` - Business logic layer (calculators, rule engine, recommendation algorithm)
-- `alembic/` - Database migrations
+- `packages/loan-engine/` - TypeScript loan calculation engine (shared package)
 
 ### Frontend Architecture (Next.js)
-- `app/` - Next.js App Router pages
+- `app/(main)/` - Main user-facing pages (simulator)
+- `app/api/` - Next.js API routes (local endpoints)
 - `components/` - React components
-- `lib/` - Utilities and shared code
+- `components/ui/` - Reusable UI components
+- `components/simulator/` - Simulator-specific components
+- `lib/` - Utilities, hooks, and type definitions
+- `data/` - Static TypeScript data (curated offers)
 
-### Key Database Models
-- `LoanProduct` - Product catalog with JSONB `constraints_json` containing hard/soft rules
-- `Application` - Loan applications with related income, debts, collaterals
-- `RecommendationRun` - Audit log of all recommendation computations
+### Loan Engine Package
+- `packages/loan-engine/src/engine.ts` - Core simulation engine
+- `packages/loan-engine/src/templates.ts` - Built-in product templates
+- `packages/loan-engine/src/types.ts` - TypeScript type definitions
 
 ## Development Commands
 
 ### Initial Setup
 
 ```bash
-# Start PostgreSQL database with pgvector
-docker compose -f infra/docker/docker-compose.yml up -d
+# Install loan-engine package
+cd packages/loan-engine
+npm install
+npm run build
 
-# Backend setup
-cd apps/api
-python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
-pip install -U pip
-pip install -r requirements.txt
-cp .env.example .env  # Edit with actual values
-
-# Run migrations
-alembic upgrade head
-
-# Frontend setup
+# Install frontend dependencies
 cd apps/web
 npm install
-cp .env.local.example .env.local  # Edit with actual values
 ```
 
-### Running Development Servers
+### Running Development Server
 
 ```bash
-# Backend (from apps/api/)
-source .venv/bin/activate
-uvicorn app.main:app --reload --port 8000
-# API: http://localhost:8000
-# Docs: http://localhost:8000/docs
-
-# Frontend (from apps/web/)
+# From apps/web/
 npm run dev
 # App: http://localhost:3000
 ```
 
-### Database Migrations
+### Building for Production
 
 ```bash
-cd apps/api
-source .venv/bin/activate
+# Build loan-engine first
+cd packages/loan-engine
+npm run build
 
-# Create new migration (auto-generate from model changes)
-alembic revision --autogenerate -m "Description of changes"
-
-# Apply migrations
-alembic upgrade head
-
-# Rollback one migration
-alembic downgrade -1
+# Build frontend
+cd apps/web
+npm run build
 ```
 
 ### Testing
 
 ```bash
-# Backend tests (from apps/api/)
-source .venv/bin/activate
-pytest
+# Loan engine tests
+cd packages/loan-engine
+npm test
 
-# Run specific test file
-pytest tests/test_calculators.py
-
-# Run with verbose output
-pytest -v
-
-# Frontend tests (from apps/web/)
-npm run lint
-npm run build  # Type checking happens during build
+# Frontend type checking
+cd apps/web
+npm run build
 ```
 
-## Adding New Features
+## Key Features
 
-### Adding New API Endpoint
+### Simulator Flow
+1. **Category Step** - Choose loan type (MORTGAGE_RE or REFINANCE)
+2. **Inputs Step** - Enter loan details
+3. **Strategy Results Step** - View 3 strategies compared across all product templates
 
-1. Define request/response schemas in `app/schemas/<domain>.py` using Pydantic
-2. Implement business logic in `app/services/<domain>.py`
-3. Create endpoint handler in `app/routers/<domain>.py` using FastAPI router
-4. Register router in `app/main.py` if it's a new router file
+### Multi-Strategy Comparison
+- **Mortgage (M1, M2, M3)**:
+  - M1: Minimum Payment
+  - M2: Extra Principal (configurable amount)
+  - M3: Exit Plan (early payoff)
+  
+- **Refinance (R1, R2, R3)**:
+  - R1: Refinance Now (liquidity)
+  - R2: Refinance + Accelerate
+  - R3: Optimal Timing
 
-### Adding New Database Table
+### API Routes (Next.js)
+- `GET /api/simulator/templates` - Fetch product templates (built-in)
+- `POST /api/simulator/simulate` - Run multi-strategy simulation
+- `POST /api/simulator/recommend` - Get recommended loan packages
 
-1. Create SQLAlchemy model in `app/models/<name>.py`
-2. Import model in `app/models/__init__.py`
-3. Generate migration: `alembic revision --autogenerate -m "Add <table>"`
-4. Review generated migration in `alembic/versions/`
-5. Apply migration: `alembic upgrade head`
-
-## Critical Constraints
-
-### Deterministic Decision Boundary
-
-This is the most important architectural constraint:
-
-**MUST be deterministic:**
-- Product filtering (hard constraints: max_ltv, max_dsr, min_income, max_tenor, geo, collateral types)
-- Scoring calculations (soft preferences: fixed rate duration, SLA, fees)
-- All financial calculations (DSR, LTV, monthly payment, amortization)
-- Recommendation ranking algorithm
-
-**LLM CAN do:**
-- Guide application intake (ask clarifying questions)
-- Explain recommendation results using structured facts from database
-- Answer FAQ with RAG citations from product documentation
-
-**LLM CANNOT do:**
-- Generate or modify rates, fees, or eligibility constraints
-- Make approval decisions or claims
-- Output financial numbers not derived from deterministic calculators
-- Invent product features or terms
-
-### Server-Side Validation
-
-All API responses must be validated by Pydantic schemas. Any LLM-generated content claiming approval or inventing financial terms must be rejected/sanitized before reaching users.
-
-## Product Rules Structure
-
-Products store constraints in JSONB fields:
-
-```json
-{
-  "hard": {
-    "max_ltv": 0.75,
-    "max_dsr": 0.5,
-    "min_income_monthly": 20000000,
-    "max_tenor_months": 240,
-    "allowed_collateral_types": ["HOUSE", "CONDO", "LAND"],
-    "geo_allowed": ["HCM", "HN", "DN"]
-  },
-  "soft": {
-    "pref_fixed_months_weight": 0.3,
-    "pref_fast_sla_weight": 0.2,
-    "pref_low_fee_weight": 0.2
-  }
-}
-```
+### Data Sources
+- Built-in templates from `@loan-ai/loan-engine` package (static, no database)
+- Curated offers from `data/simulator-curated-offers.ts` (display metadata)
 
 ## Tech Stack
-
-**Backend:**
-- FastAPI (web framework)
-- SQLAlchemy (ORM)
-- Alembic (migrations)
-- PostgreSQL with pgvector
-- Pydantic (validation)
-- pytest (testing)
 
 **Frontend:**
 - Next.js 15 with App Router
 - TypeScript
 - Tailwind CSS
-- TanStack Query
+- TanStack Query (React Query)
+
+**Loan Engine:**
+- TypeScript
+- Vitest (testing)
+
+## Adding New Features
+
+### Adding New Product Template
+
+1. Edit `packages/loan-engine/src/templates.ts` to add template data
+2. Edit `apps/web/data/simulator-curated-offers.ts` to add display metadata
+3. Templates must conform to the `ProductTemplate` type
+
+### Adding New Simulation Strategy
+
+1. Update types in `packages/loan-engine/src/types.ts`
+2. Implement strategy logic in `packages/loan-engine/src/engine.ts`
+3. Update frontend labels in `apps/web/lib/simulator-types.ts`
 
 ## Environment Configuration
 
-Backend (`apps/api/.env`):
-- `DATABASE_URL` - PostgreSQL connection string
-- `JWT_SECRET` - Secret key for JWT tokens
-- `CORS_ORIGINS` - Allowed frontend origins
-- `API_V1_PREFIX` - API version prefix (default: /api/v1)
-
 Frontend (`apps/web/.env.local`):
-- API endpoint configuration
-
-See `.env.example` files for complete list.
+- No external API configuration needed
+- All simulations run locally

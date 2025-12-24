@@ -2,24 +2,8 @@
 import type {
   ProductTemplate as ProductTemplateType,
   ProductCategory as ProductCategoryType,
-  RepaymentMethod as RepaymentMethodType,
-  PaymentRecalcRule as PaymentRecalcRuleType,
-  InsuranceBasis as InsuranceBasisType,
-  UserInput as UserInputType,
-  StressConfig as StressConfigType,
-  RepaymentStrategy as RepaymentStrategyType,
-  StrategyType as StrategyTypeType,
   MilestoneType as MilestoneTypeType,
-  StrategyMinPayment as StrategyMinPaymentType,
-  StrategyFixedExtraPrincipal as StrategyFixedExtraPrincipalType,
-  StrategyMilestonePayoff as StrategyMilestonePayoffType,
-  StrategyExitPlan as StrategyExitPlanType,
   ScheduleRow as ScheduleRowType,
-  ScheduleTotals as ScheduleTotalsType,
-  SimulationMetrics as SimulationMetricsType,
-  SimulationResult as SimulationResultType,
-  SimulateRequest as SimulateRequestType,
-  SimulateResponse as SimulateResponseType,
   PrepaymentScheduleItem as PrepaymentScheduleItemType,
   OldLoanInput as OldLoanInputType,
   OldPrepaymentTier as OldPrepaymentTierType,
@@ -27,15 +11,11 @@ import type {
   RefinanceInput as RefinanceInputType,
   MortgagePurchaseResult as MortgagePurchaseResultType,
   RefinanceResult as RefinanceResultType,
-  RefinanceBreakdown as RefinanceBreakdownType,
-  SimulationResultUnion as SimulationResultUnionType,
-  // New multi-strategy types
+  // Multi-strategy types
   ExitRule as ExitRuleType,
   RefinanceObjective as RefinanceObjectiveType,
   MortgageStrategyId as MortgageStrategyIdType,
   RefinanceStrategyId as RefinanceStrategyIdType,
-  MortgageStrategyResult as MortgageStrategyResultType,
-  RefinanceStrategyResult as RefinanceStrategyResultType,
   MortgageMultiStrategyResult as MortgageMultiStrategyResultType,
   RefinanceMultiStrategyResult as RefinanceMultiStrategyResultType,
 } from '@loan-ai/loan-engine';
@@ -43,24 +23,8 @@ import type {
 // Re-export types with original names
 export type ProductTemplate = ProductTemplateType;
 export type ProductCategory = ProductCategoryType;
-export type RepaymentMethod = RepaymentMethodType;
-export type PaymentRecalcRule = PaymentRecalcRuleType;
-export type InsuranceBasis = InsuranceBasisType;
-export type UserInput = UserInputType;
-export type StressConfig = StressConfigType;
-export type RepaymentStrategy = RepaymentStrategyType;
-export type StrategyType = StrategyTypeType;
 export type MilestoneType = MilestoneTypeType;
-export type StrategyMinPayment = StrategyMinPaymentType;
-export type StrategyFixedExtraPrincipal = StrategyFixedExtraPrincipalType;
-export type StrategyMilestonePayoff = StrategyMilestonePayoffType;
-export type StrategyExitPlan = StrategyExitPlanType;
 export type ScheduleRow = ScheduleRowType;
-export type ScheduleTotals = ScheduleTotalsType;
-export type SimulationMetrics = SimulationMetricsType;
-export type SimulationResult = SimulationResultType;
-export type SimulateRequest = SimulateRequestType;
-export type SimulateResponse = SimulateResponseType;
 export type PrepaymentScheduleItem = PrepaymentScheduleItemType;
 export type OldLoanInput = OldLoanInputType;
 export type OldPrepaymentTier = OldPrepaymentTierType;
@@ -68,26 +32,15 @@ export type MortgagePurchaseInput = MortgagePurchaseInputType;
 export type RefinanceInput = RefinanceInputType;
 export type MortgagePurchaseResult = MortgagePurchaseResultType;
 export type RefinanceResult = RefinanceResultType;
-export type RefinanceBreakdown = RefinanceBreakdownType;
-export type SimulationResultUnion = SimulationResultUnionType;
-// New multi-strategy types
+// Multi-strategy types
 export type ExitRule = ExitRuleType;
 export type RefinanceObjective = RefinanceObjectiveType;
 export type MortgageStrategyId = MortgageStrategyIdType;
 export type RefinanceStrategyId = RefinanceStrategyIdType;
-export type MortgageStrategyResult = MortgageStrategyResultType;
-export type RefinanceStrategyResult = RefinanceStrategyResultType;
 export type MortgageMultiStrategyResult = MortgageMultiStrategyResultType;
 export type RefinanceMultiStrategyResult = RefinanceMultiStrategyResultType;
 
 // Frontend-specific types
-export interface SimulatorState {
-  step: 'category' | 'inputs' | 'strategy' | 'results';
-  category: 'MORTGAGE_RE' | 'REFINANCE' | null;
-  userInput: Partial<UserInputForm>;
-  selectedStrategies: StrategyType[];
-  selectedTemplates: string[];
-}
 
 // Mortgage Purchase Form Data
 export interface MortgagePurchaseForm {
@@ -143,52 +96,9 @@ export interface RefinanceForm {
   threshold_pct?: number;
 }
 
-// Legacy form type for backward compatibility
-export interface UserInputForm {
-  loan_amount_vnd: number;
-  term_months: number;
-  horizon_months: number;
-  property_value_vnd?: number;
-  down_payment_vnd?: number;
-  current_remaining_balance_vnd?: number;
-  current_rate_pct?: number;
-  remaining_term_months?: number;
-  refinance_cashout_vnd?: number;
-  repayment_method: 'annuity' | 'equal_principal';
-  include_insurance: boolean;
-  stress_bump: 0 | 2 | 4;
-  extra_principal_vnd?: number;
-  milestone_type?: 'payoff_at_end_of_promo' | 'payoff_at_end_of_grace' | 'payoff_when_prepay_fee_hits_threshold';
-  threshold_pct?: number;
-  // Refinance-specific
-  old_loan_age_months?: number;
-  refinance_timing?: 'now' | 'after_12m' | 'after_24m' | 'custom';
-}
-
 export interface TemplatesResponse {
   templates: ProductTemplate[];
   count: number;
-}
-
-export interface SimulateResponseData {
-  results: {
-    template_id: string;
-    strategy_type: string;
-    result: SimulationResult;
-  }[];
-  count: number;
-  user_input: UserInput;
-}
-
-// New V2 response for refinance
-export interface SimulateResponseDataV2 {
-  results: {
-    template_id: string;
-    strategy_type: string;
-    result: SimulationResultUnion;
-  }[];
-  count: number;
-  input_type: 'MORTGAGE_RE' | 'REFINANCE';
 }
 
 // V3 API Response - multi-strategy per template
@@ -253,26 +163,6 @@ export function formatShortVND(amount: number): string {
   }
   return formatVND(amount);
 }
-
-export const STRATEGY_LABELS: Record<string, { name: string; description: string }> = {
-  STRATEGY_MIN_PAYMENT: {
-    name: 'Thanh Toán Tối Thiểu',
-    description: 'Chỉ trả đúng kỳ hạn, ưu tiên giữ thanh khoản',
-  },
-  STRATEGY_FIXED_EXTRA_PRINCIPAL: {
-    name: 'Trả Thêm Gốc Hàng Tháng',
-    description: 'Trả thêm gốc cố định mỗi tháng để giảm tổng lãi',
-  },
-  STRATEGY_EXIT_PLAN: {
-    name: 'Kế Hoạch Thoát',
-    description: 'Tất toán sớm hoặc tái cấu trúc theo mốc thời gian',
-  },
-  // Legacy
-  STRATEGY_REFINANCE_OR_PAYOFF_AT_MILESTONE: {
-    name: 'Tất Toán Theo Mốc',
-    description: 'Tất toán sớm tại mốc thời gian cụ thể',
-  },
-};
 
 // Strategy info with pros/cons for tooltips
 interface StrategyInfo {
@@ -385,20 +275,24 @@ export const REFINANCE_OBJECTIVE_LABELS: Record<RefinanceObjective, string> = {
   FASTEST_BREAK_EVEN: 'Hoà vốn nhanh nhất',
 };
 
-export const CATEGORY_LABELS: Record<string, { name: string; description: string }> = {
+export const CATEGORY_LABELS: Record<string, { name: string; description: string; hint?: string }> = {
   MORTGAGE_RE: {
     name: 'Vay Mua BĐS',
     description: 'Vay mua nhà, căn hộ hoặc đất',
+    hint: 'Dành cho bạn đang cần vay tiền để mua bất động sản',
   },
   REFINANCE: {
-    name: 'Tái Tài Trợ (Refinance)',
-    description: 'Chuyển khoản vay từ ngân hàng khác để có lãi suất tốt hơn',
+    name: 'Chuyển Ngân Hàng',
+    description: 'Chuyển khoản vay sang ngân hàng khác để giảm lãi suất',
+    hint: 'Dành cho bạn đang có khoản vay và muốn tìm lãi suất tốt hơn',
   },
 };
 
-export const REFINANCE_TIMING_LABELS: Record<string, string> = {
-  now: 'Refinance ngay',
-  after_12m: 'Sau 12 tháng',
-  after_24m: 'Sau 24 tháng',
-  custom: 'Tùy chọn',
+// Beginner-friendly explanations for common terms
+export const BEGINNER_TIPS = {
+  promo_rate: 'Lãi suất ưu đãi chỉ áp dụng trong thời gian đầu (thường 6-24 tháng). Sau đó, lãi sẽ chuyển sang thả nổi theo thị trường.',
+  floating_rate: 'Lãi thả nổi thay đổi theo điều kiện kinh tế. Khi lãi suất thị trường tăng, tiền trả hàng tháng của bạn cũng tăng.',
+  prepayment_fee: 'Nếu bạn trả hết khoản vay trước hạn, ngân hàng sẽ tính phí phạt. Phí này thường giảm dần theo thời gian.',
+  ltv: 'Tỷ lệ vay/giá nhà là phần trăm số tiền vay so với giá trị tài sản. Ngân hàng thường cho vay tối đa 70-80% giá trị.',
+  budget_tip: 'Nên dành tối đa 40-50% thu nhập ròng cho việc trả nợ. Ví dụ: thu nhập 30 triệu → trả nợ tối đa 12-15 triệu/tháng.',
 };

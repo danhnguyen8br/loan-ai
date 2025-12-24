@@ -53,7 +53,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     terms: ['Lãi tham chiếu', 'Lãi suất tham chiếu', 'Reference Rate', 'Benchmark Rate'],
     short: 'Mức lãi suất cơ sở do ngân hàng công bố định kỳ, dùng làm chuẩn để tính lãi thả nổi.',
     long: 'Mỗi ngân hàng có cách tính lãi tham chiếu riêng, thường dựa trên lãi suất tiết kiệm 12-13 tháng hoặc trung bình của thị trường. Được cập nhật định kỳ (tháng/quý).',
-    examples: ['Techcombank: Lãi tiết kiệm 12 tháng + 3%'],
+    examples: ['Ví dụ: Lãi tiết kiệm/huy động 12 tháng + 3%'],
   },
   {
     key: 'prepayment_fee',
@@ -79,7 +79,7 @@ export const GLOSSARY: GlossaryEntry[] = [
 
 ✅ Ưu điểm:
 • Áp lực tháng đầu thấp hơn Equal Principal
-• Dễ vượt qua đánh giá DTI/DSR của ngân hàng
+• Dễ vượt qua đánh giá gánh nợ hàng tháng của ngân hàng
 • Dễ cân đối ngân sách hàng tháng
 
 ⚠️ Nhược điểm:
@@ -93,17 +93,17 @@ export const GLOSSARY: GlossaryEntry[] = [
   },
   {
     key: 'ltv',
-    terms: ['LTV', 'Tỷ lệ vay/giá trị tài sản', 'Loan-to-Value', 'Tỷ lệ cho vay'],
-    short: 'Loan-to-Value: Tỷ lệ số tiền vay so với giá trị tài sản thế chấp. Thường tối đa 70-80%.',
-    long: 'LTV = (Số tiền vay / Giá trị tài sản) × 100%. LTV càng thấp, rủi ro cho ngân hàng càng thấp → có thể được lãi suất tốt hơn.',
-    examples: ['Nhà trị giá 3 tỷ, vay 2.1 tỷ → LTV = 70%'],
+    terms: ['LTV', 'Tỷ lệ vay/giá nhà', 'Phần trăm vay so với giá nhà', 'Loan-to-Value', 'Tỷ lệ cho vay'],
+    short: 'Phần trăm số tiền vay so với giá trị tài sản thế chấp. Ngân hàng thường cho vay tối đa 70-80% giá trị.',
+    long: 'Tỷ lệ vay/giá nhà = (Số tiền vay ÷ Giá trị tài sản) × 100%. Tỷ lệ càng thấp, rủi ro cho ngân hàng càng thấp → bạn có thể được lãi suất tốt hơn.',
+    examples: ['Nhà trị giá 3 tỷ, vay 2.1 tỷ → Tỷ lệ vay = 70%'],
   },
   {
     key: 'dti_dsr',
-    terms: ['DTI', 'DSR', 'Tỷ lệ trả nợ/thu nhập', 'Debt-to-Income', 'Debt Service Ratio'],
-    short: 'Tỷ lệ tổng nợ phải trả hàng tháng so với thu nhập. Ngân hàng thường yêu cầu ≤ 50-60%.',
-    long: 'DTI/DSR = (Tổng nợ trả hàng tháng / Thu nhập ròng) × 100%. Bao gồm cả nợ vay mới và các khoản nợ hiện tại (thẻ tín dụng, vay tiêu dùng...).',
-    examples: ['Thu nhập 30 triệu, nợ tổng 15 triệu/tháng → DSR = 50%'],
+    terms: ['DTI', 'DSR', '% thu nhập trả nợ', 'Gánh nợ hàng tháng', 'Tỷ lệ nợ/thu nhập', 'Debt-to-Income', 'Debt Service Ratio'],
+    short: 'Phần trăm thu nhập bạn phải dành để trả nợ mỗi tháng. Ngân hàng thường yêu cầu không quá 50-60%.',
+    long: '% thu nhập trả nợ = (Tổng nợ trả hàng tháng ÷ Thu nhập ròng) × 100%. Bao gồm cả khoản vay mới và các nợ hiện có (thẻ tín dụng, vay tiêu dùng...).',
+    examples: ['Thu nhập 30 triệu, tổng nợ phải trả 15 triệu/tháng → Gánh nợ = 50%'],
   },
   {
     key: 'settlement',
@@ -113,7 +113,7 @@ export const GLOSSARY: GlossaryEntry[] = [
   },
   {
     key: 'refinance',
-    terms: ['Tái tài trợ', 'Refinance', 'Đảo nợ', 'Chuyển khoản vay'],
+    terms: ['Chuyển ngân hàng', 'Refinance', 'Đảo nợ', 'Chuyển khoản vay'],
     short: 'Vay khoản mới để trả khoản cũ, thường để hưởng lãi suất tốt hơn hoặc điều kiện phù hợp hơn.',
     long: 'Refinance có thể ở cùng ngân hàng hoặc chuyển sang ngân hàng khác. Cần tính toán kỹ: lãi suất mới, phí tất toán sớm, phí thẩm định lại, và tổng chi phí để đảm bảo có lợi.',
     examples: ['Đang vay 10%/năm, refinance sang gói 8% → tiết kiệm 2%/năm'],
@@ -128,7 +128,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     key: 'property_valuation',
     terms: ['Thẩm định', 'Định giá tài sản', 'Property Valuation', 'Thẩm định giá'],
     short: 'Đánh giá giá trị tài sản thế chấp do ngân hàng hoặc đơn vị độc lập thực hiện. Phí khoảng 0.1-0.3% giá trị.',
-    long: 'Kết quả thẩm định quyết định số tiền tối đa được vay (theo tỷ lệ LTV). Thẩm định xem xét: vị trí, diện tích, pháp lý, tình trạng xây dựng, giá thị trường khu vực.',
+    long: 'Kết quả thẩm định quyết định số tiền tối đa được vay (theo tỷ lệ vay/giá nhà). Thẩm định xem xét: vị trí, diện tích, pháp lý, tình trạng xây dựng, giá thị trường khu vực.',
     examples: ['Nhà mua 3 tỷ, thẩm định được 2.8 tỷ → Vay tối đa 2.8 × 70% = 1.96 tỷ'],
   },
   {
@@ -149,6 +149,26 @@ export const GLOSSARY: GlossaryEntry[] = [
     terms: ['Tài sản thế chấp', 'Thế chấp', 'Collateral', 'TSTC'],
     short: 'Tài sản dùng để đảm bảo khoản vay. Thường là bất động sản, xe, sổ tiết kiệm.',
     long: 'Ngân hàng giữ quyền xử lý tài sản nếu khách hàng không trả được nợ. Với bất động sản, cần đăng ký giao dịch bảo đảm tại Văn phòng Đăng ký Đất đai.',
+  },
+  {
+    key: 'monthly_payment',
+    terms: ['Trả hàng tháng', 'Tiền trả/tháng', 'Monthly Payment', 'Kỳ hạn trả'],
+    short: 'Số tiền bạn phải trả cho ngân hàng mỗi tháng, bao gồm cả gốc và lãi.',
+    long: 'Tiền trả hàng tháng phụ thuộc vào: số tiền vay, lãi suất, kỳ hạn vay, và phương thức trả nợ. Với vay thả nổi, số tiền này có thể thay đổi khi lãi suất điều chỉnh.',
+  },
+  {
+    key: 'total_cost',
+    terms: ['Tổng chi phí', 'Chi phí toàn bộ', 'Total Cost'],
+    short: 'Tổng số tiền bạn phải trả ngoài tiền gốc vay: lãi + phí + bảo hiểm.',
+    long: 'Đây là con số quan trọng nhất để so sánh các khoản vay. Hai gói vay có lãi suất khác nhau nhưng tổng chi phí có thể tương đương do phí và kỳ hạn khác nhau.',
+    examples: ['Vay 2 tỷ/20 năm, tổng chi phí 1.5 tỷ → Tổng phải trả 3.5 tỷ'],
+  },
+  {
+    key: 'break_even',
+    terms: ['Hoà vốn', 'Điểm hoà vốn', 'Break-even', 'Hòa vốn'],
+    short: 'Thời điểm mà lợi ích từ việc chuyển ngân hàng bắt đầu vượt qua chi phí chuyển đổi.',
+    long: 'Khi refinance, bạn phải trả phí tất toán sớm, phí thẩm định lại. Điểm hoà vốn cho biết sau bao lâu bạn sẽ bắt đầu tiết kiệm thực sự so với giữ khoản vay cũ.',
+    examples: ['Hoà vốn sau 18 tháng → Từ tháng 19, bạn bắt đầu tiết kiệm thật'],
   },
   {
     key: 'fixed_rate',
@@ -192,7 +212,7 @@ export const GLOSSARY: GlossaryEntry[] = [
 
 ⚠️ Nhược điểm:
 • Áp lực tháng đầu cao hơn (cần dòng tiền khỏe)
-• Có thể khó vượt qua đánh giá DTI/DSR hơn Annuity
+• Có thể khó vượt qua đánh giá gánh nợ hàng tháng hơn Annuity
 • Gánh nặng tài chính lớn hơn ở giai đoạn đầu khi thu nhập có thể chưa cao
 
 📌 Phù hợp với: Người có thu nhập ổn định, muốn tiết kiệm tổng lãi, hoặc dự kiến thu nhập tăng trong tương lai.`,

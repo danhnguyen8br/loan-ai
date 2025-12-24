@@ -1,252 +1,102 @@
-# Loan AI Recommender MVP
+# Mortgage Simulator
 
-AI-powered loan product recommendation system that uses **deterministic rules + calculators** for recommendations, with LLM assistance for intake UX and explanations.
+Công cụ mô phỏng chi phí vay mua BĐS và refinance tại Việt Nam. So sánh nhiều gói vay với 3 chiến lược trả nợ khác nhau.
+
+## Features
+
+- 🏠 **Mô phỏng vay mua BĐS** - Tính toán chi phí cho khoản vay mua nhà mới
+- 🔄 **Mô phỏng Refinance** - So sánh chi phí chuyển ngân hàng
+- 📊 **So sánh 3 chiến lược** - Thanh toán tối thiểu, trả thêm gốc, tất toán sớm
+- 📈 **Lịch thanh toán chi tiết** - Xem từng tháng với lãi suất, gốc, lãi
+- 📥 **Xuất CSV** - Tải về lịch thanh toán chi tiết
 
 ## Project Structure
 
 ```
 loan-ai/
 ├── apps/
-│   ├── api/              # FastAPI backend
-│   │   ├── app/
-│   │   │   ├── core/     # Config, database
-│   │   │   ├── models/   # SQLAlchemy models
-│   │   │   ├── schemas/  # Pydantic schemas
-│   │   │   ├── routers/  # API endpoints
-│   │   │   ├── services/ # Business logic
-│   │   │   └── main.py
-│   │   ├── alembic/      # Database migrations
-│   │   ├── tests/
-│   │   └── requirements.txt
 │   └── web/              # Next.js frontend
 │       ├── app/          # App router pages
 │       ├── components/   # React components
-│       └── lib/          # Utilities
-├── packages/
-│   └── shared/           # Shared types (optional)
-├── infra/
-│   └── docker/
-│       └── docker-compose.yml
-└── docs/
-    ├── product_catalog/
-    └── api_contracts/
+│       ├── lib/          # Utilities, hooks, types
+│       └── data/         # Static JSON data
+└── packages/
+    └── loan-engine/      # TypeScript calculation engine
+        ├── src/
+        │   ├── engine.ts     # Core simulation logic
+        │   ├── templates.ts  # Built-in product templates
+        │   └── types.ts      # Type definitions
+        └── tests/
 ```
 
 ## Quick Start
 
-### 1. Start Database
+### 1. Build Loan Engine
 
 ```bash
-docker compose -f infra/docker/docker-compose.yml up -d
+cd packages/loan-engine
+npm install
+npm run build
 ```
 
-This starts PostgreSQL with pgvector extension on port 5432.
-
-### 2. Backend Setup
-
-```bash
-cd apps/api
-
-# Create virtual environment
-python -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-
-# Install dependencies
-pip install -U pip
-pip install -r requirements.txt
-
-# Create .env file
-cp .env.example .env
-
-# Run migrations
-alembic upgrade head
-
-# Start API server
-uvicorn app.main:app --reload --port 8000
-```
-
-API will be available at http://localhost:8000
-API docs at http://localhost:8000/docs
-
-### 3. Frontend Setup
+### 2. Start Frontend
 
 ```bash
 cd apps/web
-
-# Install dependencies
 npm install
-
-# Create .env.local
-cp .env.local.example .env.local
-
-# Start dev server
 npm run dev
 ```
 
-Frontend will be available at http://localhost:3000
+App will be available at http://localhost:3000
 
-## Core Features
+## Strategies
 
-### MVP Scope (Must-Have)
+### Mortgage Strategies (M1, M2, M3)
 
-- ✅ Product catalog + rules in database (editable via admin)
-- ✅ Deterministic calculators + rule engine
-- ✅ Recommendation engine + compare view
-- ✅ Audit log of recommendations
-- 🔄 Minimal RAG FAQ (optional)
+| Strategy | Description | Best For |
+|----------|-------------|----------|
+| **M1: Thanh Toán Tối Thiểu** | Chỉ trả đúng kỳ hạn | Giữ thanh khoản, cần vốn cho đầu tư khác |
+| **M2: Trả Thêm Gốc** | Trả thêm gốc cố định hàng tháng | Có thu nhập ổn định, muốn giảm tổng lãi |
+| **M3: Tất Toán Sớm** | Tất toán tại mốc thời gian xác định | Có kế hoạch bán nhà hoặc nguồn tiền lớn |
 
-### Out of Scope (For Later)
+### Refinance Strategies (R1, R2, R3)
 
-- Full AVM ML model (using stub for now)
-- Bank integrations
-- Automated document OCR/verification
-
-## API Endpoints
-
-### Applications
-
-- `POST /api/v1/applications` - Create draft application
-- `GET /api/v1/applications/{id}` - Get application
-- `PUT /api/v1/applications/{id}` - Update application
-- `POST /api/v1/applications/{id}/compute` - Compute metrics (DSR, LTV, etc.)
-
-### Products
-
-- `GET /api/v1/products` - List products (filter by purpose)
-- `GET /api/v1/products/{id}` - Get product details
-- `POST /api/v1/products` - Create product (admin)
-- `PUT /api/v1/products/{id}` - Update product (admin)
-- `DELETE /api/v1/products/{id}` - Delete product (admin)
-
-### Recommendations
-
-- `POST /api/v1/recommendations/{application_id}/recommend` - Generate recommendations
-- `GET /api/v1/recommendations/{id}` - Get recommendation results
-
-## Database Schema
-
-### Core Tables
-
-- `users` - User accounts
-- `banks` - Partner banks
-- `loan_products` - Loan product catalog with rules
-- `applications` - Loan applications
-- `application_incomes` - Income sources
-- `application_debts` - Existing debts
-- `application_collaterals` - Collateral assets
-- `recommendation_runs` - Audit log of recommendations
-
-### Product Rules Structure
-
-Products include constraints stored as JSONB:
-
-```json
-{
-  "hard": {
-    "max_ltv": 0.75,
-    "max_dsr": 0.5,
-    "min_income_monthly": 20000000,
-    "max_tenor_months": 240,
-    "allowed_collateral_types": ["HOUSE", "CONDO", "LAND"],
-    "geo_allowed": ["HCM", "HN", "DN"]
-  },
-  "soft": {
-    "pref_fixed_months_weight": 0.3,
-    "pref_fast_sla_weight": 0.2,
-    "pref_low_fee_weight": 0.2
-  }
-}
-```
+| Strategy | Description | Best For |
+|----------|-------------|----------|
+| **R1: Refinance Ngay** | Chuyển vay ngay, trả tối thiểu | Muốn hưởng lãi suất mới ngay |
+| **R2: Refinance + Trả Nhanh** | Chuyển vay ngay và trả thêm gốc | Muốn tiết kiệm lãi tối đa |
+| **R3: Thời Điểm Tối Ưu** | Tự động tìm tháng refinance tối ưu | Phí tất toán cũ còn cao |
 
 ## Tech Stack
 
-### Backend
-
-- **FastAPI** - Python web framework
-- **PostgreSQL** with **pgvector** - Database with vector support
-- **SQLAlchemy** - ORM
-- **Alembic** - Database migrations
-- **Pydantic** - Data validation
-
-### Frontend
-
-- **Next.js 15** - React framework (App Router)
+- **Next.js 15** - React framework with App Router
 - **TypeScript** - Type safety
 - **Tailwind CSS** - Styling
-- **TanStack Query** - Data fetching (to be added)
+- **TanStack Query** - Data fetching
 
-## Development Workflow
+## Development
 
-### Creating Database Migrations
-
-```bash
-cd apps/api
-alembic revision --autogenerate -m "Description of changes"
-alembic upgrade head
-```
-
-### Running Tests
+### Run Tests
 
 ```bash
-cd apps/api
-pytest
+# Loan engine tests
+cd packages/loan-engine
+npm test
 ```
 
-### Adding New API Endpoint
+### Build for Production
 
-1. Define Pydantic schemas in `app/schemas/`
-2. Create service functions in `app/services/`
-3. Add router endpoints in `app/routers/`
-4. Register router in `app/main.py`
+```bash
+# Build loan-engine first
+cd packages/loan-engine
+npm run build
 
-## Non-Negotiable Rules
-
-### Deterministic Decision Boundary
-
-- **Filtering/scoring** MUST be deterministic (rule engine + calculators)
-- LLM can:
-  - Ask questions (intake)
-  - Explain results using structured facts
-  - Answer FAQ via RAG with citations
-- LLM CANNOT:
-  - Invent rates, fees, eligibility constraints
-  - Claim approval
-  - Output numbers not in allowed inputs/outputs
-
-### Server-Side Guardrails
-
-- All responses validated by Pydantic schemas
-- LLM responses with forbidden claims are rejected/sanitized
-
-## Next Steps
-
-### Immediate Development Tasks
-
-1. Implement amortization calculators (annuity + equal principal)
-2. Build rule engine with hard filters + soft scoring
-3. Implement recommendation algorithm
-4. Create frontend wizard for application intake
-5. Add unit tests for calculators and rule engine
-6. Seed initial product catalog data
-
-### Future Enhancements
-
-- Document upload and verification
-- AVM (Automated Valuation Model) integration
-- Bank partner portal
-- RAG-based FAQ system
-- Monitoring and analytics
-
-## Environment Variables
-
-See `.env.example` files in:
-- `/apps/api/.env.example` - Backend configuration
-- `/apps/web/.env.local.example` - Frontend configuration
+# Build frontend
+cd apps/web
+npm run build
+npm start
+```
 
 ## License
 
 Proprietary - All Rights Reserved
-
-## Support
-
-For issues and questions, please contact the development team.

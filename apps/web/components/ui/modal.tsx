@@ -58,11 +58,11 @@ export function Modal({ isOpen, onClose, title, children, size = 'md' }: ModalPr
           >
             {/* Header */}
             {title && (
-              <div className="flex items-center justify-between p-6 border-b border-gray-100">
+              <div className="flex items-center justify-between p-6 border-b border-leadity-gray-light">
                 <h3 className="text-xl font-semibold text-dark-darker">{title}</h3>
                 <button
                   onClick={onClose}
-                  className="w-8 h-8 rounded-lg flex items-center justify-center text-leadity-gray hover:text-dark hover:bg-gray-100 transition-colors"
+                  className="w-8 h-8 rounded-lg flex items-center justify-center text-leadity-gray hover:text-dark hover:bg-leadity-gray-lighter transition-colors"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

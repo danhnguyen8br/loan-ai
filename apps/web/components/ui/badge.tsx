@@ -19,21 +19,22 @@ export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
 
 const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
   ({ className = '', variant = 'default', size = 'sm', children, ...props }, ref) => {
-    // Updated with WCAG AA compliant contrast ratios
+    // WCAG AA compliant contrast ratios (4.5:1 minimum for normal text)
+    // Using primary-700 (#2d7a0b) for green text on light backgrounds
     const variantStyles = {
-      // Core variants - improved contrast
-      default: 'bg-neutral-100 text-neutral-700 border border-neutral-200',
-      success: 'bg-emerald-50 text-emerald-700 border border-emerald-200',
-      warning: 'bg-amber-50 text-amber-800 border border-amber-200',
-      danger: 'bg-red-50 text-red-700 border border-red-200',
-      info: 'bg-blue-50 text-blue-700 border border-blue-200',
-      primary: 'bg-primary/15 text-primary-700 border border-primary/30',
-      // Semantic loan-related variants
-      promoRate: 'bg-blue-50 text-blue-700 border border-blue-200',
-      floatingRate: 'bg-orange-50 text-orange-700 border border-orange-200',
-      grace: 'bg-purple-50 text-purple-700 border border-purple-200',
-      fee: 'bg-teal-50 text-teal-700 border border-teal-200',
-      insurance: 'bg-violet-50 text-violet-700 border border-violet-200',
+      // Core variants - WCAG AA compliant
+      default: 'bg-leadity-gray-lighter text-leadity-gray border border-leadity-gray-light',
+      success: 'bg-primary-50 text-primary-700 border border-primary-200',
+      warning: 'bg-status-warning-light text-status-warning-dark border border-amber-200',
+      danger: 'bg-status-error-light text-status-error-dark border border-red-200',
+      info: 'bg-primary-50 text-dark border border-primary-200',
+      primary: 'bg-primary-100 text-primary-700 border border-primary-300',
+      // Semantic loan-related variants - using darker text for contrast
+      promoRate: 'bg-primary-50 text-primary-700 border border-primary-200',
+      floatingRate: 'bg-orange-50 text-orange-800 border border-orange-200',
+      grace: 'bg-purple-50 text-purple-800 border border-purple-200',
+      fee: 'bg-teal-50 text-teal-800 border border-teal-200',
+      insurance: 'bg-violet-50 text-violet-800 border border-violet-200',
     };
 
     const sizeStyles = {

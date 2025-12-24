@@ -51,7 +51,7 @@ export function InfoTooltip({
               bg-primary/15 hover:bg-primary/25 active:bg-primary/35
               text-primary-700 hover:text-primary-800
               transition-all duration-150
-              focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-1
+              focus:outline-none focus-visible:ring-[3px] focus-visible:ring-primary/30 focus-visible:ring-offset-2
               cursor-help
               ${className}
             `}

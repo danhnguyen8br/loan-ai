@@ -1,5 +1,7 @@
 'use client';
 
+import { Icons } from '@/components/ui/icons';
+
 interface StepIndicatorProps {
   currentStep: number;
   steps: { label: string; description: string }[];
@@ -15,7 +17,7 @@ export function StepIndicator({ currentStep, steps }: StepIndicatorProps) {
             {index < steps.length - 1 && (
               <div 
                 className={`absolute top-5 left-[calc(50%+1.25rem)] right-[calc(-50%+1.25rem)] h-0.5 transition-colors duration-300 ${
-                  index < currentStep ? 'bg-primary-500' : 'bg-gray-200'
+                  index < currentStep ? 'bg-primary-dark' : 'bg-leadity-gray-light'
                 }`}
               />
             )}
@@ -25,16 +27,14 @@ export function StepIndicator({ currentStep, steps }: StepIndicatorProps) {
               <div
                 className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm transition-all duration-300 ${
                   index < currentStep
-                    ? 'bg-primary-500 text-white shadow-sm'
+                    ? 'bg-primary-dark text-text-inverse shadow-sm'
                     : index === currentStep
-                    ? 'bg-primary text-gray-900 ring-4 ring-primary/25 shadow-sm'
-                    : 'bg-gray-100 text-gray-400 border border-gray-200'
+                    ? 'bg-primary text-dark-darker ring-4 ring-primary/25 shadow-sm'
+                    : 'bg-leadity-gray-lighter text-text-muted border border-leadity-gray-light'
                 }`}
               >
                 {index < currentStep ? (
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
-                  </svg>
+                  <Icons.Check className="w-5 h-5" />
                 ) : (
                   index + 1
                 )}
@@ -43,12 +43,12 @@ export function StepIndicator({ currentStep, steps }: StepIndicatorProps) {
               {/* Label */}
               <div className="mt-3 text-center">
                 <p className={`text-sm font-medium transition-colors duration-200 ${
-                  index <= currentStep ? 'text-gray-900' : 'text-gray-400'
+                  index <= currentStep ? 'text-dark-darker' : 'text-text-muted'
                 }`}>
                   {step.label}
                 </p>
                 <p className={`text-xs mt-0.5 hidden sm:block transition-colors duration-200 ${
-                  index <= currentStep ? 'text-gray-600' : 'text-gray-400'
+                  index <= currentStep ? 'text-leadity-gray-muted' : 'text-text-muted'
                 }`}>
                   {step.description}
                 </p>

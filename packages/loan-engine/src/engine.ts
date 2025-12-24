@@ -428,6 +428,9 @@ export function simulateLoanSchedule(params: LoanScheduleParams): LoanScheduleRe
   let totalOutOfPocket = upfront_fees;
   let actualTermMonths = term_months;
 
+  // Calculate effective term after grace period
+  const effectiveTermMonths = Math.max(term_months - grace_principal_months, 1);
+
   for (let month = 1; month <= horizon_months && balance > 0; month++) {
     const rateEntry = rate_timeline.find(r => r.month === month) ?? rate_timeline[rate_timeline.length - 1];
     const annualRate = rateEntry?.annual_rate_pct ?? 8.0;
@@ -438,11 +441,26 @@ export function simulateLoanSchedule(params: LoanScheduleParams): LoanScheduleRe
 
     const interest = roundVND(balanceStart * monthlyRate);
 
-    // Recalculate payment at start or rate reset points
+    // Recalculate payment at:
+    // 1. Start of loan (month 1)
+    // 2. End of promo period (rate reset)
+    // 3. End of grace period (when principal payments begin)
     const isRateReset = month === 1 || (month === promo_months + 1);
+    const isGraceEnd = month === grace_principal_months + 1;
     
-    if (isRateReset || currentPayment === 0) {
-      const remainingMonths = term_months - month + 1;
+    if (isRateReset || isGraceEnd || currentPayment === 0) {
+      // After grace period, calculate PMT for remaining effective months
+      const isAfterGrace = month > grace_principal_months;
+      let remainingMonths: number;
+      
+      if (isAfterGrace) {
+        // Remaining months after grace = term_months - month + 1
+        // But should be at least 1
+        remainingMonths = Math.max(term_months - month + 1, 1);
+      } else {
+        // During grace, calculate based on effective term starting after grace
+        remainingMonths = effectiveTermMonths;
+      }
       
       if (repayment_method === 'annuity') {
         currentPayment = calculatePMT(balance, monthlyRate, remainingMonths);
@@ -957,12 +975,13 @@ export function simulateRefinance(
     oldPayoff.old_prepay_fee + 
     newLoanResult.totals.total_cost_excl_principal;
   
-  // Step G: Calculate break-even month
+  // Step G: Calculate break-even month (including all switching costs)
   const breakEvenMonth = calculateBreakEvenMonth(
     baseline.schedule,
     oldPayoff,
     newLoanResult.schedule,
-    refinanceMonthIndex
+    refinanceMonthIndex,
+    newLoanUpfrontFees  // Include upfront fees for new loan
   );
   
   // Step H: Net savings
@@ -1021,7 +1040,8 @@ function calculateBreakEvenMonth(
   baselineSchedule: ScheduleRow[],
   oldPayoff: OldLoanPayoffResult,
   newLoanSchedule: ScheduleRow[],
-  refinanceMonthIndex: number
+  refinanceMonthIndex: number,
+  newLoanUpfrontFees: number = 0  // Include upfront fees for new loan in switching cost
 ): number | null {
   // Build cumulative cost arrays
   let baselineCumCost = 0;
@@ -1045,8 +1065,8 @@ function calculateBreakEvenMonth(
     refinanceCosts.push(refinanceCumCost);
   }
   
-  // Add switching costs at refinance point
-  refinanceCumCost += oldPayoff.old_prepay_fee;
+  // Add switching costs at refinance point (old prepay fee + new loan upfront fees)
+  refinanceCumCost += oldPayoff.old_prepay_fee + newLoanUpfrontFees;
   
   // Add new loan costs
   for (const row of newLoanSchedule) {
@@ -1100,6 +1120,9 @@ export function generateSchedule(
   let totalOutOfPocket = upfrontFees;
   let actualTermMonths = termMonths;
   
+  // Calculate effective term after grace period
+  const effectiveTermMonths = Math.max(termMonths - gracePrincipalMonths, 1);
+  
   const assumptions: string[] = [];
   assumptions.push(`Monthly approximation used (annual_rate/12)`);
   assumptions.push(`Promo period: ${template.rates.promo_fixed_months} months at ${template.rates.promo_fixed_rate_pct}%`);
@@ -1125,8 +1148,19 @@ export function generateSchedule(
          (month > template.rates.promo_fixed_months && 
           (month - template.rates.promo_fixed_months - 1) % template.rates.reset_frequency_months === 0)));
     
-    if (isRateReset || currentPayment === 0) {
-      const remainingMonths = termMonths - month + 1;
+    // Also recalculate when grace period ends
+    const isGraceEnd = month === gracePrincipalMonths + 1;
+    
+    if (isRateReset || isGraceEnd || currentPayment === 0) {
+      // After grace period, calculate PMT for remaining effective months
+      const isAfterGrace = month > gracePrincipalMonths;
+      let remainingMonths: number;
+      
+      if (isAfterGrace) {
+        remainingMonths = Math.max(termMonths - month + 1, 1);
+      } else {
+        remainingMonths = effectiveTermMonths;
+      }
       
       if (repaymentMethod === 'annuity') {
         currentPayment = calculatePMT(balance, monthlyRate, remainingMonths);
@@ -1571,6 +1605,10 @@ function simulateMortgagePurchaseWithExit(
   let totalOutOfPocket = upfrontFees;
   let actualTermMonths = input.term_months;
 
+  // Calculate effective term after grace period
+  const gracePrincipalMonths = template.grace.grace_principal_months;
+  const effectiveTermMonths = Math.max(input.term_months - gracePrincipalMonths, 1);
+
   for (let month = 1; month <= horizonMonths && balance > 0; month++) {
     const rateEntry = rateTimeline.find(r => r.month === month) ?? rateTimeline[rateTimeline.length - 1];
     const annualRate = rateEntry?.annual_rate_pct ?? 8.0;
@@ -1580,23 +1618,33 @@ function simulateMortgagePurchaseWithExit(
     const date = addMonths(input.start_date, month - 1);
     const interest = roundVND(balanceStart * monthlyRate);
 
-    // Recalculate payment at start or rate reset
+    // Recalculate payment at start, rate reset, or grace period end
     const isRateReset = month === 1 || (month === template.rates.promo_fixed_months + 1);
-    if (isRateReset || currentPayment === 0) {
-      const remainingMonths = input.term_months - month + 1;
+    const isGraceEnd = month === gracePrincipalMonths + 1;
+    
+    if (isRateReset || isGraceEnd || currentPayment === 0) {
+      const isAfterGrace = month > gracePrincipalMonths;
+      let remainingMonths: number;
+      
+      if (isAfterGrace) {
+        remainingMonths = Math.max(input.term_months - month + 1, 1);
+      } else {
+        remainingMonths = effectiveTermMonths;
+      }
+      
       if (repaymentMethod === 'annuity') {
         currentPayment = calculatePMT(balance, monthlyRate, remainingMonths);
       }
     }
 
     let principalScheduled: number;
-    const isInGracePeriod = month <= template.grace.grace_principal_months;
+    const isInGracePeriod = month <= gracePrincipalMonths;
 
     if (isInGracePeriod) {
       principalScheduled = 0;
     } else if (repaymentMethod === 'equal_principal') {
-      const effectiveTermMonths = input.term_months - template.grace.grace_principal_months;
-      principalScheduled = roundVND(input.loan_amount_vnd / effectiveTermMonths);
+      const effectivePrincipalMonths = input.term_months - gracePrincipalMonths;
+      principalScheduled = roundVND(input.loan_amount_vnd / effectivePrincipalMonths);
     } else {
       principalScheduled = Math.max(0, currentPayment - interest);
     }

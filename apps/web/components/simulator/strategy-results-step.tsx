@@ -5,6 +5,7 @@ import { Card, CardBody, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select } from '@/components/ui/select';
+import { Icons } from '@/components/ui/icons';
 import { GlossaryIcon } from '@/components/ui/glossary-term';
 import { InfoTooltip } from '@/components/ui/info-tooltip';
 import type { 
@@ -184,7 +185,7 @@ export function StrategyResultsStep({
             <p className="text-xs text-gray-500">
               {category === 'MORTGAGE_RE' 
                 ? 'Tự động chạy 3 chiến lược: Thanh Toán Tối Thiểu, Trả Thêm Gốc, Tất Toán Sớm'
-                : 'Tự động chạy 3 chiến lược: Refinance Ngay, Refinance + Trả Nhanh, Thời Điểm Tối Ưu'}
+                : 'Tự động chạy 3 chiến lược: Chuyển NH ngay, Chuyển NH + Trả nhanh, Thời điểm tối ưu'}
             </p>
           </CardHeader>
           <CardBody className="space-y-4">
@@ -246,9 +247,7 @@ export function StrategyResultsStep({
           <Card variant="bordered" className="bg-amber-50 border-amber-200 max-w-4xl mx-auto">
             <CardBody className="p-4">
               <div className="flex items-start">
-                <svg className="w-5 h-5 text-amber-600 mr-3 mt-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                </svg>
+                <Icons.Warning className="w-5 h-5 text-amber-600 mr-3 mt-3 flex-shrink-0" />
                 <div>
                   <h4 className="font-medium text-amber-800 mb-1 text-sm mt-3">Lưu Ý</h4>
                   <ul className="text-xs text-amber-700 space-y-1 list-disc list-inside">
@@ -293,11 +292,11 @@ function StrategyTooltipContent({
     <div className="space-y-2">
       <p className="text-white/95 leading-relaxed">{strategyInfo.description}</p>
       <div className="border-t border-white/10 pt-2">
-        <p className="text-xs text-green-400 font-medium mb-1">✓ Ưu điểm:</p>
+        <p className="text-xs text-[#77FF45] font-medium mb-1">✓ Ưu điểm:</p>
         <ul className="space-y-0.5">
           {strategyInfo.pros.map((pro, i) => (
             <li key={i} className="text-xs text-white/80 leading-relaxed flex items-start">
-              <span className="text-green-400 mr-1.5 mt-0.5">•</span>
+              <span className="text-[#77FF45] mr-1.5 mt-0.5">•</span>
               <span>{pro}</span>
             </li>
           ))}
@@ -350,7 +349,7 @@ function MortgageStrategyConfig({
       <div className="p-4 bg-gray-50 rounded-xl border-2 border-gray-200 hover:border-gray-300 hover:bg-gray-100/50 hover:shadow-sm transition-all duration-200 cursor-default group">
         <div className="flex items-center justify-between">
           <h4 className="font-medium text-gray-800 text-sm flex items-center gap-2">
-            <span className="w-7 h-7 bg-gray-500 group-hover:bg-gray-600 text-white rounded-full flex items-center justify-center text-xs font-bold transition-colors">M1</span>
+            <span className="w-7 h-7 bg-[#343839] group-hover:bg-[#141718] text-white rounded-full flex items-center justify-center text-xs font-bold transition-colors">M1</span>
             <span className="group-hover:text-gray-900 transition-colors">{MORTGAGE_STRATEGY_LABELS.M1_MIN_PAYMENT.name}</span>
             <StrategyInfoTooltip strategyInfo={MORTGAGE_STRATEGY_LABELS.M1_MIN_PAYMENT} />
           </h4>
@@ -362,16 +361,16 @@ function MortgageStrategyConfig({
       </div>
 
       {/* M2: Extra Principal - Slider */}
-      <div className="p-4 bg-blue-50 rounded-xl border-2 border-blue-200 hover:border-blue-300 hover:bg-blue-100/50 hover:shadow-sm transition-all duration-200 group">
-        <h4 className="font-medium text-blue-800 mb-3 text-sm flex items-center gap-2">
-          <span className="w-7 h-7 bg-blue-500 group-hover:bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold transition-colors">M2</span>
-          <span className="group-hover:text-blue-900 transition-colors">{MORTGAGE_STRATEGY_LABELS.M2_EXTRA_PRINCIPAL.name}</span>
+      <div className="p-4 bg-[#F7FFF3] rounded-xl border-2 border-[#7CD734]/50 hover:border-[#7CD734] hover:bg-[#F7FFF3]/80 hover:shadow-sm transition-all duration-200 group">
+        <h4 className="font-medium text-[#343839] mb-3 text-sm flex items-center gap-2">
+          <span className="w-7 h-7 bg-[#4DC614] group-hover:bg-[#7CD734] text-white rounded-full flex items-center justify-center text-xs font-bold transition-colors">M2</span>
+          <span className="group-hover:text-[#141718] transition-colors">{MORTGAGE_STRATEGY_LABELS.M2_EXTRA_PRINCIPAL.name}</span>
           <StrategyInfoTooltip strategyInfo={MORTGAGE_STRATEGY_LABELS.M2_EXTRA_PRINCIPAL} />
         </h4>
         <div className="space-y-3 ml-9">
           <div className="flex items-center justify-between text-sm">
-            <span className="text-blue-700">Trả thêm gốc mỗi tháng:</span>
-            <span className="font-bold text-blue-800 text-lg bg-blue-100 px-3 py-1 rounded-lg">
+            <span className="text-[#343839]">Trả thêm gốc mỗi tháng:</span>
+            <span className="font-bold text-[#141718] text-lg bg-[#F7FFF3] px-3 py-1 rounded-lg border border-[#7CD734]/30">
               {formatShortVND(extraPrincipal)}/tháng
             </span>
           </div>
@@ -382,9 +381,9 @@ function MortgageStrategyConfig({
             step={1_000_000}
             value={extraPrincipal}
             onChange={(e) => onChange({ extra_principal_vnd: Number(e.target.value) })}
-            className="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+            className="w-full h-2 bg-[#E8ECEF] rounded-lg appearance-none cursor-pointer accent-[#4DC614]"
           />
-          <div className="flex justify-between text-xs text-blue-600">
+          <div className="flex justify-between text-xs text-[#343839]">
             <span>0</span>
             <span>100tr</span>
             <span>500tr</span>
@@ -401,8 +400,8 @@ function MortgageStrategyConfig({
                 onClick={() => onChange({ extra_principal_vnd: amount })}
                 className={`px-2.5 py-1.5 text-xs rounded-lg transition-all duration-150 ${
                   extraPrincipal === amount
-                    ? 'bg-blue-500 text-white font-medium shadow-sm'
-                    : 'bg-white border border-blue-200 text-blue-600 hover:border-blue-400 hover:bg-blue-50'
+                    ? 'bg-[#4DC614] text-white font-medium shadow-sm'
+                    : 'bg-white border border-[#7CD734]/50 text-[#343839] hover:border-[#7CD734] hover:bg-[#F7FFF3]'
                 }`}
               >
                 {formatShortVND(amount)}
@@ -413,16 +412,28 @@ function MortgageStrategyConfig({
       </div>
 
       {/* M3: Exit Plan */}
-      <div className="p-4 bg-purple-50 rounded-xl border-2 border-purple-200 hover:border-purple-300 hover:bg-purple-100/50 hover:shadow-sm transition-all duration-200 group">
-        <h4 className="font-medium text-purple-800 mb-3 text-sm flex items-center gap-2">
-          <span className="w-7 h-7 bg-purple-500 group-hover:bg-purple-600 text-white rounded-full flex items-center justify-center text-xs font-bold transition-colors">M3</span>
-          <span className="group-hover:text-purple-900 transition-colors">{MORTGAGE_STRATEGY_LABELS.M3_EXIT_PLAN.name}</span>
+      <div className="p-4 bg-[#F7FFF3]/50 rounded-xl border-2 border-[#7CD734]/30 hover:border-[#7CD734]/60 hover:bg-[#F7FFF3] hover:shadow-sm transition-all duration-200 group">
+        <h4 className="font-medium text-[#343839] mb-3 text-sm flex items-center gap-2">
+          <span className="w-7 h-7 bg-[#7CD734] group-hover:bg-[#4DC614] text-white rounded-full flex items-center justify-center text-xs font-bold transition-colors">M3</span>
+          <span className="group-hover:text-[#141718] transition-colors">{MORTGAGE_STRATEGY_LABELS.M3_EXIT_PLAN.name}</span>
           <StrategyInfoTooltip strategyInfo={MORTGAGE_STRATEGY_LABELS.M3_EXIT_PLAN} />
         </h4>
         <div className="ml-9">
           <Select
             value={formData.exit_rule || 'PROMO_END'}
-            onChange={(e) => onChange({ exit_rule: e.target.value as MortgagePurchaseForm['exit_rule'] })}
+            onChange={(e) => {
+              const nextExitRule = e.target.value as MortgagePurchaseForm['exit_rule'];
+              const updates: Partial<MortgagePurchaseForm> = { exit_rule: nextExitRule };
+              // Provide sensible defaults when switching into modes that require extra params,
+              // while still allowing the user to clear the input afterwards.
+              if (nextExitRule === 'FEE_THRESHOLD' && formData.exit_fee_threshold_pct == null) {
+                updates.exit_fee_threshold_pct = 0;
+              }
+              if (nextExitRule === 'CUSTOM' && formData.exit_custom_month == null) {
+                updates.exit_custom_month = 24;
+              }
+              onChange(updates);
+            }}
             className="text-sm"
           >
             {Object.entries(EXIT_RULE_LABELS).map(([value, label]) => (
@@ -432,14 +443,18 @@ function MortgageStrategyConfig({
           
           {formData.exit_rule === 'FEE_THRESHOLD' && (
             <div className="mt-2">
-              <label className="block text-xs text-purple-700 mb-1">Ngưỡng phí (%)</label>
+              <label className="block text-xs text-[#343839] mb-1">Ngưỡng phí (%)</label>
               <Input
                 type="number"
                 min={0}
                 max={5}
                 step={0.5}
-                value={formData.exit_fee_threshold_pct ?? 0}
-                onChange={(e) => onChange({ exit_fee_threshold_pct: Number(e.target.value) })}
+                value={formData.exit_fee_threshold_pct ?? ''}
+                onChange={(e) =>
+                  onChange({
+                    exit_fee_threshold_pct: e.target.value === '' ? undefined : Number(e.target.value),
+                  })
+                }
                 className="text-sm"
               />
             </div>
@@ -447,13 +462,17 @@ function MortgageStrategyConfig({
           
           {formData.exit_rule === 'CUSTOM' && (
             <div className="mt-2">
-              <label className="block text-xs text-purple-700 mb-1">Tháng tất toán</label>
+              <label className="block text-xs text-[#343839] mb-1">Tháng tất toán</label>
               <Input
                 type="number"
                 min={1}
                 max={60}
-                value={formData.exit_custom_month ?? 24}
-                onChange={(e) => onChange({ exit_custom_month: Number(e.target.value) })}
+                value={formData.exit_custom_month ?? ''}
+                onChange={(e) =>
+                  onChange({
+                    exit_custom_month: e.target.value === '' ? undefined : Number(e.target.value),
+                  })
+                }
                 className="text-sm"
               />
             </div>
@@ -480,7 +499,7 @@ function RefinanceStrategyConfig({
       <div className="p-4 bg-gray-50 rounded-xl border-2 border-gray-200 hover:border-gray-300 hover:bg-gray-100/50 hover:shadow-sm transition-all duration-200 cursor-default group">
         <div className="flex items-center justify-between">
           <h4 className="font-medium text-gray-800 text-sm flex items-center gap-2">
-            <span className="w-7 h-7 bg-gray-500 group-hover:bg-gray-600 text-white rounded-full flex items-center justify-center text-xs font-bold transition-colors">R1</span>
+            <span className="w-7 h-7 bg-[#343839] group-hover:bg-[#141718] text-white rounded-full flex items-center justify-center text-xs font-bold transition-colors">R1</span>
             <span className="group-hover:text-gray-900 transition-colors">{REFINANCE_STRATEGY_LABELS.R1_REFI_NOW_LIQUIDITY.name}</span>
             <StrategyInfoTooltip strategyInfo={REFINANCE_STRATEGY_LABELS.R1_REFI_NOW_LIQUIDITY} />
           </h4>
@@ -492,16 +511,16 @@ function RefinanceStrategyConfig({
       </div>
 
       {/* R2: Extra Principal - Slider */}
-      <div className="p-4 bg-blue-50 rounded-xl border-2 border-blue-200 hover:border-blue-300 hover:bg-blue-100/50 hover:shadow-sm transition-all duration-200 group">
-        <h4 className="font-medium text-blue-800 mb-3 text-sm flex items-center gap-2">
-          <span className="w-7 h-7 bg-blue-500 group-hover:bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold transition-colors">R2</span>
-          <span className="group-hover:text-blue-900 transition-colors">{REFINANCE_STRATEGY_LABELS.R2_REFI_NOW_ACCELERATE.name}</span>
+      <div className="p-4 bg-[#F7FFF3] rounded-xl border-2 border-[#7CD734]/50 hover:border-[#7CD734] hover:bg-[#F7FFF3]/80 hover:shadow-sm transition-all duration-200 group">
+        <h4 className="font-medium text-[#343839] mb-3 text-sm flex items-center gap-2">
+          <span className="w-7 h-7 bg-[#4DC614] group-hover:bg-[#7CD734] text-white rounded-full flex items-center justify-center text-xs font-bold transition-colors">R2</span>
+          <span className="group-hover:text-[#141718] transition-colors">{REFINANCE_STRATEGY_LABELS.R2_REFI_NOW_ACCELERATE.name}</span>
           <StrategyInfoTooltip strategyInfo={REFINANCE_STRATEGY_LABELS.R2_REFI_NOW_ACCELERATE} />
         </h4>
         <div className="space-y-3 ml-9">
           <div className="flex items-center justify-between text-sm">
-            <span className="text-blue-700">Trả thêm gốc mỗi tháng:</span>
-            <span className="font-bold text-blue-800 text-lg bg-blue-100 px-3 py-1 rounded-lg">
+            <span className="text-[#343839]">Trả thêm gốc mỗi tháng:</span>
+            <span className="font-bold text-[#141718] text-lg bg-[#F7FFF3] px-3 py-1 rounded-lg border border-[#7CD734]/30">
               {formatShortVND(extraPrincipal)}/tháng
             </span>
           </div>
@@ -512,9 +531,9 @@ function RefinanceStrategyConfig({
             step={1_000_000}
             value={extraPrincipal}
             onChange={(e) => onChange({ extra_principal_vnd: Number(e.target.value) })}
-            className="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+            className="w-full h-2 bg-[#E8ECEF] rounded-lg appearance-none cursor-pointer accent-[#4DC614]"
           />
-          <div className="flex justify-between text-xs text-blue-600">
+          <div className="flex justify-between text-xs text-[#343839]">
             <span>0</span>
             <span>100tr</span>
             <span>500tr</span>
@@ -531,8 +550,8 @@ function RefinanceStrategyConfig({
                 onClick={() => onChange({ extra_principal_vnd: amount })}
                 className={`px-2.5 py-1.5 text-xs rounded-lg transition-all duration-150 ${
                   extraPrincipal === amount
-                    ? 'bg-blue-500 text-white font-medium shadow-sm'
-                    : 'bg-white border border-blue-200 text-blue-600 hover:border-blue-400 hover:bg-blue-50'
+                    ? 'bg-[#4DC614] text-white font-medium shadow-sm'
+                    : 'bg-white border border-[#7CD734]/50 text-[#343839] hover:border-[#7CD734] hover:bg-[#F7FFF3]'
                 }`}
               >
                 {formatShortVND(amount)}
@@ -543,10 +562,10 @@ function RefinanceStrategyConfig({
       </div>
 
       {/* R3: Objective */}
-      <div className="p-4 bg-green-50 rounded-xl border-2 border-green-200 hover:border-green-300 hover:bg-green-100/50 hover:shadow-sm transition-all duration-200 group">
-        <h4 className="font-medium text-green-800 mb-3 text-sm flex items-center gap-2">
-          <span className="w-7 h-7 bg-green-500 group-hover:bg-green-600 text-white rounded-full flex items-center justify-center text-xs font-bold transition-colors">R3</span>
-          <span className="group-hover:text-green-900 transition-colors">{REFINANCE_STRATEGY_LABELS.R3_OPTIMAL_TIMING.name}</span>
+      <div className="p-4 bg-[#F7FFF3]/50 rounded-xl border-2 border-[#7CD734]/30 hover:border-[#7CD734]/60 hover:bg-[#F7FFF3] hover:shadow-sm transition-all duration-200 group">
+        <h4 className="font-medium text-[#343839] mb-3 text-sm flex items-center gap-2">
+          <span className="w-7 h-7 bg-[#7CD734] group-hover:bg-[#4DC614] text-white rounded-full flex items-center justify-center text-xs font-bold transition-colors">R3</span>
+          <span className="group-hover:text-[#141718] transition-colors">{REFINANCE_STRATEGY_LABELS.R3_OPTIMAL_TIMING.name}</span>
           <StrategyInfoTooltip strategyInfo={REFINANCE_STRATEGY_LABELS.R3_OPTIMAL_TIMING} />
         </h4>
         <div className="ml-9">
@@ -560,7 +579,7 @@ function RefinanceStrategyConfig({
             ))}
           </Select>
           <p className="text-xs text-gray-500 group-hover:text-gray-600 mt-2 transition-colors">
-            Hệ thống sẽ tự động tìm tháng refinance tối ưu trong khoảng thời gian mô phỏng
+            Hệ thống sẽ tự động tìm tháng chuyển ngân hàng tối ưu trong khoảng thời gian mô phỏng
           </p>
         </div>
       </div>
@@ -580,9 +599,7 @@ function SimulationOptionsConfig({
     <Card variant="bordered" className="bg-slate-50/50">
       <CardHeader className="pb-2">
         <h3 className="text-base font-semibold text-dark-darker flex items-center">
-          <svg className="w-5 h-5 mr-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-          </svg>
+          <Icons.Settings className="w-5 h-5 mr-2 text-primary" />
           Tùy Chọn Mô Phỏng
         </h3>
       </CardHeader>
@@ -708,7 +725,7 @@ function MortgageResultsDisplay({
         {(['M1_MIN_PAYMENT', 'M2_EXTRA_PRINCIPAL', 'M3_EXIT_PLAN'] as MortgageStrategyId[]).map((sid, idx) => (
           <div key={sid} className="flex items-center gap-2 text-sm">
             <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs text-white ${
-              idx === 0 ? 'bg-gray-500' : idx === 1 ? 'bg-blue-500' : 'bg-purple-500'
+              idx === 0 ? 'bg-[#343839]' : idx === 1 ? 'bg-[#4DC614]' : 'bg-[#7CD734]'
             }`}>
               M{idx + 1}
             </span>
@@ -725,19 +742,19 @@ function MortgageResultsDisplay({
               <th className="px-3 py-3 text-left font-semibold text-gray-700 min-w-[200px]">Gói Vay</th>
               <th className="px-2 py-3 text-center font-semibold text-gray-700">
                 <span className="inline-flex items-center gap-1">
-                  <span className="w-5 h-5 bg-gray-500 text-white rounded-full flex items-center justify-center text-xs">M1</span>
+                  <span className="w-5 h-5 bg-[#343839] text-white rounded-full flex items-center justify-center text-xs">M1</span>
                   Chi Phí
                 </span>
               </th>
               <th className="px-2 py-3 text-center font-semibold text-gray-700">
                 <span className="inline-flex items-center gap-1">
-                  <span className="w-5 h-5 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs">M2</span>
+                  <span className="w-5 h-5 bg-[#4DC614] text-white rounded-full flex items-center justify-center text-xs">M2</span>
                   Chi Phí
                 </span>
               </th>
               <th className="px-2 py-3 text-center font-semibold text-gray-700">
                 <span className="inline-flex items-center gap-1">
-                  <span className="w-5 h-5 bg-purple-500 text-white rounded-full flex items-center justify-center text-xs">M3</span>
+                  <span className="w-5 h-5 bg-[#7CD734] text-white rounded-full flex items-center justify-center text-xs">M3</span>
                   Chi Phí
                 </span>
               </th>
@@ -759,7 +776,7 @@ function MortgageResultsDisplay({
                       <span className="font-semibold text-dark-darker text-sm leading-tight">{templateResult.template_name}</span>
                       {template && (
                         <div className="flex flex-wrap gap-1">
-                          <span className="text-[10px] px-1.5 py-0.5 bg-blue-100 text-blue-700 rounded font-medium">
+                          <span className="text-[10px] px-1.5 py-0.5 bg-[#F7FFF3] text-[#4DC614] rounded font-medium">
                             {template.rates.promo_fixed_rate_pct}% × {template.rates.promo_fixed_months}T
                           </span>
                           <span className="text-[10px] px-1.5 py-0.5 bg-orange-100 text-orange-700 rounded">
@@ -891,7 +908,7 @@ function RefinanceResultsDisplay({
     <div className="space-y-6">
       <div className="text-center">
         <h3 className="text-xl font-bold text-dark-darker">
-          So Sánh 3 Chiến Lược Refinance × {results.length} Gói Vay
+          So Sánh 3 Chiến Lược Chuyển Ngân Hàng × {results.length} Gói Vay
         </h3>
         <p className="text-sm text-gray-500 mt-1">
           Nhấp vào ô để xem chi tiết gói vay và lịch thanh toán
@@ -903,7 +920,7 @@ function RefinanceResultsDisplay({
         {(['R1_REFI_NOW_LIQUIDITY', 'R2_REFI_NOW_ACCELERATE', 'R3_OPTIMAL_TIMING'] as RefinanceStrategyId[]).map((sid, idx) => (
           <div key={sid} className="flex items-center gap-2 text-sm">
             <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs text-white ${
-              idx === 0 ? 'bg-gray-500' : idx === 1 ? 'bg-blue-500' : 'bg-green-500'
+              idx === 0 ? 'bg-[#343839]' : idx === 1 ? 'bg-[#4DC614]' : 'bg-[#7CD734]'
             }`}>
               R{idx + 1}
             </span>
@@ -917,22 +934,22 @@ function RefinanceResultsDisplay({
         <table className="w-full text-sm">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-3 py-3 text-left font-semibold text-gray-700 min-w-[200px]">Gói Refinance</th>
+              <th className="px-3 py-3 text-left font-semibold text-gray-700 min-w-[200px]">Gói chuyển ngân hàng</th>
               <th className="px-2 py-3 text-center font-semibold text-gray-700">
                 <span className="inline-flex items-center gap-1">
-                  <span className="w-5 h-5 bg-gray-500 text-white rounded-full flex items-center justify-center text-xs">R1</span>
+                  <span className="w-5 h-5 bg-[#343839] text-white rounded-full flex items-center justify-center text-xs">R1</span>
                   Tiết Kiệm
                 </span>
               </th>
               <th className="px-2 py-3 text-center font-semibold text-gray-700">
                 <span className="inline-flex items-center gap-1">
-                  <span className="w-5 h-5 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs">R2</span>
+                  <span className="w-5 h-5 bg-[#4DC614] text-white rounded-full flex items-center justify-center text-xs">R2</span>
                   Tiết Kiệm
                 </span>
               </th>
               <th className="px-2 py-3 text-center font-semibold text-gray-700">
                 <span className="inline-flex items-center gap-1">
-                  <span className="w-5 h-5 bg-green-500 text-white rounded-full flex items-center justify-center text-xs">R3</span>
+                  <span className="w-5 h-5 bg-[#7CD734] text-white rounded-full flex items-center justify-center text-xs">R3</span>
                   Tiết Kiệm
                 </span>
               </th>
@@ -954,7 +971,7 @@ function RefinanceResultsDisplay({
                       <span className="font-semibold text-dark-darker text-sm leading-tight">{templateResult.template_name}</span>
                       {template && (
                         <div className="flex flex-wrap gap-1">
-                          <span className="text-[10px] px-1.5 py-0.5 bg-blue-100 text-blue-700 rounded font-medium">
+                          <span className="text-[10px] px-1.5 py-0.5 bg-[#F7FFF3] text-[#4DC614] rounded font-medium">
                             {template.rates.promo_fixed_rate_pct}% × {template.rates.promo_fixed_months}T
                           </span>
                           <span className="text-[10px] px-1.5 py-0.5 bg-orange-100 text-orange-700 rounded">
@@ -1038,63 +1055,6 @@ function RefinanceResultsDisplay({
   );
 }
 
-// Strategy Cell for Mortgage
-function StrategyCell({ 
-  result, 
-  isBest,
-  color
-}: { 
-  result: MortgagePurchaseResult; 
-  isBest: boolean;
-  color: 'gray' | 'blue' | 'purple';
-}) {
-  const colorClasses = {
-    gray: isBest ? 'text-green-700 font-bold' : 'text-gray-700',
-    blue: isBest ? 'text-green-700 font-bold' : 'text-blue-700',
-    purple: isBest ? 'text-green-700 font-bold' : 'text-purple-700',
-  };
-
-  return (
-    <div className={colorClasses[color]}>
-      <div>{formatShortVND(result.totals.total_cost_excl_principal)}</div>
-      {result.metrics.payoff_month && (
-        <div className="text-xs text-gray-500">Tất toán tháng {result.metrics.payoff_month}</div>
-      )}
-      {isBest && <div className="text-xs text-green-600">✓ Tốt nhất</div>}
-    </div>
-  );
-}
-
-// Strategy Cell for Refinance (legacy, kept for reference)
-function RefinanceStrategyCell({ 
-  result, 
-  isBest,
-  optimalMonth,
-}: { 
-  result: RefinanceResult; 
-  isBest: boolean;
-  optimalMonth?: number;
-}) {
-  const isPositive = result.net_saving_vnd > 0;
-  
-  return (
-    <div>
-      <div className={`font-medium ${
-        isBest ? 'text-green-700 font-bold' : isPositive ? 'text-green-600' : 'text-orange-600'
-      }`}>
-        {isPositive ? '+' : ''}{formatShortVND(result.net_saving_vnd)}
-      </div>
-      {result.break_even_month && (
-        <div className="text-xs text-gray-500">Hoà vốn T{result.break_even_month}</div>
-      )}
-      {optimalMonth !== undefined && optimalMonth > 0 && (
-        <div className="text-xs text-blue-500">Refi tháng {optimalMonth}</div>
-      )}
-      {isBest && <div className="text-xs text-green-600">✓ Tốt nhất</div>}
-    </div>
-  );
-}
-
 // Clickable Strategy Cell for Mortgage - Interactive version
 function ClickableStrategyCell({ 
   result, 
@@ -1111,16 +1071,16 @@ function ClickableStrategyCell({
 }) {
   const colorStyles = {
     gray: {
-      bg: isSelected ? 'bg-gray-100 ring-2 ring-gray-500' : 'bg-gray-50 hover:bg-gray-100',
-      text: isBest ? 'text-green-700' : 'text-gray-700',
+      bg: isSelected ? 'bg-[#E8ECEF] ring-2 ring-[#343839]' : 'bg-gray-50 hover:bg-gray-100',
+      text: isBest ? 'text-[#4DC614]' : 'text-gray-700',
     },
     blue: {
-      bg: isSelected ? 'bg-blue-100 ring-2 ring-blue-500' : 'bg-blue-50 hover:bg-blue-100',
-      text: isBest ? 'text-green-700' : 'text-blue-700',
+      bg: isSelected ? 'bg-[#F7FFF3] ring-2 ring-[#4DC614]' : 'bg-[#F7FFF3]/50 hover:bg-[#F7FFF3]',
+      text: isBest ? 'text-[#4DC614]' : 'text-[#343839]',
     },
     purple: {
-      bg: isSelected ? 'bg-purple-100 ring-2 ring-purple-500' : 'bg-purple-50 hover:bg-purple-100',
-      text: isBest ? 'text-green-700' : 'text-purple-700',
+      bg: isSelected ? 'bg-[#F7FFF3] ring-2 ring-[#7CD734]' : 'bg-[#F7FFF3]/30 hover:bg-[#F7FFF3]/60',
+      text: isBest ? 'text-[#4DC614]' : 'text-[#343839]',
     },
   };
 
@@ -1138,7 +1098,7 @@ function ClickableStrategyCell({
       {result.metrics.payoff_month && (
         <div className="text-[10px] text-gray-500">Tất toán T{result.metrics.payoff_month}</div>
       )}
-      {isBest && <div className="text-[10px] text-green-600 font-medium">✓ Tốt nhất</div>}
+      {isBest && <div className="text-[10px] text-[#4DC614] font-medium">✓ Tốt nhất</div>}
       {isSelected && (
         <div className="text-[10px] text-gray-400 mt-1">▼ Đang xem</div>
       )}
@@ -1168,12 +1128,12 @@ function ClickableRefinanceCell({
       onClick={onClick}
       className={`w-full p-2 rounded-lg transition-all cursor-pointer ${
         isSelected 
-          ? (isPositive ? 'bg-green-100 ring-2 ring-green-500 shadow-md' : 'bg-orange-100 ring-2 ring-orange-500 shadow-md')
-          : (isPositive ? 'bg-green-50 hover:bg-green-100 hover:shadow-sm' : 'bg-orange-50 hover:bg-orange-100 hover:shadow-sm')
+          ? (isPositive ? 'bg-[#F7FFF3] ring-2 ring-[#4DC614] shadow-md' : 'bg-amber-100 ring-2 ring-amber-500 shadow-md')
+          : (isPositive ? 'bg-[#F7FFF3]/50 hover:bg-[#F7FFF3] hover:shadow-sm' : 'bg-amber-50 hover:bg-amber-100 hover:shadow-sm')
       }`}
     >
       <div className={`font-semibold ${
-        isBest ? 'text-green-700' : isPositive ? 'text-green-600' : 'text-orange-600'
+        isBest ? 'text-[#4DC614]' : isPositive ? 'text-[#4DC614]' : 'text-amber-600'
       }`}>
         {isPositive ? '+' : ''}{formatShortVND(result.net_saving_vnd)}
       </div>
@@ -1181,9 +1141,9 @@ function ClickableRefinanceCell({
         <div className="text-[10px] text-gray-500">Hoà vốn T{result.break_even_month}</div>
       )}
       {optimalMonth !== undefined && optimalMonth > 0 && (
-        <div className="text-[10px] text-blue-500">Refi tháng {optimalMonth}</div>
+        <div className="text-[10px] text-[#4DC614]">Chuyển NH tháng {optimalMonth}</div>
       )}
-      {isBest && <div className="text-[10px] text-green-600 font-medium">✓ Tốt nhất</div>}
+      {isBest && <div className="text-[10px] text-[#4DC614] font-medium">✓ Tốt nhất</div>}
       {isSelected && (
         <div className="text-[10px] text-gray-400 mt-1">▼ Đang xem</div>
       )}
@@ -1217,13 +1177,13 @@ function SelectedCellDetail({
   
   // Strategy color mapping
   const strategyColorClass = {
-    M1_MIN_PAYMENT: 'text-gray-600',
-    M2_EXTRA_PRINCIPAL: 'text-blue-600',
-    M3_EXIT_PLAN: 'text-purple-600',
+    M1_MIN_PAYMENT: 'text-[#343839]',
+    M2_EXTRA_PRINCIPAL: 'text-[#4DC614]',
+    M3_EXIT_PLAN: 'text-[#7CD734]',
   }[strategyId] || 'text-primary';
   
   return (
-    <Card variant="bordered" className="bg-gradient-to-br from-slate-50 to-white border-primary/30">
+    <Card variant="bordered" className="bg-gradient-to-br from-[#F7FFF3] to-white border-[#7CD734]/50">
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between w-full">
           <div>
@@ -1232,15 +1192,11 @@ function SelectedCellDetail({
           </div>
           <div className="flex items-center gap-2">
             <Button size="sm" variant="ghost" onClick={onDownloadCSV}>
-              <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-              </svg>
+              <Icons.Download className="w-4 h-4 mr-1" />
               Tải CSV
             </Button>
             <Button size="sm" variant="ghost" onClick={onClose}>
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              <Icons.X className="w-5 h-5" />
             </Button>
           </div>
         </div>
@@ -1250,9 +1206,7 @@ function SelectedCellDetail({
         {template && (
           <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
             <h5 className="font-semibold text-gray-800 mb-3 flex items-center">
-              <svg className="w-4 h-4 mr-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
+              <Icons.DocumentText className="w-4 h-4 mr-2 text-primary" />
               Chi Tiết Gói Vay
             </h5>
             
@@ -1260,7 +1214,7 @@ function SelectedCellDetail({
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
               <div>
                 <span className="text-gray-500 block text-xs">Lãi suất ưu đãi</span>
-                <span className="font-semibold text-blue-700">{template.rates.promo_fixed_rate_pct}% × {template.rates.promo_fixed_months}T</span>
+                <span className="font-semibold text-[#4DC614]">{template.rates.promo_fixed_rate_pct}% × {template.rates.promo_fixed_months}T</span>
               </div>
               <div>
                 <span className="text-gray-500 block text-xs">Sau ưu đãi (thả nổi)</span>
@@ -1273,7 +1227,7 @@ function SelectedCellDetail({
                 </div>
               )}
               <div>
-                <span className="text-gray-500 block text-xs">LTV tối đa</span>
+                <span className="text-gray-500 block text-xs">Tỷ lệ vay tối đa</span>
                 <span className="font-semibold">{template.loan_limits.max_ltv_pct}%</span>
               </div>
             </div>
@@ -1288,14 +1242,14 @@ function SelectedCellDetail({
                       Lãi tham chiếu: {referenceRate}%
                     </span>
                     <span className="text-gray-400">+</span>
-                    <span className="px-1.5 py-0.5 bg-blue-100 text-blue-700 rounded font-medium">
+                    <span className="px-1.5 py-0.5 bg-[#F7FFF3] text-[#4DC614] rounded font-medium">
                       Biên độ: {marginRate}%
                     </span>
                     {stressBump > 0 && (
                       <>
                         <span className="text-gray-400">+</span>
                         <span className="px-1.5 py-0.5 bg-red-100 text-red-700 rounded font-medium">
-                          Stress test: +{stressBump}%
+                          Kịch bản lãi tăng: +{stressBump}%
                         </span>
                       </>
                     )}
@@ -1318,9 +1272,7 @@ function SelectedCellDetail({
               <div className="mt-3 pt-3 border-t border-gray-200">
                 <div className="flex items-start gap-2">
                   <span className="text-gray-500 text-xs whitespace-nowrap flex items-center gap-1">
-                    <svg className="w-3.5 h-3.5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                    </svg>
+                    <Icons.Shield className="w-3.5 h-3.5 text-purple-500" />
                     Bảo hiểm:
                   </span>
                   <div className="text-xs flex flex-wrap gap-2">
@@ -1350,9 +1302,7 @@ function SelectedCellDetail({
             <div className="mt-3 pt-3 border-t border-gray-200">
               <div className="flex items-start gap-2">
                 <span className="text-gray-500 text-xs whitespace-nowrap flex items-center gap-1">
-                  <svg className="w-3.5 h-3.5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-                  </svg>
+                  <Icons.Money className="w-3.5 h-3.5 text-orange-500" />
                   Các loại phí:
                 </span>
                 <div className="text-xs flex flex-wrap gap-1.5">
@@ -1381,7 +1331,7 @@ function SelectedCellDetail({
                    (!template.fees.origination_fee_vnd || template.fees.origination_fee_vnd === 0) &&
                    (!template.fees.appraisal_fee_vnd || template.fees.appraisal_fee_vnd === 0) &&
                    (!template.fees.recurring_monthly_fee_vnd || template.fees.recurring_monthly_fee_vnd === 0) && (
-                    <span className="px-1.5 py-0.5 bg-green-100 text-green-700 rounded">
+                    <span className="px-1.5 py-0.5 bg-[#F7FFF3] text-[#4DC614] rounded">
                       Miễn phí giải ngân & thẩm định
                     </span>
                   )}
@@ -1412,9 +1362,9 @@ function SelectedCellDetail({
         )}
         {/* Key Metrics Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="p-3 bg-blue-50 rounded-lg">
-            <div className="text-xs text-blue-600 mb-1">Tổng Chi Phí</div>
-            <div className="font-bold text-blue-800">{formatShortVND(result.totals.total_cost_excl_principal)}</div>
+          <div className="p-3 bg-[#F7FFF3] rounded-lg">
+            <div className="text-xs text-[#343839] mb-1">Tổng Chi Phí</div>
+            <div className="font-bold text-[#141718]">{formatShortVND(result.totals.total_cost_excl_principal)}</div>
           </div>
           <div className="p-3 bg-red-50 rounded-lg">
             <div className="text-xs text-red-600 mb-1">Tổng Lãi</div>
@@ -1424,9 +1374,9 @@ function SelectedCellDetail({
             <div className="text-xs text-orange-600 mb-1">Tổng Phí</div>
             <div className="font-bold text-orange-800">{formatShortVND(result.totals.total_fees)}</div>
           </div>
-          <div className="p-3 bg-purple-50 rounded-lg">
-            <div className="text-xs text-purple-600 mb-1">TT/Tháng Cao Nhất</div>
-            <div className="font-bold text-purple-800">{formatShortVND(result.metrics.max_monthly_payment)}</div>
+          <div className="p-3 bg-[#E8ECEF] rounded-lg">
+            <div className="text-xs text-[#343839] mb-1">TT/Tháng Cao Nhất</div>
+            <div className="font-bold text-[#141718]">{formatShortVND(result.metrics.max_monthly_payment)}</div>
           </div>
         </div>
 
@@ -1487,16 +1437,16 @@ function SelectedRefinanceCellDetail({
   
   // Strategy color mapping for Refinance
   const strategyColorClass = {
-    R1_REFI_NOW_LIQUIDITY: 'text-gray-600',
-    R2_REFI_NOW_ACCELERATE: 'text-blue-600',
-    R3_OPTIMAL_TIMING: 'text-green-600',
+    R1_REFI_NOW_LIQUIDITY: 'text-[#343839]',
+    R2_REFI_NOW_ACCELERATE: 'text-[#4DC614]',
+    R3_OPTIMAL_TIMING: 'text-[#7CD734]',
   }[strategyId] || 'text-primary';
   
   return (
     <Card variant="bordered" className={`${
       isPositive 
-        ? 'bg-gradient-to-br from-green-50 to-white border-green-300' 
-        : 'bg-gradient-to-br from-orange-50 to-white border-orange-300'
+        ? 'bg-gradient-to-br from-[#F7FFF3] to-white border-[#7CD734]/50' 
+        : 'bg-gradient-to-br from-amber-50 to-white border-amber-300'
     }`}>
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between w-full">
@@ -1506,15 +1456,11 @@ function SelectedRefinanceCellDetail({
           </div>
           <div className="flex items-center gap-2">
             <Button size="sm" variant="ghost" onClick={onDownloadCSV}>
-              <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-              </svg>
+              <Icons.Download className="w-4 h-4 mr-1" />
               Tải CSV
             </Button>
             <Button size="sm" variant="ghost" onClick={onClose}>
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              <Icons.X className="w-5 h-5" />
             </Button>
           </div>
         </div>
@@ -1524,17 +1470,15 @@ function SelectedRefinanceCellDetail({
         {template && (
           <div className="p-4 bg-white/50 rounded-lg border border-gray-200">
             <h5 className="font-semibold text-gray-800 mb-3 flex items-center">
-              <svg className="w-4 h-4 mr-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-              Chi Tiết Gói Refinance
+              <Icons.DocumentText className="w-4 h-4 mr-2 text-primary" />
+              Chi Tiết Gói Chuyển Ngân Hàng
             </h5>
             
             {/* Interest Rates Section */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
               <div>
                 <span className="text-gray-500 block text-xs">Lãi suất ưu đãi</span>
-                <span className="font-semibold text-blue-700">{template.rates.promo_fixed_rate_pct}% × {template.rates.promo_fixed_months}T</span>
+                <span className="font-semibold text-[#4DC614]">{template.rates.promo_fixed_rate_pct}% × {template.rates.promo_fixed_months}T</span>
               </div>
               <div>
                 <span className="text-gray-500 block text-xs">Sau ưu đãi (thả nổi)</span>
@@ -1542,7 +1486,7 @@ function SelectedRefinanceCellDetail({
               </div>
               {template.fees.refinance_processing_fee_pct !== undefined && (
                 <div>
-                  <span className="text-gray-500 block text-xs">Phí xử lý Refinance</span>
+                <span className="text-gray-500 block text-xs">Phí xử lý chuyển ngân hàng</span>
                   <span className="font-semibold text-teal-700">{template.fees.refinance_processing_fee_pct}%</span>
                 </div>
               )}
@@ -1564,14 +1508,14 @@ function SelectedRefinanceCellDetail({
                       Lãi tham chiếu: {referenceRate}%
                     </span>
                     <span className="text-gray-400">+</span>
-                    <span className="px-1.5 py-0.5 bg-blue-100 text-blue-700 rounded font-medium">
+                    <span className="px-1.5 py-0.5 bg-[#F7FFF3] text-[#4DC614] rounded font-medium">
                       Biên độ: {marginRate}%
                     </span>
                     {stressBump > 0 && (
                       <>
                         <span className="text-gray-400">+</span>
                         <span className="px-1.5 py-0.5 bg-red-100 text-red-700 rounded font-medium">
-                          Stress test: +{stressBump}%
+                          Kịch bản lãi tăng: +{stressBump}%
                         </span>
                       </>
                     )}
@@ -1594,9 +1538,7 @@ function SelectedRefinanceCellDetail({
               <div className="mt-3 pt-3 border-t border-gray-200">
                 <div className="flex items-start gap-2">
                   <span className="text-gray-500 text-xs whitespace-nowrap flex items-center gap-1">
-                    <svg className="w-3.5 h-3.5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                    </svg>
+                    <Icons.Shield className="w-3.5 h-3.5 text-purple-500" />
                     Bảo hiểm:
                   </span>
                   <div className="text-xs flex flex-wrap gap-2">
@@ -1626,9 +1568,7 @@ function SelectedRefinanceCellDetail({
             <div className="mt-3 pt-3 border-t border-gray-200">
               <div className="flex items-start gap-2">
                 <span className="text-gray-500 text-xs whitespace-nowrap flex items-center gap-1">
-                  <svg className="w-3.5 h-3.5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-                  </svg>
+                  <Icons.Money className="w-3.5 h-3.5 text-orange-500" />
                   Các loại phí:
                 </span>
                 <div className="text-xs flex flex-wrap gap-1.5">
@@ -1669,7 +1609,7 @@ function SelectedRefinanceCellDetail({
                    (!template.fees.origination_fee_vnd || template.fees.origination_fee_vnd === 0) &&
                    (!template.fees.appraisal_fee_vnd || template.fees.appraisal_fee_vnd === 0) &&
                    (!template.fees.recurring_monthly_fee_vnd || template.fees.recurring_monthly_fee_vnd === 0) && (
-                    <span className="px-1.5 py-0.5 bg-green-100 text-green-700 rounded">
+                    <span className="px-1.5 py-0.5 bg-[#F7FFF3] text-[#4DC614] rounded">
                       Miễn các loại phí
                     </span>
                   )}
@@ -1685,17 +1625,17 @@ function SelectedRefinanceCellDetail({
         )}
 
         {/* Saving Banner */}
-        <div className={`p-4 rounded-lg ${isPositive ? 'bg-green-100' : 'bg-orange-100'}`}>
+        <div className={`p-4 rounded-lg ${isPositive ? 'bg-[#F7FFF3]' : 'bg-amber-100'}`}>
           <div className="flex items-center justify-between">
-            <span className={`text-sm ${isPositive ? 'text-green-700' : 'text-orange-700'}`}>
+            <span className={`text-sm ${isPositive ? 'text-[#343839]' : 'text-amber-700'}`}>
               {isPositive ? 'Bạn tiết kiệm được:' : 'Chi phí thêm:'}
             </span>
-            <span className={`text-2xl font-bold ${isPositive ? 'text-green-700' : 'text-orange-700'}`}>
+            <span className={`text-2xl font-bold ${isPositive ? 'text-[#4DC614]' : 'text-amber-700'}`}>
               {isPositive ? '+' : ''}{formatShortVND(result.net_saving_vnd)}
             </span>
           </div>
           {result.break_even_month && (
-            <div className={`text-sm mt-1 ${isPositive ? 'text-green-600' : 'text-orange-600'}`}>
+            <div className={`text-sm mt-1 ${isPositive ? 'text-[#4DC614]' : 'text-amber-600'}`}>
               Hoà vốn sau tháng {result.break_even_month}
             </div>
           )}
@@ -1707,9 +1647,9 @@ function SelectedRefinanceCellDetail({
             <div className="text-xs text-gray-600 mb-1">Chi phí khoản vay cũ</div>
             <div className="font-bold text-gray-800">{formatShortVND(result.baseline.totals.total_cost_excl_principal)}</div>
           </div>
-          <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
-            <div className="text-xs text-blue-600 mb-1">Chi phí khoản vay mới</div>
-            <div className="font-bold text-blue-800">{formatShortVND(result.refinance.totals.total_cost_excl_principal)}</div>
+          <div className="p-3 bg-[#F7FFF3] rounded-lg border border-[#7CD734]/50">
+            <div className="text-xs text-[#343839] mb-1">Chi phí khoản vay mới</div>
+            <div className="font-bold text-[#141718]">{formatShortVND(result.refinance.totals.total_cost_excl_principal)}</div>
           </div>
         </div>
 
@@ -1762,9 +1702,7 @@ function MonthlyScheduleTable({
       {/* Header */}
       <div className="bg-gradient-to-r from-slate-100 to-slate-50 px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <svg className="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
+          <Icons.Calendar className="w-5 h-5 text-slate-600" />
           <h4 className="font-semibold text-slate-800 text-sm">{title}</h4>
           <span className="text-xs text-slate-500">({schedule.length} tháng)</span>
         </div>
@@ -1782,26 +1720,26 @@ function MonthlyScheduleTable({
       </div>
       
       {/* Summary Row */}
-      <div className="bg-blue-50 px-4 py-2 grid grid-cols-5 gap-4 text-xs border-b border-blue-100">
+      <div className="bg-[#F7FFF3] px-4 py-2 grid grid-cols-5 gap-4 text-xs border-b border-[#7CD734]/30">
         <div>
-          <span className="text-blue-600">Tổng Lãi:</span>
-          <span className="ml-1 font-semibold text-blue-800">{formatShortVND(totals.interest)}</span>
+          <span className="text-[#343839]">Tổng Lãi:</span>
+          <span className="ml-1 font-semibold text-[#141718]">{formatShortVND(totals.interest)}</span>
         </div>
         <div>
-          <span className="text-blue-600">Tổng Gốc:</span>
-          <span className="ml-1 font-semibold text-blue-800">{formatShortVND(totals.principal)}</span>
+          <span className="text-[#343839]">Tổng Gốc:</span>
+          <span className="ml-1 font-semibold text-[#141718]">{formatShortVND(totals.principal)}</span>
         </div>
         <div>
-          <span className="text-blue-600">Tổng Phí:</span>
-          <span className="ml-1 font-semibold text-blue-800">{formatShortVND(totals.fees)}</span>
+          <span className="text-[#343839]">Tổng Phí:</span>
+          <span className="ml-1 font-semibold text-[#141718]">{formatShortVND(totals.fees)}</span>
         </div>
         <div>
-          <span className="text-blue-600">Tổng BH:</span>
-          <span className="ml-1 font-semibold text-blue-800">{formatShortVND(totals.insurance)}</span>
+          <span className="text-[#343839]">Tổng BH:</span>
+          <span className="ml-1 font-semibold text-[#141718]">{formatShortVND(totals.insurance)}</span>
         </div>
         <div>
-          <span className="text-blue-600">Tổng TT:</span>
-          <span className="ml-1 font-bold text-blue-900">{formatShortVND(totals.total)}</span>
+          <span className="text-[#343839]">Tổng TT:</span>
+          <span className="ml-1 font-bold text-[#141718]">{formatShortVND(totals.total)}</span>
         </div>
       </div>
       
@@ -1836,11 +1774,11 @@ function MonthlyScheduleTable({
               
               let rowClass = '';
               if (isPayoff) {
-                rowClass = 'bg-green-50 border-l-4 border-l-green-500';
+                rowClass = 'bg-[#F7FFF3] border-l-4 border-l-[#4DC614]';
               } else if (isPromoEnd) {
                 rowClass = 'bg-amber-50 border-l-4 border-l-amber-400';
               } else if (hasExtraPrincipal) {
-                rowClass = 'bg-blue-50/50';
+                rowClass = 'bg-[#F7FFF3]/50';
               } else if (idx % 2 === 1) {
                 rowClass = 'bg-gray-50/50';
               }
@@ -1851,7 +1789,7 @@ function MonthlyScheduleTable({
                     <div className="flex items-center gap-1">
                       {row.month}
                       {isPayoff && (
-                        <span className="text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded-full">Tất toán</span>
+                        <span className="text-[10px] bg-[#4DC614] text-white px-1.5 py-0.5 rounded-full">Tất toán</span>
                       )}
                       {isPromoEnd && !isPayoff && (
                         <span className="text-[10px] bg-amber-500 text-white px-1.5 py-0.5 rounded-full">Hết ưu đãi</span>
@@ -1869,7 +1807,7 @@ function MonthlyScheduleTable({
                   <td className="px-3 py-2 text-right text-gray-700">{formatShortVND(row.principal_scheduled)}</td>
                   {showAllColumns && (
                     <>
-                      <td className="px-3 py-2 text-right text-blue-600">
+                      <td className="px-3 py-2 text-right text-[#4DC614]">
                         {row.extra_principal > 0 ? formatShortVND(row.extra_principal) : '—'}
                       </td>
                       <td className="px-3 py-2 text-right text-orange-600">
@@ -1933,15 +1871,15 @@ function MonthlyScheduleTable({
       <div className="px-4 py-2 bg-gray-50 border-t border-gray-100">
         <div className="flex flex-wrap gap-4 text-[10px] mb-2">
           <div className="flex items-center gap-1">
-            <div className="w-3 h-3 rounded border-l-4 border-l-green-500 bg-green-50"></div>
+            <div className="w-3 h-3 rounded border-l-4 border-l-[#4DC614] bg-[#F7FFF3]"></div>
             <span className="text-gray-500">Tháng tất toán</span>
           </div>
           <div className="flex items-center gap-1">
-            <div className="w-3 h-3 rounded border-l-4 border-l-amber-400 bg-amber-50"></div>
+            <div className="w-3 h-3 rounded border-l-4 border-l-amber-500 bg-amber-50"></div>
             <span className="text-gray-500">Thay đổi lãi suất</span>
           </div>
           <div className="flex items-center gap-1">
-            <div className="w-3 h-3 rounded bg-blue-50"></div>
+            <div className="w-3 h-3 rounded bg-[#F7FFF3]"></div>
             <span className="text-gray-500">Có trả thêm gốc</span>
           </div>
         </div>

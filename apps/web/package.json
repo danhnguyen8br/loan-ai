@@ -3,9 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "npm --prefix ../../packages/loan-engine run build",
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "prebuild": "npm --prefix ../../packages/loan-engine run build",
+    "build": "rm -rf .next && next build",
+    "start": "node .next/standalone/server.js",
     "lint": "next lint"
   },
   "dependencies": {
