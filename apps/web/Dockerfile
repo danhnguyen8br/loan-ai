@@ -12,21 +12,21 @@ RUN npm install && npm run build
 
 # Stage 2: Dependencies
 FROM node:20-alpine AS deps
-WORKDIR /monorepo
+WORKDIR /app
 
-# Copy built loan-engine (with dist)
+# Copy built loan-engine to the correct relative path (../../packages/loan-engine from apps/web)
 COPY --from=loan-engine-builder /monorepo/packages/loan-engine ./packages/loan-engine/
 
 # Copy web app package files
 COPY apps/web/package*.json ./apps/web/
 
-# Install dependencies (loan-engine is already built, so prepare script won't fail)
-WORKDIR /monorepo/apps/web
+# Install dependencies (loan-engine is already built and referenced as file:../../packages/loan-engine)
+WORKDIR /app/apps/web
 RUN npm install --ignore-scripts && npm rebuild
 
 # Stage 3: Builder
 FROM node:20-alpine AS builder
-WORKDIR /monorepo
+WORKDIR /app
 
 # Copy packages from monorepo (use pre-built loan-engine)
 COPY --from=loan-engine-builder /monorepo/packages/loan-engine ./packages/loan-engine/
@@ -35,10 +35,10 @@ COPY --from=loan-engine-builder /monorepo/packages/loan-engine ./packages/loan-e
 COPY apps/web/ ./apps/web/
 
 # Copy node_modules from deps stage
-COPY --from=deps /monorepo/apps/web/node_modules ./apps/web/node_modules
+COPY --from=deps /app/apps/web/node_modules ./apps/web/node_modules
 
 # Build the app
-WORKDIR /monorepo/apps/web
+WORKDIR /app/apps/web
 
 # Build Next.js app
 ENV NEXT_TELEMETRY_DISABLED=1
@@ -56,9 +56,9 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 # Copy built app
-COPY --from=builder /monorepo/apps/web/public ./public
-COPY --from=builder --chown=nextjs:nodejs /monorepo/apps/web/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /monorepo/apps/web/.next/static ./.next/static
+COPY --from=builder /app/apps/web/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/static ./.next/static
 
 USER nextjs
 
