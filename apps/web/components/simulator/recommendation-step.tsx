@@ -75,7 +75,7 @@ export function RecommendationStep({
   // Handle case where no best package was found
   if (!best) {
     return (
-      <div className="px-4 py-8">
+      <div className="px-4 py-8 space-y-6">
         <Card variant="bordered" className="bg-amber-50 border-amber-200">
           <CardBody className="text-center py-8">
             <Icons.InfoCircle className="w-12 h-12 text-amber-400 mx-auto mb-4" />
@@ -86,6 +86,28 @@ export function RecommendationStep({
             </Button>
           </CardBody>
         </Card>
+
+        {/* CTA Section */}
+        <div className="bg-gradient-to-r from-[#4DC614]/10 to-emerald-50 rounded-xl p-4 sm:p-5 border border-[#4DC614]/20">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="flex-1">
+              <p className="text-sm text-gray-600 leading-relaxed">
+                Lãi suất được <span className="font-semibold text-[#4DC614]">Leadity</span> lựa chọn từ các gói vay cạnh tranh nhất trên thị trường. Để có được thông tin cụ thể hơn, hãy liên hệ với chúng tôi ngay hôm nay.
+              </p>
+            </div>
+            <a
+              href="https://www.leadity.ai/#contact"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 bg-[#4DC614] hover:bg-[#45b312] text-white font-semibold px-6 py-3 rounded-lg transition-all shadow-md hover:shadow-lg whitespace-nowrap"
+            >
+              <span>Liên hệ tư vấn</span>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+          </div>
+        </div>
       </div>
     );
   }
@@ -124,10 +146,34 @@ export function RecommendationStep({
       )}
 
       {/* Navigation */}
-      <div className="space-y-3 pt-4 pb-4 sm:pb-6 lg:pb-0">
+      <div className="space-y-3 pt-4">
         <Button onClick={onEditNeeds} variant="outline" className="w-full h-12 text-base sm:h-auto touch-manipulation">
           Chỉnh Lại Nhu Cầu
         </Button>
+      </div>
+
+      {/* CTA Section */}
+      <div className="mt-6 pb-4 sm:pb-6 lg:pb-0">
+        <div className="bg-gradient-to-r from-[#4DC614]/10 to-emerald-50 rounded-xl p-4 sm:p-5 border border-[#4DC614]/20">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="flex-1">
+              <p className="text-sm text-gray-600 leading-relaxed">
+                Lãi suất được <span className="font-semibold text-[#4DC614]">Leadity</span> lựa chọn từ các gói vay cạnh tranh nhất trên thị trường. Để có được thông tin cụ thể hơn, hãy liên hệ với chúng tôi ngay hôm nay.
+              </p>
+            </div>
+            <a
+              href="https://www.leadity.ai/#contact"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 bg-[#4DC614] hover:bg-[#45b312] text-white font-semibold px-6 py-3 rounded-lg transition-all shadow-md hover:shadow-lg whitespace-nowrap"
+            >
+              <span>Liên hệ tư vấn</span>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -266,24 +312,24 @@ function MortgageResultCard({
         {/* Stress Test - only show if not exit plan OR exit is after promo/grace */}
         {showStressSection && (
           <div className="bg-status-warning-light rounded-xl p-4">
-            <h4 className="text-sm font-medium text-status-warning-dark mb-2 flex items-center gap-2">
-              <Icons.TrendUp className="w-4 h-4" />
+            <h4 className="text-base font-medium text-status-warning-dark mb-2 flex items-center gap-2">
+              <Icons.TrendUp className="w-5 h-5" />
               Kịch bản lãi suất biến động khi hết ưu đãi
             </h4>
-            <div className="flex gap-2 text-sm">
-              <div className="flex-1 bg-white rounded-lg p-2 text-center">
-                <div className="text-xs text-text-muted">
+            <div className="flex gap-2 text-base">
+              <div className="flex-1 bg-white rounded-lg p-2.5 text-center">
+                <div className="text-sm text-text-muted">
                   LS sau ưu đãi{pkg.stressBaseRatePct !== undefined ? ` ~${pkg.stressBaseRatePct.toFixed(2)}%` : ''}
                 </div>
-                <div className="font-semibold text-dark-darker">{formatVND(pkg.stressPayments!.base)}</div>
+                <div className="font-semibold text-dark-darker text-base">{formatVND(pkg.stressPayments!.base)}</div>
               </div>
-              <div className="flex-1 bg-white rounded-lg p-2 text-center">
-                <div className="text-xs text-status-warning">+2%</div>
-                <div className="font-semibold text-status-warning-dark">{formatVND(pkg.stressPayments!.plus2)}</div>
+              <div className="flex-1 bg-white rounded-lg p-2.5 text-center">
+                <div className="text-sm text-status-warning">+2%</div>
+                <div className="font-semibold text-status-warning-dark text-base">{formatVND(pkg.stressPayments!.plus2)}</div>
               </div>
-              <div className="flex-1 bg-white rounded-lg p-2 text-center">
-                <div className="text-xs text-status-error">+4%</div>
-                <div className="font-semibold text-status-error-dark">{formatVND(pkg.stressPayments!.plus4)}</div>
+              <div className="flex-1 bg-white rounded-lg p-2.5 text-center">
+                <div className="text-sm text-status-error">+4%</div>
+                <div className="font-semibold text-status-error-dark text-base">{formatVND(pkg.stressPayments!.plus4)}</div>
               </div>
             </div>
           </div>
@@ -407,24 +453,24 @@ function RefinanceResultCard({
         {/* Stress Test Payments - only show if hold duration > promo/grace period */}
         {showStressSection && (
           <div className="bg-status-warning-light rounded-xl p-4">
-            <h4 className="text-sm font-medium text-status-warning-dark mb-2 flex items-center gap-2">
-              <Icons.TrendUp className="w-4 h-4" />
+            <h4 className="text-base font-medium text-status-warning-dark mb-2 flex items-center gap-2">
+              <Icons.TrendUp className="w-5 h-5" />
               Kịch bản lãi suất biến động khi hết ưu đãi
             </h4>
-            <div className="flex gap-2 text-sm">
+            <div className="flex gap-2 text-base">
               <div className="flex-1 bg-white rounded-lg p-2.5 text-center">
-                <div className="text-xs text-text-muted mb-0.5">
+                <div className="text-sm text-text-muted mb-0.5">
                   LS sau ưu đãi{pkg.stressBaseRatePct !== undefined ? ` ~${pkg.stressBaseRatePct.toFixed(2)}%` : ''}
                 </div>
-                <div className="font-semibold text-dark-darker">{formatVND(pkg.stressPayments!.base)}</div>
+                <div className="font-semibold text-dark-darker text-base">{formatVND(pkg.stressPayments!.base)}</div>
               </div>
               <div className="flex-1 bg-white rounded-lg p-2.5 text-center">
-                <div className="text-xs text-status-warning mb-0.5">+2%</div>
-                <div className="font-semibold text-status-warning-dark">{formatVND(pkg.stressPayments!.plus2)}</div>
+                <div className="text-sm text-status-warning mb-0.5">+2%</div>
+                <div className="font-semibold text-status-warning-dark text-base">{formatVND(pkg.stressPayments!.plus2)}</div>
               </div>
               <div className="flex-1 bg-white rounded-lg p-2.5 text-center">
-                <div className="text-xs text-status-error mb-0.5">+4%</div>
-                <div className="font-semibold text-status-error-dark">{formatVND(pkg.stressPayments!.plus4)}</div>
+                <div className="text-sm text-status-error mb-0.5">+4%</div>
+                <div className="font-semibold text-status-error-dark text-base">{formatVND(pkg.stressPayments!.plus4)}</div>
               </div>
             </div>
           </div>
@@ -433,26 +479,26 @@ function RefinanceResultCard({
         {/* Exit Fees for New Loan */}
         {pkg.newLoanExitFees && (
           <div className="bg-purple-50 rounded-xl p-4">
-            <h4 className="text-sm font-medium text-purple-800 mb-2 flex items-center gap-2">
-              <Icons.Money className="w-4 h-4" />
+            <h4 className="text-base font-medium text-purple-800 mb-2 flex items-center gap-2">
+              <Icons.Money className="w-5 h-5" />
               Phí tất toán sớm (khoản mới)
             </h4>
-            <div className="flex gap-2 text-sm">
+            <div className="flex gap-2 text-base">
               <div className="flex-1 bg-white rounded-lg p-2.5 text-center">
-                <div className="text-xs text-gray-500 mb-0.5">Sau 12T</div>
-                <div className={`font-semibold ${pkg.newLoanExitFees.at12Months > 0 ? 'text-purple-700' : 'text-green-600'}`}>
+                <div className="text-sm text-gray-500 mb-0.5">Sau 12T</div>
+                <div className={`font-semibold text-base ${pkg.newLoanExitFees.at12Months > 0 ? 'text-purple-700' : 'text-green-600'}`}>
                   {pkg.newLoanExitFees.at12Months > 0 ? formatVND(pkg.newLoanExitFees.at12Months) : 'Miễn phí'}
                 </div>
               </div>
               <div className="flex-1 bg-white rounded-lg p-2.5 text-center">
-                <div className="text-xs text-gray-500 mb-0.5">Sau 24T</div>
-                <div className={`font-semibold ${pkg.newLoanExitFees.at24Months > 0 ? 'text-purple-700' : 'text-green-600'}`}>
+                <div className="text-sm text-gray-500 mb-0.5">Sau 24T</div>
+                <div className={`font-semibold text-base ${pkg.newLoanExitFees.at24Months > 0 ? 'text-purple-700' : 'text-green-600'}`}>
                   {pkg.newLoanExitFees.at24Months > 0 ? formatVND(pkg.newLoanExitFees.at24Months) : 'Miễn phí'}
                 </div>
               </div>
               <div className="flex-1 bg-white rounded-lg p-2.5 text-center">
-                <div className="text-xs text-gray-500 mb-0.5">Sau 36T</div>
-                <div className={`font-semibold ${pkg.newLoanExitFees.at36Months > 0 ? 'text-purple-700' : 'text-green-600'}`}>
+                <div className="text-sm text-gray-500 mb-0.5">Sau 36T</div>
+                <div className={`font-semibold text-base ${pkg.newLoanExitFees.at36Months > 0 ? 'text-purple-700' : 'text-green-600'}`}>
                   {pkg.newLoanExitFees.at36Months > 0 ? formatVND(pkg.newLoanExitFees.at36Months) : 'Miễn phí'}
                 </div>
               </div>
@@ -527,9 +573,9 @@ function MetricBox({
 
   return (
     <div className={`rounded-lg sm:rounded-xl p-3 sm:p-4 my-3 ${colorMap[color]}`}>
-      <div className="text-xs sm:text-sm opacity-75 mb-0.5 leading-tight">{label}</div>
-      <div className="text-base sm:text-lg font-bold leading-tight">{value}</div>
-      {sublabel && <div className="text-xs sm:text-sm opacity-60 leading-tight mt-0.5">{sublabel}</div>}
+      <div className="text-sm opacity-75 mb-0.5 leading-tight">{label}</div>
+      <div className="text-lg sm:text-xl font-bold leading-tight">{value}</div>
+      {sublabel && <div className="text-sm opacity-60 leading-tight mt-0.5">{sublabel}</div>}
     </div>
   );
 }
@@ -594,10 +640,34 @@ function NoRefinanceRecommendation({
       )}
 
       {/* Navigation */}
-      <div className="space-y-3 pt-4 pb-6">
+      <div className="space-y-3 pt-4">
         <Button onClick={onEditNeeds} variant="outline" className="w-full text-base">
           Thay Đổi Thông Tin
         </Button>
+      </div>
+
+      {/* CTA Section */}
+      <div className="mt-6 pb-6">
+        <div className="bg-gradient-to-r from-[#4DC614]/10 to-emerald-50 rounded-xl p-4 sm:p-5 border border-[#4DC614]/20">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="flex-1">
+              <p className="text-sm text-gray-600 leading-relaxed">
+                Lãi suất được <span className="font-semibold text-[#4DC614]">Leadity</span> lựa chọn từ các gói vay cạnh tranh nhất trên thị trường. Để có được thông tin cụ thể hơn, hãy liên hệ với chúng tôi ngay hôm nay.
+              </p>
+            </div>
+            <a
+              href="https://www.leadity.ai/#contact"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 bg-[#4DC614] hover:bg-[#45b312] text-white font-semibold px-6 py-3 rounded-lg transition-all shadow-md hover:shadow-lg whitespace-nowrap"
+            >
+              <span>Liên hệ tư vấn</span>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   );

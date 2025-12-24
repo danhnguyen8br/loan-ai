@@ -239,8 +239,8 @@ function StatBox({ label, value, color }: { label: string; value: string; color:
 
   return (
     <div className="text-center">
-      <div className="text-xs sm:text-sm text-text-muted">{label}</div>
-      <div className={`text-sm sm:text-base font-bold ${colorMap[color]}`}>{value}</div>
+      <div className="text-sm text-text-muted">{label}</div>
+      <div className={`text-base sm:text-lg font-bold ${colorMap[color]}`}>{value}</div>
     </div>
   );
 }
@@ -261,14 +261,14 @@ function MonthlyListView({ months, promoEndMonth }: { months: ScheduleRowRespons
             }`}
           >
             <div className="flex items-center gap-3">
-              <div className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold ${
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center text-base font-bold ${
                 isPayoff ? 'bg-primary-dark text-text-inverse' : 
                 isPromo ? 'bg-primary-50 text-primary-700' : 'bg-status-warning-light text-status-warning-dark'
               }`}>
                 T{row.month}
               </div>
               <div>
-                <div className="text-sm text-leadity-gray">
+                <div className="text-base text-leadity-gray">
                   <span className="font-medium">Lãi:</span> {formatVND(row.interest)}
                   <span className="mx-1 text-leadity-gray-light">|</span>
                   <span className="font-medium">Gốc:</span> {formatVND(row.principal_scheduled)}
@@ -279,12 +279,12 @@ function MonthlyListView({ months, promoEndMonth }: { months: ScheduleRowRespons
               </div>
             </div>
             <div className="text-right">
-              <div className="font-bold text-dark-darker text-base">{formatVND(row.payment_total)}</div>
+              <div className="font-bold text-dark-darker text-lg">{formatVND(row.payment_total)}</div>
               {isPayoff && (
-                <div className="text-sm text-primary-700 font-medium">Tất toán</div>
+                <div className="text-base text-primary-700 font-medium">Tất toán</div>
               )}
               {isPromoEnd && !isPayoff && (
-                <div className="text-sm text-status-warning font-medium">Hết ưu đãi</div>
+                <div className="text-base text-status-warning font-medium">Hết ưu đãi</div>
               )}
             </div>
           </div>
@@ -297,16 +297,16 @@ function MonthlyListView({ months, promoEndMonth }: { months: ScheduleRowRespons
 function MonthlyTableView({ months, promoEndMonth }: { months: ScheduleRowResponse[]; promoEndMonth: number }) {
   return (
     <div className="overflow-x-auto">
-      <table className="w-full text-sm">
+      <table className="w-full text-base">
         <thead className="bg-leadity-gray-light">
           <tr>
-            <th className="px-3 py-2.5 text-left font-semibold text-leadity-gray-muted">Tháng</th>
-            <th className="px-3 py-2.5 text-right font-semibold text-leadity-gray-muted">Lãi suất</th>
-            <th className="px-3 py-2.5 text-right font-semibold text-leadity-gray-muted">Dư nợ đầu</th>
-            <th className="px-3 py-2.5 text-right font-semibold text-leadity-gray-muted">Lãi</th>
-            <th className="px-3 py-2.5 text-right font-semibold text-leadity-gray-muted">Gốc</th>
-            <th className="px-3 py-2.5 text-right font-semibold text-leadity-gray-muted bg-leadity-gray-light">Tổng TT</th>
-            <th className="px-3 py-2.5 text-right font-semibold text-leadity-gray-muted">Dư nợ cuối</th>
+            <th className="px-3 py-3 text-left font-semibold text-leadity-gray-muted whitespace-nowrap">Tháng</th>
+            <th className="px-3 py-3 text-right font-semibold text-leadity-gray-muted whitespace-nowrap">Lãi suất</th>
+            <th className="px-3 py-3 text-right font-semibold text-leadity-gray-muted whitespace-nowrap">Dư nợ đầu</th>
+            <th className="px-3 py-3 text-right font-semibold text-leadity-gray-muted whitespace-nowrap">Lãi</th>
+            <th className="px-3 py-3 text-right font-semibold text-leadity-gray-muted whitespace-nowrap">Gốc</th>
+            <th className="px-3 py-3 text-right font-semibold text-leadity-gray-muted bg-leadity-gray-light whitespace-nowrap">Tổng TT</th>
+            <th className="px-3 py-3 text-right font-semibold text-leadity-gray-muted whitespace-nowrap">Dư nợ cuối</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-leadity-gray-light/50">
@@ -323,17 +323,17 @@ function MonthlyTableView({ months, promoEndMonth }: { months: ScheduleRowRespon
                   row.month % 2 === 0 ? 'bg-leadity-gray-lighter/30' : ''
                 }
               >
-                <td className="px-3 py-2 font-medium text-dark">
+                <td className="px-3 py-2.5 font-medium text-dark whitespace-nowrap">
                   T{row.month}
                   {isPayoff && <span className="ml-1 text-primary-dark">✓</span>}
                   {isPromoEnd && !isPayoff && <span className="ml-1 text-status-warning">↓</span>}
                 </td>
-                <td className="px-3 py-2 text-right text-leadity-gray-muted">{row.rate_annual_pct.toFixed(2)}%</td>
-                <td className="px-3 py-2 text-right text-leadity-gray-muted">{formatVND(row.balance_start)}</td>
-                <td className="px-3 py-2 text-right text-status-error">{formatVND(row.interest)}</td>
-                <td className="px-3 py-2 text-right text-leadity-gray">{formatVND(row.principal_scheduled + row.extra_principal)}</td>
-                <td className="px-3 py-2 text-right font-bold text-dark-darker bg-leadity-gray-lighter">{formatVND(row.payment_total)}</td>
-                <td className="px-3 py-2 text-right text-leadity-gray-muted">{formatVND(row.balance_end)}</td>
+                <td className="px-3 py-2.5 text-right text-leadity-gray-muted whitespace-nowrap">{row.rate_annual_pct.toFixed(2)}%</td>
+                <td className="px-3 py-2.5 text-right text-leadity-gray-muted whitespace-nowrap">{formatVND(row.balance_start)}</td>
+                <td className="px-3 py-2.5 text-right text-status-error whitespace-nowrap">{formatVND(row.interest)}</td>
+                <td className="px-3 py-2.5 text-right text-leadity-gray whitespace-nowrap">{formatVND(row.principal_scheduled + row.extra_principal)}</td>
+                <td className="px-3 py-2.5 text-right font-bold text-dark-darker bg-leadity-gray-lighter whitespace-nowrap">{formatVND(row.payment_total)}</td>
+                <td className="px-3 py-2.5 text-right text-leadity-gray-muted whitespace-nowrap">{formatVND(row.balance_end)}</td>
               </tr>
             );
           })}

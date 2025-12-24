@@ -163,7 +163,7 @@ function MortgageCombinedForm({
       {/* Section 1: Loan Info */}
       <Card variant="bordered">
         <CardBody className="space-y-4 p-4 sm:p-5">
-          <h3 className="text-base font-semibold text-gray-800 flex items-center gap-2">
+          <h3 className="text-base font-semibold text-gray-800 flex items-center gap-2 my-2">
             <span className="w-6 h-6 rounded-full bg-[#4DC614] text-white flex items-center justify-center text-sm">1</span>
             Thông tin khoản vay
           </h3>
@@ -470,7 +470,7 @@ function RefinanceCombinedForm({
       {/* Section 1: Current Loan Info */}
       <Card variant="bordered">
         <CardBody className="space-y-4 p-4 sm:p-5">
-          <h3 className="text-base font-semibold text-gray-800 flex items-center gap-2">
+          <h3 className="text-base font-semibold text-gray-800 flex items-center gap-2 my-2">
             <span className="w-6 h-6 rounded-full bg-[#4DC614] text-white flex items-center justify-center text-sm">1</span>
             Khoản vay hiện tại
           </h3>

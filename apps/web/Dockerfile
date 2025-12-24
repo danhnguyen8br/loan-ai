@@ -1,23 +1,35 @@
 # Multi-stage build for Next.js
 
-# Stage 1: Dependencies
+# Stage 1: Build loan-engine package
+FROM node:20-alpine AS loan-engine-builder
+WORKDIR /monorepo/packages/loan-engine
+
+# Copy loan-engine package files
+COPY packages/loan-engine/ ./
+
+# Install dependencies and build
+RUN npm install && npm run build
+
+# Stage 2: Dependencies
 FROM node:20-alpine AS deps
 WORKDIR /monorepo
 
-# Copy monorepo package files
-COPY packages/loan-engine/package*.json ./packages/loan-engine/
+# Copy built loan-engine (with dist)
+COPY --from=loan-engine-builder /monorepo/packages/loan-engine ./packages/loan-engine/
+
+# Copy web app package files
 COPY apps/web/package*.json ./apps/web/
 
-# Install dependencies
+# Install dependencies (loan-engine is already built, so prepare script won't fail)
 WORKDIR /monorepo/apps/web
-RUN npm install
+RUN npm install --ignore-scripts && npm rebuild
 
-# Stage 2: Builder
+# Stage 3: Builder
 FROM node:20-alpine AS builder
 WORKDIR /monorepo
 
-# Copy packages from monorepo
-COPY packages/ ./packages/
+# Copy packages from monorepo (use pre-built loan-engine)
+COPY --from=loan-engine-builder /monorepo/packages/loan-engine ./packages/loan-engine/
 
 # Copy web app
 COPY apps/web/ ./apps/web/
@@ -32,7 +44,7 @@ WORKDIR /monorepo/apps/web
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm run build
 
-# Stage 3: Runner
+# Stage 4: Runner
 FROM node:20-alpine AS runner
 WORKDIR /app
 

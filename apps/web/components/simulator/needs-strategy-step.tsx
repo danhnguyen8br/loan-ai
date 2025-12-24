@@ -234,7 +234,7 @@ function MortgageForm({
       {/* Section 1: Loan Amount */}
       <Card variant="bordered">
         <CardBody className="space-y-4 p-4 sm:p-5">
-          <h3 className="text-base font-semibold text-dark flex items-center gap-2">
+          <h3 className="text-base font-semibold text-dark flex items-center gap-2 my-2">
             <span className="w-6 h-6 rounded-full bg-primary-dark text-text-inverse flex items-center justify-center text-sm">
               1
             </span>
@@ -659,7 +659,7 @@ function RefinanceForm({
       {/* Section 1: Current Loan Info */}
       <Card variant="bordered">
         <CardBody className="space-y-4 p-4 sm:p-5">
-          <h3 className="text-base font-semibold text-gray-800 flex items-center gap-2">
+          <h3 className="text-base font-semibold text-gray-800 flex items-center gap-2 my-2">
             <span className="w-6 h-6 rounded-full bg-[#4DC614] text-white flex items-center justify-center text-sm">
               1
             </span>
@@ -792,7 +792,7 @@ function RefinanceForm({
       {/* Section 2: Strategy Questions */}
       <Card variant="bordered" className="bg-gradient-to-br from-[#F7FFF3] to-white border-[#7CD734]/50">
         <CardBody className="space-y-4 p-4 sm:p-5">
-          <h3 className="text-base font-semibold text-gray-800 flex items-center gap-2">
+          <h3 className="text-base font-semibold text-gray-800 flex items-center gap-2 my-2">
             <span className="w-6 h-6 rounded-full bg-[#4DC614] text-white flex items-center justify-center text-sm">
               2
             </span>

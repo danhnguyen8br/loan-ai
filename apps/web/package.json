@@ -3,15 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "predev": "npm --prefix ../../packages/loan-engine run build",
     "dev": "next dev",
-    "prebuild": "npm --prefix ../../packages/loan-engine run build",
-    "build": "rm -rf .next && next build",
-    "start": "node .next/standalone/server.js",
+    "build": "next build",
+    "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
-    "@loan-ai/loan-engine": "file:../../packages/loan-engine",
+    "@loan-ai/loan-engine": "*",
     "@radix-ui/react-tooltip": "^1.2.8",
     "@tanstack/react-query": "^5.0.0",
     "lucide-react": "^0.562.0",

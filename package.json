@@ -1,0 +1,18 @@
+{
+  "name": "loan-ai",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspace=@loan-ai/loan-engine && npm run build --workspace=loan-ai-web",
+    "dev": "npm run dev --workspace=loan-ai-web",
+    "lint": "npm run lint --workspace=loan-ai-web"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
+
