@@ -1,5 +1,6 @@
 'use client';
 
+// Test: Vercel auto-deployment configuration
 import { useState, useCallback } from 'react';
 import { NeedsStrategyStep, type NeedsStrategy } from '@/components/simulator/needs-strategy-step';
 import { RecommendationStep } from '@/components/simulator/recommendation-step';
