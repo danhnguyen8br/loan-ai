@@ -124,7 +124,7 @@ export function NeedsStrategyStep({ initialData, onContinue }: NeedsStrategyStep
           }`}
         >
           <Icons.BankTransfer className={`w-5 h-5 ${mode === 'REFINANCE' ? 'text-primary-dark' : ''}`} />
-          Chuyển NH
+          Chuyển Ngân Hàng
         </button>
       </div>
 
@@ -335,11 +335,11 @@ function MortgageForm({
           }`}
           onClick={() => setStrategyType('PAY_OFF_FAST')}
         >
-          <CardBody className="p-3">
-            <div className="flex items-start gap-3">
-              <div className="pt-0.5">
+          <CardBody className="p-3 sm:p-4">
+            <div className="flex items-start gap-2.5">
+              <div className="pt-1">
                 <div
-                  className={`w-5 h-5 rounded-full border-2 flex items-center justify-center my-2 ${
+                  className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
                     strategyType === 'PAY_OFF_FAST' ? 'border-primary-dark' : 'border-leadity-gray-light'
                   }`}
                 >
@@ -349,14 +349,15 @@ function MortgageForm({
                 </div>
               </div>
 
-              <div className="flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center bg-amber-50 text-amber-600 my-2">
-                <Icons.Lightning className="w-5 h-5" />
-              </div>
-
               <div className="flex-1 min-w-0">
-                <h4 className="font-medium text-dark-darker text-base my-2">Tôi muốn trả nợ xong sớm nhất</h4>
-                <p className="text-sm text-leadity-gray-muted mt-0.5">
-                  Khuyến nghị rõ ràng để bạn chọn đúng gói và không &ldquo;đuối&rdquo; dòng tiền hàng tháng.
+                <h4 className="font-medium text-dark-darker text-base flex items-start gap-1.5">
+                  <span className="w-6 h-6 rounded-lg flex items-center justify-center bg-amber-50 text-amber-500 flex-shrink-0 mt-0.5">
+                    <Icons.Lightning className="w-4 h-4" />
+                  </span>
+                  Tôi muốn trả nợ xong sớm nhất
+                </h4>
+                <p className="text-sm text-leadity-gray-muted mt-1">
+                  Khuyến nghị rõ ràng để bạn chọn đúng gói và không ảnh hưởng dòng tiền hàng tháng.
                 </p>
 
                 <StrategyDetails color="green">
@@ -480,11 +481,11 @@ function MortgageForm({
           }`}
           onClick={() => setStrategyType('LOW_MONTHLY_SETTLE_LATER')}
         >
-          <CardBody className="p-3">
-            <div className="flex items-start gap-3">
-              <div className="pt-0.5">
+          <CardBody className="p-3 sm:p-4">
+            <div className="flex items-start gap-2.5">
+              <div className="pt-1">
                 <div
-                  className={`w-5 h-5 rounded-full border-2 flex items-center justify-center my-2 ${
+                  className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
                     strategyType === 'LOW_MONTHLY_SETTLE_LATER' ? 'border-purple-600' : 'border-gray-300'
                   }`}
                 >
@@ -494,16 +495,15 @@ function MortgageForm({
                 </div>
               </div>
 
-              <div className="flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center bg-purple-100 text-purple-600 my-2">
-                <Icons.CoinStack className="w-5 h-5" />
-              </div>
-
               <div className="flex-1 min-w-0">
-                <h4 className="font-medium text-gray-900 text-base my-2">
+                <h4 className="font-medium text-gray-900 text-base flex items-start gap-1.5">
+                  <span className="w-6 h-6 rounded-lg flex items-center justify-center bg-purple-100 text-purple-600 flex-shrink-0 mt-0.5">
+                    <Icons.CoinStack className="w-4 h-4" />
+                  </span>
                   Tôi muốn khoản trả hàng tháng thấp nhất, rồi tất toán sau {settleAfterYears} năm
                 </h4>
-                <p className="text-sm text-gray-600 mt-0.5">
-                  Phù hợp nếu bạn muốn &ldquo;nhẹ tháng&rdquo; trong ngắn hạn và dự kiến có khoản tiền lớn để tất toán.
+                <p className="text-sm text-gray-600 mt-1">
+                  Phù hợp nếu bạn muốn số tiền thanh toán thấp nhất và dự kiến có khoản tiền lớn để tất toán.
                 </p>
 
                 <StrategyDetails color="purple">
@@ -517,7 +517,7 @@ function MortgageForm({
                     </li>
                     <li>
                       Ưu tiên gói vay: phí trả trước hạn tại mốc {settleAfterYears} năm thấp nhất (#1) • lãi ưu đãi phù hợp giai
-                      đoạn bạn giữ • phí/điều kiện kèm không &ldquo;ăn&rdquo; mất lợi ích.
+                      đoạn bạn giữ • phí/điều kiện kèm tối ưu lợi ích.
                     </li>
                   </ul>
                   <p className="mt-2 text-xs text-gray-500 italic">

@@ -1,18 +1,36 @@
 import { describe, it, expect } from 'vitest';
 import {
   roundVND,
+  addMonths,
   calculatePMT,
+  buildRateTimeline,
   buildRateTimelineLegacy,
+  buildFixedRateTimeline,
   getPrepaymentFeePct,
+  getOldLoanPrepaymentFeePct,
   calculatePrepaymentFee,
+  calculateOldLoanPrepaymentFee,
   calculateUpfrontFees,
+  calculateClosingCash,
   getMilestonePayoffMonth,
+  getRefinanceTimingMonth,
+  getExtraPrincipal,
+  simulateLoanSchedule,
   generateSchedule,
   calculateAPR,
   getTemplateById,
+  getTemplatesByCategory,
+  getAllTemplates,
   PRODUCT_TEMPLATES,
 } from '../src';
-import type { UserInput, RepaymentStrategy, ProductTemplate } from '../src/types';
+import type {
+  UserInput,
+  RepaymentStrategy,
+  ProductTemplate,
+  StrategyExitPlan,
+  LoanScheduleParams,
+  MortgagePurchaseInput,
+} from '../src/types';
 
 // ============================================================================
 // Helper to create standard user input
@@ -1172,6 +1190,1134 @@ describe('Strategy Labels', () => {
     expect(REFINANCE_STRATEGY_LABELS['R1_REFI_NOW_LIQUIDITY']).toBe('Refinance Ngay (Giữ Thanh Khoản)');
     expect(REFINANCE_STRATEGY_LABELS['R2_REFI_NOW_ACCELERATE']).toBe('Refinance Ngay + Trả Nhanh');
     expect(REFINANCE_STRATEGY_LABELS['R3_OPTIMAL_TIMING']).toBe('Tối Ưu Thời Điểm Refinance');
+  });
+});
+
+// ============================================================================
+// NEW: addMonths Utility Tests
+// ============================================================================
+
+describe('addMonths', () => {
+  it('adds months correctly', () => {
+    expect(addMonths('2024-01-15', 0)).toBe('2024-01-15');
+    expect(addMonths('2024-01-15', 1)).toBe('2024-02-15');
+    expect(addMonths('2024-01-15', 12)).toBe('2025-01-15');
+  });
+
+  it('handles month boundaries correctly', () => {
+    // January to February
+    expect(addMonths('2024-01-31', 1)).toBe('2024-03-02'); // Feb doesn't have 31 days
+    // December to January (year change)
+    expect(addMonths('2024-12-15', 1)).toBe('2025-01-15');
+  });
+
+  it('handles leap year correctly', () => {
+    expect(addMonths('2024-02-29', 12)).toBe('2025-03-01');
+  });
+});
+
+// ============================================================================
+// NEW: buildRateTimeline Direct Tests
+// ============================================================================
+
+describe('buildRateTimeline', () => {
+  it('builds correct timeline for promo + floating', () => {
+    const template = getTemplateById('market2025_mortgage_promo_6m')!;
+    
+    const timeline = buildRateTimeline(template, 0, 24);
+    
+    expect(timeline.length).toBe(24);
+    
+    // First 6 months should be promo rate (5.2%)
+    for (let i = 0; i < 6; i++) {
+      expect(timeline[i].annual_rate_pct).toBe(5.2);
+    }
+    
+    // After promo: 5.0% + 3.8% margin = 8.8%
+    for (let i = 6; i < 24; i++) {
+      expect(timeline[i].annual_rate_pct).toBe(8.8);
+    }
+  });
+
+  it('applies stress bump correctly', () => {
+    const template = getTemplateById('market2025_mortgage_promo_6m')!;
+    
+    const timeline = buildRateTimeline(template, 2, 24);
+    
+    // Promo period unaffected
+    expect(timeline[0].annual_rate_pct).toBe(5.2);
+    expect(timeline[5].annual_rate_pct).toBe(5.2);
+    
+    // Post-promo with +2% stress: 5.0% + 3.8% + 2% = 10.8%
+    expect(timeline[6].annual_rate_pct).toBe(10.8);
+  });
+
+  it('handles horizon shorter than promo period', () => {
+    const template = getTemplateById('market2025_mortgage_fixed_60m')!;
+    
+    const timeline = buildRateTimeline(template, 0, 24);
+    
+    // All 24 months should be at promo rate (7.8%)
+    for (const entry of timeline) {
+      expect(entry.annual_rate_pct).toBe(7.8);
+    }
+  });
+});
+
+// ============================================================================
+// NEW: buildFixedRateTimeline Tests
+// ============================================================================
+
+describe('buildFixedRateTimeline', () => {
+  it('builds fixed rate timeline correctly', () => {
+    const timeline = buildFixedRateTimeline(10.5, 36);
+    
+    expect(timeline.length).toBe(36);
+    
+    for (const entry of timeline) {
+      expect(entry.annual_rate_pct).toBe(10.5);
+    }
+    
+    // Verify month numbering
+    expect(timeline[0].month).toBe(1);
+    expect(timeline[35].month).toBe(36);
+  });
+
+  it('handles single month', () => {
+    const timeline = buildFixedRateTimeline(8.0, 1);
+    
+    expect(timeline.length).toBe(1);
+    expect(timeline[0].month).toBe(1);
+    expect(timeline[0].annual_rate_pct).toBe(8.0);
+  });
+});
+
+// ============================================================================
+// NEW: calculateOldLoanPrepaymentFee Tests
+// ============================================================================
+
+describe('calculateOldLoanPrepaymentFee', () => {
+  const schedule = [
+    { from_month_inclusive: 0, to_month_exclusive: 12, fee_pct: 3, fee_min_vnd: 5_000_000 },
+    { from_month_inclusive: 12, to_month_exclusive: 24, fee_pct: 2 },
+    { from_month_inclusive: 24, to_month_exclusive: null, fee_pct: 0 },
+  ];
+
+  it('calculates percentage fee correctly', () => {
+    const fee = calculateOldLoanPrepaymentFee(schedule, 6, 100_000_000);
+    expect(fee).toBe(5_000_000); // 3% = 3M, but min is 5M
+  });
+
+  it('applies minimum fee when percentage is lower', () => {
+    // Small payoff amount where 3% is less than minimum
+    const fee = calculateOldLoanPrepaymentFee(schedule, 6, 100_000_000);
+    expect(fee).toBe(5_000_000); // Min fee
+  });
+
+  it('uses percentage when higher than minimum', () => {
+    // Large payoff where 3% > minimum
+    const fee = calculateOldLoanPrepaymentFee(schedule, 6, 500_000_000);
+    expect(fee).toBe(15_000_000); // 3% of 500M = 15M > 5M min
+  });
+
+  it('returns 0 after fee period', () => {
+    const fee = calculateOldLoanPrepaymentFee(schedule, 36, 100_000_000);
+    expect(fee).toBe(0);
+  });
+});
+
+// ============================================================================
+// NEW: calculateClosingCash Tests
+// ============================================================================
+
+describe('calculateClosingCash', () => {
+  it('calculates mortgage closing cash correctly', () => {
+    const template = getTemplateById('market2025_mortgage_promo_6m')!;
+    const input: MortgagePurchaseInput = {
+      type: 'MORTGAGE_RE',
+      currency: 'VND',
+      start_date: '2024-01-01',
+      property_value_vnd: 2_500_000_000,
+      down_payment_vnd: 500_000_000,
+      loan_amount_vnd: 2_000_000_000,
+      term_months: 240,
+      horizon_months: 36,
+      include_insurance: false,
+      stress: { floating_rate_bump_pct: 0 },
+    };
+    
+    const closingCash = calculateClosingCash(template, input);
+    
+    // Down payment: 500M
+    // Origination: 2B * 0.5% = 10M
+    // Appraisal: 3M
+    // Total: 513M
+    expect(closingCash).toBe(513_000_000);
+  });
+
+  it('works with refinance template (no down payment in upfront)', () => {
+    const template = getTemplateById('market2025_refinance_promo_12m')!;
+    const input: MortgagePurchaseInput = {
+      type: 'MORTGAGE_RE',
+      currency: 'VND',
+      start_date: '2024-01-01',
+      property_value_vnd: 2_000_000_000,
+      down_payment_vnd: 0,
+      loan_amount_vnd: 1_500_000_000,
+      term_months: 180,
+      horizon_months: 36,
+      include_insurance: false,
+      stress: { floating_rate_bump_pct: 0 },
+    };
+    
+    const closingCash = calculateClosingCash(template, input);
+    
+    // Down payment: 0
+    // Processing fee: 1.5B * 0.3% = 4.5M
+    // Appraisal: 2.5M
+    // Total: 7M
+    expect(closingCash).toBe(7_000_000);
+  });
+});
+
+// ============================================================================
+// NEW: getRefinanceTimingMonth Tests
+// ============================================================================
+
+describe('getRefinanceTimingMonth', () => {
+  it('returns 0 for non-exit strategies', () => {
+    const strategy: RepaymentStrategy = { type: 'STRATEGY_MIN_PAYMENT' };
+    expect(getRefinanceTimingMonth(strategy)).toBe(0);
+  });
+
+  it('returns 0 for "now" timing', () => {
+    const strategy: StrategyExitPlan = {
+      type: 'STRATEGY_EXIT_PLAN',
+      refinance_timing: 'now',
+    };
+    expect(getRefinanceTimingMonth(strategy)).toBe(0);
+  });
+
+  it('returns 12 for "after_12m" timing', () => {
+    const strategy: StrategyExitPlan = {
+      type: 'STRATEGY_EXIT_PLAN',
+      refinance_timing: 'after_12m',
+    };
+    expect(getRefinanceTimingMonth(strategy)).toBe(12);
+  });
+
+  it('returns 24 for "after_24m" timing', () => {
+    const strategy: StrategyExitPlan = {
+      type: 'STRATEGY_EXIT_PLAN',
+      refinance_timing: 'after_24m',
+    };
+    expect(getRefinanceTimingMonth(strategy)).toBe(24);
+  });
+
+  it('returns custom month for "custom" timing', () => {
+    const strategy: StrategyExitPlan = {
+      type: 'STRATEGY_EXIT_PLAN',
+      refinance_timing: 'custom',
+      custom_refinance_month: 18,
+    };
+    expect(getRefinanceTimingMonth(strategy)).toBe(18);
+  });
+
+  it('returns 0 for "custom" timing without custom_refinance_month', () => {
+    const strategy: StrategyExitPlan = {
+      type: 'STRATEGY_EXIT_PLAN',
+      refinance_timing: 'custom',
+    };
+    expect(getRefinanceTimingMonth(strategy)).toBe(0);
+  });
+});
+
+// ============================================================================
+// NEW: getExtraPrincipal Tests
+// ============================================================================
+
+describe('getExtraPrincipal', () => {
+  it('returns 0 for non-extra-principal strategy', () => {
+    const template = getTemplateById('market2025_mortgage_promo_6m')!;
+    const strategy: RepaymentStrategy = { type: 'STRATEGY_MIN_PAYMENT' };
+    
+    expect(getExtraPrincipal(strategy, template, 1, 1_000_000_000)).toBe(0);
+  });
+
+  it('returns requested extra principal when allowed', () => {
+    const template = getTemplateById('market2025_mortgage_promo_6m')!;
+    const strategy: RepaymentStrategy = {
+      type: 'STRATEGY_FIXED_EXTRA_PRINCIPAL',
+      extra_principal_vnd: 20_000_000,
+    };
+    
+    // Template allows partial prepay with min 10M
+    expect(getExtraPrincipal(strategy, template, 1, 1_000_000_000)).toBe(20_000_000);
+  });
+
+  it('returns 0 when extra is below minimum and below balance', () => {
+    const template = getTemplateById('market2025_mortgage_promo_6m')!;
+    const strategy: RepaymentStrategy = {
+      type: 'STRATEGY_FIXED_EXTRA_PRINCIPAL',
+      extra_principal_vnd: 5_000_000, // Below 10M minimum
+    };
+    
+    expect(getExtraPrincipal(strategy, template, 1, 1_000_000_000)).toBe(0);
+  });
+
+  it('caps extra principal at remaining balance', () => {
+    const template = getTemplateById('market2025_mortgage_promo_6m')!;
+    const strategy: RepaymentStrategy = {
+      type: 'STRATEGY_FIXED_EXTRA_PRINCIPAL',
+      extra_principal_vnd: 100_000_000,
+    };
+    
+    // Only 50M remaining
+    expect(getExtraPrincipal(strategy, template, 1, 50_000_000)).toBe(50_000_000);
+  });
+
+  it('returns 0 when template disallows partial prepay', () => {
+    const template: ProductTemplate = {
+      ...getTemplateById('market2025_mortgage_promo_6m')!,
+      prepayment_penalty: {
+        ...getTemplateById('market2025_mortgage_promo_6m')!.prepayment_penalty,
+        allow_partial_prepay: false,
+      },
+    };
+    const strategy: RepaymentStrategy = {
+      type: 'STRATEGY_FIXED_EXTRA_PRINCIPAL',
+      extra_principal_vnd: 20_000_000,
+    };
+    
+    expect(getExtraPrincipal(strategy, template, 1, 1_000_000_000)).toBe(0);
+  });
+});
+
+// ============================================================================
+// NEW: simulateLoanSchedule Direct Tests
+// ============================================================================
+
+describe('simulateLoanSchedule', () => {
+  it('generates schedule with insurance on balance', () => {
+    const template = getTemplateById('market2025_mortgage_promo_6m')!;
+    const rateTimeline = buildRateTimeline(template, 0, 12);
+    
+    const params: LoanScheduleParams = {
+      principal_vnd: 1_000_000_000,
+      term_months: 240,
+      start_date: '2024-01-01',
+      rate_timeline: rateTimeline,
+      repayment_method: 'annuity',
+      grace_principal_months: 24,
+      upfront_fees: 8_000_000,
+      recurring_fee_vnd: 0,
+      insurance_config: {
+        enabled: true,
+        annual_pct: 0.1,
+        basis: 'on_balance',
+      },
+      prepayment_schedule: template.prepayment_penalty.schedule,
+      allow_partial_prepay: true,
+      partial_prepay_min_vnd: 10_000_000,
+      strategy: { type: 'STRATEGY_MIN_PAYMENT' },
+      horizon_months: 12,
+      promo_months: 6,
+    };
+    
+    const result = simulateLoanSchedule(params);
+    
+    expect(result.schedule.length).toBe(12);
+    expect(result.totals.total_insurance).toBeGreaterThan(0);
+    
+    // Insurance should be based on balance (0.1% annual / 12 months)
+    const month1Insurance = result.schedule[0].insurance;
+    const expectedInsurance = roundVND((0.1 / 100 / 12) * 1_000_000_000);
+    expect(month1Insurance).toBe(expectedInsurance);
+  });
+
+  it('generates schedule with insurance on property value', () => {
+    const template = getTemplateById('market2025_mortgage_promo_6m')!;
+    const rateTimeline = buildRateTimeline(template, 0, 12);
+    
+    const params: LoanScheduleParams = {
+      principal_vnd: 2_000_000_000,
+      term_months: 240,
+      start_date: '2024-01-01',
+      rate_timeline: rateTimeline,
+      repayment_method: 'annuity',
+      grace_principal_months: 24,
+      upfront_fees: 0,
+      recurring_fee_vnd: 0,
+      insurance_config: {
+        enabled: true,
+        annual_pct: 0.1,
+        basis: 'on_property_value',
+        property_value_vnd: 2_500_000_000,
+      },
+      prepayment_schedule: template.prepayment_penalty.schedule,
+      allow_partial_prepay: true,
+      partial_prepay_min_vnd: 10_000_000,
+      strategy: { type: 'STRATEGY_MIN_PAYMENT' },
+      horizon_months: 12,
+      promo_months: 6,
+    };
+    
+    const result = simulateLoanSchedule(params);
+    
+    // Insurance should be based on property value
+    const month1Insurance = result.schedule[0].insurance;
+    const expectedInsurance = roundVND((0.1 / 100 / 12) * 2_500_000_000);
+    expect(month1Insurance).toBe(expectedInsurance);
+  });
+
+  it('generates schedule with flat annual insurance', () => {
+    const template = getTemplateById('market2025_mortgage_promo_6m')!;
+    const rateTimeline = buildRateTimeline(template, 0, 12);
+    
+    const params: LoanScheduleParams = {
+      principal_vnd: 1_000_000_000,
+      term_months: 240,
+      start_date: '2024-01-01',
+      rate_timeline: rateTimeline,
+      repayment_method: 'annuity',
+      grace_principal_months: 24,
+      upfront_fees: 0,
+      recurring_fee_vnd: 0,
+      insurance_config: {
+        enabled: true,
+        annual_vnd: 12_000_000, // Flat 12M per year
+        basis: 'on_balance',
+      },
+      prepayment_schedule: template.prepayment_penalty.schedule,
+      allow_partial_prepay: true,
+      partial_prepay_min_vnd: 10_000_000,
+      strategy: { type: 'STRATEGY_MIN_PAYMENT' },
+      horizon_months: 12,
+      promo_months: 6,
+    };
+    
+    const result = simulateLoanSchedule(params);
+    
+    // Insurance should be 1M per month (12M / 12)
+    expect(result.schedule[0].insurance).toBe(1_000_000);
+    expect(result.totals.total_insurance).toBe(12_000_000);
+  });
+
+  it('generates schedule with recurring fees', () => {
+    const template = getTemplateById('market2025_mortgage_promo_6m')!;
+    const rateTimeline = buildRateTimeline(template, 0, 12);
+    
+    const params: LoanScheduleParams = {
+      principal_vnd: 1_000_000_000,
+      term_months: 240,
+      start_date: '2024-01-01',
+      rate_timeline: rateTimeline,
+      repayment_method: 'annuity',
+      grace_principal_months: 24,
+      upfront_fees: 0,
+      recurring_fee_vnd: 100_000, // 100k per month
+      insurance_config: { enabled: false, basis: 'on_balance' },
+      prepayment_schedule: template.prepayment_penalty.schedule,
+      allow_partial_prepay: true,
+      partial_prepay_min_vnd: 10_000_000,
+      strategy: { type: 'STRATEGY_MIN_PAYMENT' },
+      horizon_months: 12,
+      promo_months: 6,
+    };
+    
+    const result = simulateLoanSchedule(params);
+    
+    expect(result.schedule[0].fees).toBe(100_000);
+    expect(result.totals.total_fees_recurring).toBe(1_200_000);
+  });
+
+  it('handles equal_principal repayment without grace period', () => {
+    const template = getTemplateById('market2025_mortgage_promo_6m')!;
+    const rateTimeline = buildRateTimeline(template, 0, 12);
+    
+    const params: LoanScheduleParams = {
+      principal_vnd: 120_000_000,
+      term_months: 12,
+      start_date: '2024-01-01',
+      rate_timeline: rateTimeline,
+      repayment_method: 'equal_principal',
+      grace_principal_months: 0, // No grace period
+      upfront_fees: 0,
+      recurring_fee_vnd: 0,
+      insurance_config: { enabled: false, basis: 'on_balance' },
+      prepayment_schedule: template.prepayment_penalty.schedule,
+      allow_partial_prepay: true,
+      partial_prepay_min_vnd: 10_000_000,
+      strategy: { type: 'STRATEGY_MIN_PAYMENT' },
+      horizon_months: 12,
+      promo_months: 6,
+    };
+    
+    const result = simulateLoanSchedule(params);
+    
+    // Each month should have equal principal payment
+    expect(result.schedule[0].principal_scheduled).toBe(10_000_000);
+    expect(result.schedule[11].principal_scheduled).toBe(10_000_000);
+    
+    // Balance should decrease linearly
+    expect(result.schedule[0].balance_end).toBe(110_000_000);
+    expect(result.schedule[11].balance_end).toBe(0);
+  });
+});
+
+// ============================================================================
+// NEW: Template Helper Functions Tests
+// ============================================================================
+
+describe('getTemplatesByCategory', () => {
+  it('returns mortgage templates correctly', () => {
+    const mortgageTemplates = getTemplatesByCategory('MORTGAGE_RE');
+    
+    expect(mortgageTemplates.length).toBe(3);
+    mortgageTemplates.forEach(t => {
+      expect(t.category).toBe('MORTGAGE_RE');
+    });
+  });
+
+  it('returns refinance templates correctly', () => {
+    const refinanceTemplates = getTemplatesByCategory('REFINANCE');
+    
+    expect(refinanceTemplates.length).toBe(3);
+    refinanceTemplates.forEach(t => {
+      expect(t.category).toBe('REFINANCE');
+    });
+  });
+});
+
+describe('getAllTemplates', () => {
+  it('returns all templates', () => {
+    const allTemplates = getAllTemplates();
+    
+    expect(allTemplates.length).toBe(6);
+    expect(allTemplates).toEqual(PRODUCT_TEMPLATES);
+  });
+});
+
+// ============================================================================
+// NEW: APR Edge Cases Tests
+// ============================================================================
+
+describe('calculateAPR edge cases', () => {
+  it('returns undefined for empty schedule', () => {
+    const apr = calculateAPR([], 1_000_000_000, 0);
+    expect(apr).toBeUndefined();
+  });
+
+  it('handles very short schedule', () => {
+    const template = getTemplateById('market2025_mortgage_promo_6m')!;
+    const userInput = createUserInput({ horizon_months: 3 });
+    const strategy: RepaymentStrategy = { type: 'STRATEGY_MIN_PAYMENT' };
+    
+    const result = generateSchedule(template, userInput, strategy);
+    
+    // Should still have an APR, just might be higher due to upfront fees
+    expect(result.metrics.apr_pct).toBeDefined();
+    expect(result.metrics.apr_pct!).toBeGreaterThan(0);
+  });
+
+  it('handles high fees correctly', () => {
+    // Create a scenario with high upfront fees
+    const template = getTemplateById('market2025_mortgage_promo_6m')!;
+    const userInput = createUserInput({ 
+      horizon_months: 6,
+      loan_amount_vnd: 100_000_000, // Small loan
+    });
+    const strategy: RepaymentStrategy = { type: 'STRATEGY_MIN_PAYMENT' };
+    
+    const result = generateSchedule(template, userInput, strategy);
+    
+    // APR should be reasonable even with fees
+    expect(result.metrics.apr_pct).toBeDefined();
+    expect(result.metrics.apr_pct!).toBeLessThan(50); // Sanity check
+  });
+});
+
+// ============================================================================
+// NEW: Prepayment Fee with Minimum Tests
+// ============================================================================
+
+describe('calculatePrepaymentFee with minimum', () => {
+  it('applies minimum fee when percentage is lower', () => {
+    // Create a template with fee_min_vnd
+    const template: ProductTemplate = {
+      ...getTemplateById('market2025_mortgage_promo_6m')!,
+      prepayment_penalty: {
+        schedule: [
+          { from_month_inclusive: 0, to_month_exclusive: 12, fee_pct: 3, fee_min_vnd: 10_000_000 },
+          { from_month_inclusive: 12, to_month_exclusive: null, fee_pct: 0 },
+        ],
+        allow_partial_prepay: true,
+        partial_prepay_min_vnd: 10_000_000,
+      },
+    };
+    
+    // 3% of 200M = 6M, but min is 10M
+    const fee = calculatePrepaymentFee(template, 6, 200_000_000);
+    expect(fee).toBe(10_000_000);
+  });
+
+  it('uses percentage when higher than minimum', () => {
+    const template: ProductTemplate = {
+      ...getTemplateById('market2025_mortgage_promo_6m')!,
+      prepayment_penalty: {
+        schedule: [
+          { from_month_inclusive: 0, to_month_exclusive: 12, fee_pct: 3, fee_min_vnd: 10_000_000 },
+          { from_month_inclusive: 12, to_month_exclusive: null, fee_pct: 0 },
+        ],
+        allow_partial_prepay: true,
+        partial_prepay_min_vnd: 10_000_000,
+      },
+    };
+    
+    // 3% of 500M = 15M > 10M min
+    const fee = calculatePrepaymentFee(template, 6, 500_000_000);
+    expect(fee).toBe(15_000_000);
+  });
+});
+
+// ============================================================================
+// NEW: Upfront Fees Edge Cases
+// ============================================================================
+
+describe('calculateUpfrontFees edge cases', () => {
+  it('handles origination_fee_vnd (flat fee)', () => {
+    const template: ProductTemplate = {
+      ...getTemplateById('market2025_mortgage_promo_6m')!,
+      fees: {
+        ...getTemplateById('market2025_mortgage_promo_6m')!.fees,
+        origination_fee_pct: undefined,
+        origination_fee_vnd: 5_000_000, // Flat 5M
+      },
+    };
+    
+    const fees = calculateUpfrontFees(template, 1_000_000_000);
+    
+    // 5M flat + 3M appraisal = 8M
+    expect(fees).toBe(8_000_000);
+  });
+
+  it('handles both pct and vnd origination fees', () => {
+    const template: ProductTemplate = {
+      ...getTemplateById('market2025_mortgage_promo_6m')!,
+      fees: {
+        ...getTemplateById('market2025_mortgage_promo_6m')!.fees,
+        origination_fee_pct: 0.5,
+        origination_fee_vnd: 1_000_000, // Additional flat fee
+      },
+    };
+    
+    const fees = calculateUpfrontFees(template, 1_000_000_000);
+    
+    // 0.5% of 1B = 5M + 1M flat + 3M appraisal = 9M
+    expect(fees).toBe(9_000_000);
+  });
+
+  it('handles refinance_processing_fee_vnd', () => {
+    const template: ProductTemplate = {
+      ...getTemplateById('market2025_refinance_promo_12m')!,
+      fees: {
+        ...getTemplateById('market2025_refinance_promo_12m')!.fees,
+        refinance_processing_fee_pct: undefined,
+        refinance_processing_fee_vnd: 3_000_000, // Flat 3M
+      },
+    };
+    
+    const fees = calculateUpfrontFees(template, 1_000_000_000);
+    
+    // 3M processing + 2.5M appraisal = 5.5M
+    expect(fees).toBe(5_500_000);
+  });
+});
+
+// ============================================================================
+// NEW: Refinance with Cash Out Tests
+// ============================================================================
+
+describe('Refinance with Cash Out', () => {
+  it('new principal includes cash out', () => {
+    const template = getTemplateById('market2025_refinance_promo_12m')!;
+    const input = createRefinanceInput({
+      old_loan: createOldLoanInput({ old_loan_age_months: 36 }),
+      cash_out_vnd: 500_000_000,
+      horizon_months: 36,
+    });
+    const strategy: RepaymentStrategy = { type: 'STRATEGY_MIN_PAYMENT' };
+    
+    const result = simulateRefinance(template, input, strategy);
+    
+    // New principal = old payoff + cash out
+    expect(result.refinance.new_principal).toBe(
+      result.refinance.old_loan_payoff_amount + 500_000_000
+    );
+    
+    // Net saving should account for cash out
+    expect(result.assumptions_used.some(a => 
+      a.includes('month') || a.includes('Refinance')
+    )).toBe(true);
+  });
+
+  it('higher cash out increases total cost', () => {
+    const template = getTemplateById('market2025_refinance_promo_12m')!;
+    
+    const lowCashOutInput = createRefinanceInput({
+      old_loan: createOldLoanInput({ old_loan_age_months: 36 }),
+      cash_out_vnd: 0,
+      horizon_months: 60,
+    });
+    
+    const highCashOutInput = createRefinanceInput({
+      old_loan: createOldLoanInput({ old_loan_age_months: 36 }),
+      cash_out_vnd: 500_000_000,
+      horizon_months: 60,
+    });
+    
+    const strategy: RepaymentStrategy = { type: 'STRATEGY_MIN_PAYMENT' };
+    
+    const lowResult = simulateRefinance(template, lowCashOutInput, strategy);
+    const highResult = simulateRefinance(template, highCashOutInput, strategy);
+    
+    // Higher cash out = more interest
+    expect(highResult.refinance.totals.total_interest)
+      .toBeGreaterThan(lowResult.refinance.totals.total_interest);
+  });
+});
+
+// ============================================================================
+// NEW: Old Loan with Recurring Fees Tests
+// ============================================================================
+
+describe('Old Loan with Recurring Fees', () => {
+  it('includes recurring fees in baseline', () => {
+    const oldLoan = createOldLoanInput({
+      old_recurring_fees_monthly_vnd: 50_000,
+    });
+    
+    const result = simulateOldLoanBaseline(oldLoan, 24, '2024-01-01');
+    
+    expect(result.schedule[0].fees).toBe(50_000);
+    expect(result.totals.total_fees_recurring).toBe(1_200_000); // 24 * 50k
+  });
+
+  it('recurring fees affect total cost comparison', () => {
+    const template = getTemplateById('market2025_refinance_promo_12m')!;
+    
+    const oldLoanWithFees = createOldLoanInput({
+      old_loan_age_months: 36,
+      old_recurring_fees_monthly_vnd: 100_000,
+    });
+    
+    const oldLoanNoFees = createOldLoanInput({
+      old_loan_age_months: 36,
+      old_recurring_fees_monthly_vnd: 0,
+    });
+    
+    const withFeesBaseline = simulateOldLoanBaseline(oldLoanWithFees, 24, '2024-01-01');
+    const noFeesBaseline = simulateOldLoanBaseline(oldLoanNoFees, 24, '2024-01-01');
+    
+    expect(withFeesBaseline.totals.total_cost_excl_principal)
+      .toBeGreaterThan(noFeesBaseline.totals.total_cost_excl_principal);
+  });
+});
+
+// ============================================================================
+// NEW: getMilestonePayoffMonth with EXIT_PLAN Strategy Tests
+// ============================================================================
+
+describe('getMilestonePayoffMonth with EXIT_PLAN strategy', () => {
+  it('returns promo end for payoff_at_end_of_promo', () => {
+    const template = getTemplateById('market2025_mortgage_promo_6m')!;
+    const strategy: StrategyExitPlan = {
+      type: 'STRATEGY_EXIT_PLAN',
+      milestone: 'payoff_at_end_of_promo',
+    };
+    
+    expect(getMilestonePayoffMonth(strategy, template)).toBe(6);
+  });
+
+  it('returns grace end for payoff_at_end_of_grace', () => {
+    const template = getTemplateById('market2025_mortgage_fixed_24m')!;
+    const strategy: StrategyExitPlan = {
+      type: 'STRATEGY_EXIT_PLAN',
+      milestone: 'payoff_at_end_of_grace',
+    };
+    
+    // Template has 36 months grace
+    expect(getMilestonePayoffMonth(strategy, template)).toBe(36);
+  });
+
+  it('returns correct month for payoff_when_prepay_fee_hits_threshold', () => {
+    const template = getTemplateById('market2025_refinance_low_margin_float')!;
+    const strategy: StrategyExitPlan = {
+      type: 'STRATEGY_EXIT_PLAN',
+      milestone: 'payoff_when_prepay_fee_hits_threshold',
+      threshold_pct: 1,
+    };
+    
+    // Template: 0-12: 2%, 12-24: 1%, >=24: 0%
+    // First month where fee <= 1% is month 12
+    expect(getMilestonePayoffMonth(strategy, template)).toBe(12);
+  });
+
+  it('returns null for EXIT_PLAN without milestone', () => {
+    const template = getTemplateById('market2025_mortgage_promo_6m')!;
+    const strategy: StrategyExitPlan = {
+      type: 'STRATEGY_EXIT_PLAN',
+      refinance_timing: 'after_12m',
+    };
+    
+    expect(getMilestonePayoffMonth(strategy, template)).toBeNull();
+  });
+});
+
+// ============================================================================
+// NEW: Schedule Generation Edge Cases
+// ============================================================================
+
+describe('generateSchedule edge cases', () => {
+  it('handles loan that pays off before horizon', () => {
+    const template = getTemplateById('market2025_mortgage_promo_6m')!;
+    const userInput = createUserInput({
+      horizon_months: 240,
+      term_months: 120, // Longer term to ensure payoff
+      loan_amount_vnd: 100_000_000,
+    });
+    const strategy: RepaymentStrategy = { type: 'STRATEGY_MIN_PAYMENT' };
+    
+    const result = generateSchedule(template, userInput, strategy);
+    
+    // Loan should pay off before horizon (term is 120, horizon is 240)
+    const lastRow = result.schedule[result.schedule.length - 1];
+    expect(lastRow.balance_end).toBeLessThanOrEqual(100);
+    // Schedule should be shorter than horizon (may be slightly longer than term due to rounding)
+    expect(result.schedule.length).toBeLessThan(240); // Less than horizon
+    expect(result.schedule.length).toBeLessThanOrEqual(125); // Allow some flexibility
+  });
+
+  it('handles horizon within promo period', () => {
+    const template = getTemplateById('market2025_mortgage_fixed_60m')!;
+    const userInput = createUserInput({ horizon_months: 12 });
+    const strategy: RepaymentStrategy = { type: 'STRATEGY_MIN_PAYMENT' };
+    
+    const result = generateSchedule(template, userInput, strategy);
+    
+    // All months should be at promo rate
+    for (const row of result.schedule) {
+      expect(row.rate_annual_pct).toBe(7.8);
+    }
+  });
+
+  it('handles extra principal that exceeds minimum', () => {
+    const template = getTemplateById('market2025_mortgage_promo_6m')!;
+    const userInput = createUserInput({ horizon_months: 12 });
+    const strategy: RepaymentStrategy = {
+      type: 'STRATEGY_FIXED_EXTRA_PRINCIPAL',
+      extra_principal_vnd: 50_000_000, // Well above 10M minimum
+    };
+    
+    const result = generateSchedule(template, userInput, strategy);
+    
+    // Extra principal should be applied
+    expect(result.schedule[0].extra_principal).toBe(50_000_000);
+  });
+
+  it('handles payment recalc at rate reset', () => {
+    const template = getTemplateById('market2025_mortgage_promo_6m')!;
+    const userInput = createUserInput({ horizon_months: 12 });
+    const strategy: RepaymentStrategy = { type: 'STRATEGY_MIN_PAYMENT' };
+    
+    const result = generateSchedule(template, userInput, strategy);
+    
+    // Payment should change at rate reset (month 7)
+    const promoPayment = result.schedule[0].payment_total;
+    const postPromoPayment = result.schedule[6].payment_total;
+    
+    // Post-promo should be different (higher rate)
+    expect(postPromoPayment).toBeGreaterThan(promoPayment);
+  });
+});
+
+// ============================================================================
+// NEW: Zod Schema Validation Tests
+// ============================================================================
+
+import {
+  StressConfigSchema,
+  UserInputSchema,
+  MortgagePurchaseInputSchema,
+  RefinanceInputSchema,
+  OldLoanInputSchema,
+  RepaymentStrategySchema,
+  SimulateRequestSchema,
+} from '../src/types';
+
+describe('Zod Schema Validation', () => {
+  describe('StressConfigSchema', () => {
+    it('accepts valid stress values', () => {
+      expect(() => StressConfigSchema.parse({ floating_rate_bump_pct: 0 })).not.toThrow();
+      expect(() => StressConfigSchema.parse({ floating_rate_bump_pct: 2 })).not.toThrow();
+      expect(() => StressConfigSchema.parse({ floating_rate_bump_pct: 4 })).not.toThrow();
+    });
+
+    it('rejects invalid stress values', () => {
+      expect(() => StressConfigSchema.parse({ floating_rate_bump_pct: 1 })).toThrow();
+      expect(() => StressConfigSchema.parse({ floating_rate_bump_pct: 3 })).toThrow();
+      expect(() => StressConfigSchema.parse({ floating_rate_bump_pct: -1 })).toThrow();
+    });
+  });
+
+  describe('UserInputSchema', () => {
+    it('validates correct user input', () => {
+      const validInput = {
+        currency: 'VND',
+        start_date: '2024-01-01',
+        loan_amount_vnd: 1_000_000_000,
+        term_months: 240,
+        include_insurance: false,
+        stress: { floating_rate_bump_pct: 0 },
+      };
+      
+      expect(() => UserInputSchema.parse(validInput)).not.toThrow();
+    });
+
+    it('rejects invalid term_months', () => {
+      const invalidInput = {
+        currency: 'VND',
+        start_date: '2024-01-01',
+        loan_amount_vnd: 1_000_000_000,
+        term_months: 6, // Below 12
+        include_insurance: false,
+        stress: { floating_rate_bump_pct: 0 },
+      };
+      
+      expect(() => UserInputSchema.parse(invalidInput)).toThrow();
+    });
+
+    it('rejects negative loan amount', () => {
+      const invalidInput = {
+        currency: 'VND',
+        start_date: '2024-01-01',
+        loan_amount_vnd: -1_000_000,
+        term_months: 240,
+        include_insurance: false,
+        stress: { floating_rate_bump_pct: 0 },
+      };
+      
+      expect(() => UserInputSchema.parse(invalidInput)).toThrow();
+    });
+  });
+
+  describe('MortgagePurchaseInputSchema', () => {
+    it('validates correct mortgage input', () => {
+      const validInput = {
+        type: 'MORTGAGE_RE',
+        currency: 'VND',
+        start_date: '2024-01-01',
+        property_value_vnd: 2_500_000_000,
+        down_payment_vnd: 500_000_000,
+        loan_amount_vnd: 2_000_000_000,
+        term_months: 240,
+        horizon_months: 36,
+        include_insurance: false,
+        stress: { floating_rate_bump_pct: 0 },
+      };
+      
+      expect(() => MortgagePurchaseInputSchema.parse(validInput)).not.toThrow();
+    });
+
+    it('validates with optional exit_rule', () => {
+      const validInput = {
+        type: 'MORTGAGE_RE',
+        currency: 'VND',
+        start_date: '2024-01-01',
+        property_value_vnd: 2_500_000_000,
+        down_payment_vnd: 500_000_000,
+        loan_amount_vnd: 2_000_000_000,
+        term_months: 240,
+        horizon_months: 36,
+        include_insurance: false,
+        stress: { floating_rate_bump_pct: 0 },
+        exit_rule: 'PROMO_END',
+      };
+      
+      expect(() => MortgagePurchaseInputSchema.parse(validInput)).not.toThrow();
+    });
+  });
+
+  describe('OldLoanInputSchema', () => {
+    it('validates correct old loan input', () => {
+      const validInput = {
+        old_remaining_balance_vnd: 1_500_000_000,
+        old_remaining_term_months: 180,
+        old_current_rate_pct: 10.5,
+        old_repayment_method: 'annuity',
+        old_prepayment_schedule: [
+          { from_month_inclusive: 0, to_month_exclusive: 12, fee_pct: 3 },
+          { from_month_inclusive: 12, to_month_exclusive: null, fee_pct: 0 },
+        ],
+        old_loan_age_months: 24,
+      };
+      
+      expect(() => OldLoanInputSchema.parse(validInput)).not.toThrow();
+    });
+  });
+
+  describe('RepaymentStrategySchema', () => {
+    it('validates MIN_PAYMENT strategy', () => {
+      expect(() => RepaymentStrategySchema.parse({ type: 'STRATEGY_MIN_PAYMENT' })).not.toThrow();
+    });
+
+    it('validates FIXED_EXTRA_PRINCIPAL strategy', () => {
+      expect(() => RepaymentStrategySchema.parse({
+        type: 'STRATEGY_FIXED_EXTRA_PRINCIPAL',
+        extra_principal_vnd: 20_000_000,
+      })).not.toThrow();
+    });
+
+    it('validates EXIT_PLAN strategy', () => {
+      expect(() => RepaymentStrategySchema.parse({
+        type: 'STRATEGY_EXIT_PLAN',
+        milestone: 'payoff_at_end_of_promo',
+      })).not.toThrow();
+    });
+
+    it('validates MILESTONE_PAYOFF strategy', () => {
+      expect(() => RepaymentStrategySchema.parse({
+        type: 'STRATEGY_REFINANCE_OR_PAYOFF_AT_MILESTONE',
+        milestone: 'payoff_at_end_of_grace',
+      })).not.toThrow();
+    });
+  });
+
+  describe('SimulateRequestSchema', () => {
+    it('validates complete request', () => {
+      const validRequest = {
+        template_ids: ['market2025_mortgage_promo_6m'],
+        user_input: {
+          currency: 'VND',
+          start_date: '2024-01-01',
+          loan_amount_vnd: 1_000_000_000,
+          term_months: 240,
+          include_insurance: false,
+          stress: { floating_rate_bump_pct: 0 },
+        },
+        strategies: [{ type: 'STRATEGY_MIN_PAYMENT' }],
+      };
+      
+      expect(() => SimulateRequestSchema.parse(validRequest)).not.toThrow();
+    });
+
+    it('rejects empty template_ids', () => {
+      const invalidRequest = {
+        template_ids: [],
+        user_input: {
+          currency: 'VND',
+          start_date: '2024-01-01',
+          loan_amount_vnd: 1_000_000_000,
+          term_months: 240,
+          include_insurance: false,
+          stress: { floating_rate_bump_pct: 0 },
+        },
+        strategies: [{ type: 'STRATEGY_MIN_PAYMENT' }],
+      };
+      
+      expect(() => SimulateRequestSchema.parse(invalidRequest)).toThrow();
+    });
+
+    it('rejects empty strategies', () => {
+      const invalidRequest = {
+        template_ids: ['market2025_mortgage_promo_6m'],
+        user_input: {
+          currency: 'VND',
+          start_date: '2024-01-01',
+          loan_amount_vnd: 1_000_000_000,
+          term_months: 240,
+          include_insurance: false,
+          stress: { floating_rate_bump_pct: 0 },
+        },
+        strategies: [],
+      };
+      
+      expect(() => SimulateRequestSchema.parse(invalidRequest)).toThrow();
+    });
+  });
+});
+
+// ============================================================================
+// NEW: Template Data Integrity Tests
+// ============================================================================
+
+describe('Template Data Integrity', () => {
+  it('all templates have unique IDs', () => {
+    const ids = PRODUCT_TEMPLATES.map(t => t.id);
+    const uniqueIds = new Set(ids);
+    expect(uniqueIds.size).toBe(ids.length);
+  });
+
+  it('all templates have valid rate configurations', () => {
+    for (const template of PRODUCT_TEMPLATES) {
+      expect(template.rates.promo_fixed_months).toBeGreaterThanOrEqual(0);
+      expect(template.rates.promo_fixed_rate_pct).toBeGreaterThan(0);
+      expect(template.rates.floating_reference_assumption_pct).toBeGreaterThan(0);
+      expect(template.rates.floating_margin_pct).toBeGreaterThanOrEqual(0);
+      expect(template.rates.reset_frequency_months).toBeGreaterThan(0);
+    }
+  });
+
+  it('all templates have valid term rules', () => {
+    for (const template of PRODUCT_TEMPLATES) {
+      expect(template.term_rules.min_term_months).toBeLessThan(template.term_rules.max_term_months);
+      expect(template.term_rules.min_term_months).toBeGreaterThan(0);
+    }
+  });
+
+  it('all templates have valid loan limits', () => {
+    for (const template of PRODUCT_TEMPLATES) {
+      if (template.loan_limits.max_ltv_pct) {
+        expect(template.loan_limits.max_ltv_pct).toBeGreaterThan(0);
+        expect(template.loan_limits.max_ltv_pct).toBeLessThanOrEqual(100);
+      }
+      if (template.loan_limits.max_dti_pct) {
+        expect(template.loan_limits.max_dti_pct).toBeGreaterThan(0);
+        expect(template.loan_limits.max_dti_pct).toBeLessThanOrEqual(100);
+      }
+    }
+  });
+
+  it('all templates have valid grace periods', () => {
+    for (const template of PRODUCT_TEMPLATES) {
+      expect(template.grace.grace_principal_months).toBeGreaterThanOrEqual(0);
+    }
+  });
+
+  it('all templates have contiguous prepayment schedules', () => {
+    for (const template of PRODUCT_TEMPLATES) {
+      const schedule = template.prepayment_penalty.schedule;
+      
+      // First tier should start at 0
+      expect(schedule[0].from_month_inclusive).toBe(0);
+      
+      // Each tier should start where the previous one ended
+      for (let i = 1; i < schedule.length; i++) {
+        expect(schedule[i].from_month_inclusive).toBe(schedule[i - 1].to_month_exclusive);
+      }
+      
+      // Last tier should go to null (end of term)
+      expect(schedule[schedule.length - 1].to_month_exclusive).toBeNull();
+    }
+  });
+
+  it('all templates have insurance configuration', () => {
+    for (const template of PRODUCT_TEMPLATES) {
+      expect(template.fees.insurance).toBeDefined();
+      expect(typeof template.fees.insurance.enabled_default).toBe('boolean');
+      expect(typeof template.fees.insurance.mandatory).toBe('boolean');
+      expect(['on_balance', 'on_property_value']).toContain(template.fees.insurance.basis);
+    }
   });
 });
 
