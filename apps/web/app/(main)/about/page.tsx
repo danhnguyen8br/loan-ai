@@ -54,6 +54,7 @@ export default function AboutPage() {
                 width={200}
                 height={60}
                 className="h-12 sm:h-14 lg:h-16 w-auto"
+                style={{ width: 'auto', height: 'auto' }}
                 priority
               />
             </h1>
