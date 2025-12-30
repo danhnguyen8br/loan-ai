@@ -1,8 +1,14 @@
 import type { Metadata, Viewport } from "next";
 import { Afacad } from "next/font/google";
+import Script from "next/script";
+import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 import { Providers } from "@/components/providers";
 import { Navigation } from "@/components/navigation";
+
+// Google Analytics configuration from environment variables
+const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+const GA_STREAM_ID = process.env.NEXT_PUBLIC_GA_STREAM_ID;
 
 const afacad = Afacad({
   subsets: ["latin"],
@@ -44,6 +50,27 @@ export default function RootLayout({
         <Providers>
           {children}
         </Providers>
+        <Analytics />
+
+        {/* Google Analytics - only load if configured */}
+        {GA_MEASUREMENT_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${GA_MEASUREMENT_ID}'${
+                  GA_STREAM_ID ? `, { stream_id: '${GA_STREAM_ID}' }` : ''
+                });
+              `}
+            </Script>
+          </>
+        )}
       </body>
     </html>
   );
