@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Afacad } from "next/font/google";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import { Providers } from "@/components/providers";
 import { Navigation } from "@/components/navigation";
@@ -51,6 +52,7 @@ export default function RootLayout({
           {children}
         </Providers>
         <Analytics />
+        <SpeedInsights />
 
         {/* Google Analytics - only load if configured */}
         {GA_MEASUREMENT_ID && (
