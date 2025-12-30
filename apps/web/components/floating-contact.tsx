@@ -95,7 +95,7 @@ export function FloatingContact({
             Chat Zalo
           </span>
           <div className="w-14 h-14 rounded-full bg-[#0068FF] flex items-center justify-center shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-200 touch-target">
-            <ZaloIcon className="w-7 h-7 text-white" />
+            <img src="/assets/zalo-logo.png" alt="Zalo" className="w-8 h-8" />
           </div>
         </a>
 
@@ -178,22 +178,6 @@ function PhoneIcon({ className }: { className?: string }) {
   );
 }
 
-function ZaloIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none">
-      {/* Zalo "Z" letter */}
-      <path
-        d="M5 7h8.5L5 17h14"
-        stroke="currentColor"
-        strokeWidth={2.5}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      {/* Zalo dot/circle */}
-      <circle cx="18" cy="7" r="2" fill="currentColor" />
-    </svg>
-  );
-}
 
 function WhatsAppIcon({ className }: { className?: string }) {
   return (
