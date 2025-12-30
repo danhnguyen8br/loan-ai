@@ -30,12 +30,28 @@ export function Navigation() {
                   transition-all duration-200
                   ${pathname === '/'
                     ? 'text-dark-darker bg-primary/15 border border-primary/30'
-                    : 'text-dark-darker bg-primary hover:bg-primary-dark hover:text-text-inverse shadow-sm'
+                    : 'text-dark-darker hover:bg-primary/10'
                   }
                 `}
               >
                 Tìm gói vay
                 {pathname === '/' && (
+                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-primary-dark rounded-full" />
+                )}
+              </Link>
+              <Link
+                href="/about"
+                className={`
+                  relative px-4 py-2 text-base font-medium rounded-leadity-md
+                  transition-all duration-200
+                  ${pathname === '/about'
+                    ? 'text-dark-darker bg-primary/15 border border-primary/30'
+                    : 'text-dark-darker hover:bg-primary/10'
+                  }
+                `}
+              >
+                Giới thiệu
+                {pathname === '/about' && (
                   <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-primary-dark rounded-full" />
                 )}
               </Link>
