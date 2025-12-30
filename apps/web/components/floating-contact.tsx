@@ -95,7 +95,7 @@ export function FloatingContact({
             Chat Zalo
           </span>
           <div className="w-14 h-14 rounded-full bg-[#0068FF] flex items-center justify-center shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-200 touch-target">
-            <ZaloIcon className="w-8 h-8 text-white" />
+            <ZaloIcon className="w-7 h-7 text-white" />
           </div>
         </a>
 
@@ -180,8 +180,17 @@ function PhoneIcon({ className }: { className?: string }) {
 
 function ZaloIcon({ className }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 48 48" fill="currentColor">
-      <path d="M12.5 6C8.91 6 6 8.91 6 12.5v23C6 39.09 8.91 42 12.5 42h23c3.59 0 6.5-2.91 6.5-6.5v-23C42 8.91 39.09 6 35.5 6h-23zm2.14 9h11.97c.56 0 1.06.22 1.43.58.38.38.6.91.55 1.47-.03.33-.11.65-.25.95-.64 1.37-1.94 3.54-3.34 5.64-1.4 2.1-2.89 4.13-3.89 5.28h6.42c.74 0 1.34.6 1.34 1.34 0 .74-.6 1.34-1.34 1.34H14.64c-.56 0-1.07-.22-1.44-.59a2.01 2.01 0 01-.55-1.47c.03-.33.11-.65.26-.95.64-1.36 1.94-3.53 3.34-5.63 1.4-2.1 2.89-4.13 3.89-5.28h-5.5c-.74 0-1.34-.6-1.34-1.34 0-.74.6-1.34 1.34-1.34zm18.3 3.54c.67 0 1.3.26 1.77.73.47.47.73 1.1.73 1.77v7.52c0 .67-.26 1.3-.73 1.77-.47.47-1.1.73-1.77.73-.67 0-1.3-.26-1.77-.73a2.49 2.49 0 01-.73-1.77v-7.52c0-.67.26-1.3.73-1.77.47-.47 1.1-.73 1.77-.73z" />
+    <svg className={className} viewBox="0 0 24 24" fill="none">
+      {/* Zalo "Z" letter */}
+      <path
+        d="M5 7h8.5L5 17h14"
+        stroke="currentColor"
+        strokeWidth={2.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      {/* Zalo dot/circle */}
+      <circle cx="18" cy="7" r="2" fill="currentColor" />
     </svg>
   );
 }
@@ -225,4 +234,3 @@ function CloseIcon({ className }: { className?: string }) {
     </svg>
   );
 }
-
