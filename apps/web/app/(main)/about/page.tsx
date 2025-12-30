@@ -106,7 +106,7 @@ export default function AboutPage() {
 
           {/* Why Choose Us */}
           <div className="bg-gradient-to-br from-[#1a472a] to-[#2d5a3d] rounded-2xl p-8 text-white">
-            <h2 className="text-2xl font-bold mb-8 text-center">Tại Sao Chọn Leadity?</h2>
+            <h2 className="text-2xl font-bold mb-8 text-center text-white">Tại Sao Chọn Leadity?</h2>
             <div className="grid sm:grid-cols-3 gap-8">
               <div className="text-center">
                 <div className="w-16 h-16 rounded-full bg-[#7CD734] flex items-center justify-center mx-auto mb-4">
