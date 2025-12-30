@@ -1,8 +1,12 @@
 import type { Metadata, Viewport } from "next";
 import { Afacad } from "next/font/google";
+import Script from "next/script";
+import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 import { Providers } from "@/components/providers";
 import { Navigation } from "@/components/navigation";
+
+const GA_MEASUREMENT_ID = "G-QVW1QT0YM3";
 
 const afacad = Afacad({
   subsets: ["latin"],
@@ -40,10 +44,27 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="vi" className={afacad.variable}>
+      <head>
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_MEASUREMENT_ID}', {
+              stream_id: '13215373795'
+            });
+          `}
+        </Script>
+      </head>
       <body className={`${afacad.className} bg-white antialiased`}>
         <Providers>
           {children}
         </Providers>
+        <Analytics />
       </body>
     </html>
   );
