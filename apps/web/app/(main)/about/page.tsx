@@ -19,7 +19,7 @@ export default function AboutPage() {
               <Image
                 src={logoImage}
                 alt="Leadity"
-                className="h-12 sm:h-14 lg:h-16 w-auto"
+                className="h-12 sm:h-14 lg:h-16 w-auto translate-y-1 sm:translate-y-2"
                 priority
               />
             </h1>
