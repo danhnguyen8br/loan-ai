@@ -28,7 +28,7 @@ export default function AboutPage() {
       </section>
 
       {/* About Content */}
-      <section className="max-w-4xl mx-auto px-4 sm:px-6 pb-16">
+      <section className="max-w-4xl mx-auto px-4 sm:px-6 pt-8 sm:pt-12 pb-16">
         <div className="space-y-12">
           
           {/* Mission */}
