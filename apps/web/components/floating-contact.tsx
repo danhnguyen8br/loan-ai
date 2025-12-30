@@ -95,7 +95,7 @@ export function FloatingContact({
             Chat Zalo
           </span>
           <div className="w-14 h-14 rounded-full bg-[#0068FF] flex items-center justify-center shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-200 touch-target">
-            <img src="/assets/zalo-logo.png" alt="Zalo" className="w-8 h-8" />
+            <img src="/assets/zalo-logo.svg" alt="Zalo" className="w-8 h-8" />
           </div>
         </a>
 
