@@ -51,9 +51,9 @@ export default function RootLayout({
       <body className={`${afacad.className} bg-white antialiased`}>
         <Providers>
           {children}
-          <FloatingContact 
-            phoneNumber="0948386873" 
-            zaloUrl="https://zalo.me/0948386873" 
+          <FloatingContact
+            phoneNumber={process.env.NEXT_PUBLIC_CONTACT_PHONE || "0948386873"}
+            zaloUrl={process.env.NEXT_PUBLIC_ZALO_URL || "https://zalo.me/0948386873"}
           />
         </Providers>
         <Analytics />
