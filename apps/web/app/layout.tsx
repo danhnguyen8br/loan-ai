@@ -52,8 +52,8 @@ export default function RootLayout({
         <Providers>
           {children}
           <FloatingContact 
-            phoneNumber="0909123456" 
-            zaloUrl="https://zalo.me/0909123456" 
+            phoneNumber="0948386873" 
+            zaloUrl="https://zalo.me/0948386873" 
           />
         </Providers>
         <Analytics />
