@@ -122,7 +122,7 @@ export function DetailedScheduleTable({ schedule, promoEndMonth = 24 }: Detailed
           <button
             type="button"
             onClick={expandAll}
-            className="text-sm text-primary-dark hover:text-primary font-medium"
+            className="text-sm text-primary-700 hover:text-primary font-medium"
           >
             Mở rộng tất cả
           </button>
@@ -262,7 +262,7 @@ function MonthlyListView({ months, promoEndMonth }: { months: ScheduleRowRespons
           >
             <div className="flex items-center gap-3">
               <div className={`w-10 h-10 rounded-full flex items-center justify-center text-base font-bold ${
-                isPayoff ? 'bg-primary-dark text-text-inverse' : 
+                isPayoff ? 'bg-primary-700 text-text-inverse' : 
                 isPromo ? 'bg-primary-50 text-primary-700' : 'bg-status-warning-light text-status-warning-dark'
               }`}>
                 T{row.month}
@@ -325,7 +325,7 @@ function MonthlyTableView({ months, promoEndMonth }: { months: ScheduleRowRespon
               >
                 <td className="px-3 py-2.5 font-medium text-dark whitespace-nowrap">
                   T{row.month}
-                  {isPayoff && <span className="ml-1 text-primary-dark">✓</span>}
+                  {isPayoff && <span className="ml-1 text-primary-700">✓</span>}
                   {isPromoEnd && !isPayoff && <span className="ml-1 text-status-warning">↓</span>}
                 </td>
                 <td className="px-3 py-2.5 text-right text-leadity-gray-muted whitespace-nowrap">{row.rate_annual_pct.toFixed(2)}%</td>

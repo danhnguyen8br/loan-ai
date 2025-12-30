@@ -338,7 +338,7 @@ function MortgageResultCard({
         {/* Explanations */}
         <div className="bg-leadity-gray-lighter rounded-xl p-4 sm:p-5">
           <h4 className="text-sm sm:text-base font-medium text-dark mb-3 flex items-center gap-2">
-            <Icons.InfoCircle className="w-5 h-5 text-primary-dark" />
+            <Icons.InfoCircle className="w-5 h-5 text-primary-700" />
             Vì sao chọn gói này?
           </h4>
           <ul className="space-y-2">
@@ -347,7 +347,7 @@ function MortgageResultCard({
                 {exp.trim().startsWith('Lưu ý:') ? (
                   <Icons.X className="w-4 h-4 text-status-warning mt-0.5 flex-shrink-0" aria-hidden="true" />
                 ) : (
-                  <span className="text-primary-dark mt-0.5 flex-shrink-0">✓</span>
+                  <span className="text-primary-700 mt-0.5 flex-shrink-0">✓</span>
                 )}
                 <span>{exp}</span>
               </li>
@@ -509,7 +509,7 @@ function RefinanceResultCard({
         {/* Explanations */}
         <div className="bg-leadity-gray-lighter rounded-xl p-4 sm:p-5">
           <h4 className="text-sm sm:text-base font-medium text-dark mb-3 flex items-center gap-2">
-            <Icons.InfoCircle className="w-5 h-5 text-primary-dark" />
+            <Icons.InfoCircle className="w-5 h-5 text-primary-700" />
             Phân tích chi tiết
           </h4>
           <ul className="space-y-2">
@@ -518,7 +518,7 @@ function RefinanceResultCard({
                 {exp.trim().startsWith('Lưu ý:') ? (
                   <Icons.X className="w-4 h-4 text-status-warning mt-0.5 flex-shrink-0" aria-hidden="true" />
                 ) : (
-                  <span className="text-primary-dark mt-0.5 flex-shrink-0">✓</span>
+                  <span className="text-primary-700 mt-0.5 flex-shrink-0">✓</span>
                 )}
                 <span>{exp}</span>
               </li>

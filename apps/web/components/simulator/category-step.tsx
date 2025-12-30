@@ -75,7 +75,7 @@ export function CategoryStep({ selectedCategory, onSelect }: CategoryStepProps) 
                 </div>
                 
                 {isSelected && (
-                  <div className="mt-4 flex items-center justify-center text-primary-dark font-medium">
+                  <div className="mt-4 flex items-center justify-center text-primary-700 font-medium">
                     <Icons.Check className="w-5 h-5 mr-1" />
                     Đã chọn
                   </div>

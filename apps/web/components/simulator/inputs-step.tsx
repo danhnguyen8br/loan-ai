@@ -134,7 +134,7 @@ export function InputsStep({
                         onChange={(e) => handleMortgageFieldChange('property_value_vnd', parseBillion(e.target.value))}
                         className="pr-12"
                       />
-                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">tỷ</span>
+                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted">tỷ</span>
                     </div>
                     {(formData as MortgagePurchaseForm).property_value_vnd && (
                       <p className="text-xs text-gray-500 mt-1">
@@ -156,7 +156,7 @@ export function InputsStep({
                         onChange={(e) => handleMortgageFieldChange('loan_amount_vnd', parseBillion(e.target.value))}
                         className="pr-12"
                       />
-                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">tỷ</span>
+                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted">tỷ</span>
                     </div>
                     {(formData as MortgagePurchaseForm).loan_amount_vnd && (formData as MortgagePurchaseForm).property_value_vnd && (
                       <p className="text-xs text-gray-500 mt-1">
@@ -177,7 +177,7 @@ export function InputsStep({
                         disabled
                         className="bg-gray-50 pr-12"
                       />
-                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">tỷ</span>
+                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted">tỷ</span>
                     </div>
                     {(formData as MortgagePurchaseForm).down_payment_vnd && (formData as MortgagePurchaseForm).property_value_vnd && (
                       <p className="text-xs text-gray-500 mt-1">
@@ -233,7 +233,7 @@ export function InputsStep({
                         onChange={(e) => handleOldLoanChange('old_remaining_balance_vnd', parseBillion(e.target.value))}
                         className="pr-12"
                       />
-                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">tỷ</span>
+                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted">tỷ</span>
                     </div>
                   </div>
 
@@ -316,7 +316,7 @@ export function InputsStep({
               <Card variant="bordered" className="border-primary/50 bg-primary-50/30">
                 <CardHeader>
                   <h3 className="text-lg font-semibold text-dark-darker flex items-center">
-                    <Icons.Refinance className="w-5 h-5 mr-2 text-primary-dark" />
+                    <Icons.Refinance className="w-5 h-5 mr-2 text-primary-700" />
                     Khoản Vay Mới (Chuyển ngân hàng)
                   </h3>
                   <p className="text-sm text-gray-500">Thông số khoản vay mới thay thế</p>
@@ -350,7 +350,7 @@ export function InputsStep({
                         onChange={(e) => handleInputChange('cash_out_vnd', parseBillion(e.target.value))}
                         className="pr-12"
                       />
-                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">tỷ</span>
+                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted">tỷ</span>
                     </div>
                     <p className="text-xs text-gray-500 mt-1">
                       Vay thêm ngoài số tiền tất toán cũ
