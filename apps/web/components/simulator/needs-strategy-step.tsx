@@ -1,6 +1,13 @@
 'use client';
 
 import { useState } from 'react';
+
+// Extend Window interface for Google Analytics gtag
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void;
+  }
+}
 import { Card, CardBody } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -214,6 +221,16 @@ function MortgageForm({
 
   const handleSubmit = () => {
     if (!isValid) return;
+
+    // Track GA event for viewing loan packages
+    if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+      window.gtag('event', 'view_loan_packages', {
+        event_category: 'Simulator',
+        event_label: 'Mortgage',
+        loan_amount: loanAmount,
+        strategy_type: strategyType,
+      });
+    }
 
     const strategy: MortgageStrategy =
       strategyType === 'PAY_OFF_FAST'
@@ -641,6 +658,16 @@ function RefinanceForm({
 
   const handleSubmit = () => {
     if (!isValid) return;
+
+    // Track GA event for viewing loan packages
+    if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+      window.gtag('event', 'view_loan_packages', {
+        event_category: 'Simulator',
+        event_label: 'Refinance',
+        remaining_balance: remainingBalance,
+        priority: priority,
+      });
+    }
 
     onContinue({
       mode: 'REFINANCE',
