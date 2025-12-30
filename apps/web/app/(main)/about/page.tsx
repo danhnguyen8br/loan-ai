@@ -3,9 +3,36 @@
 import Image from 'next/image';
 import logoImage from '@/public/assets/leadity-logo.png';
 
+// Structured data for SEO
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Leadity",
+  description: "Môi giới khoản vay thế chấp chuyên nghiệp tại Việt Nam",
+  url: "https://leadity.ai",
+  logo: "https://leadity.ai/assets/leadity-logo.png",
+  contactPoint: {
+    "@type": "ContactPoint",
+    telephone: "+84-948-386-873",
+    contactType: "customer service",
+    availableLanguage: ["Vietnamese", "English"],
+  },
+  sameAs: ["https://zalo.me/0948386873"],
+  areaServed: {
+    "@type": "Country",
+    name: "Vietnam",
+  },
+  serviceType: "Mortgage Broker",
+};
+
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+      {/* Structured Data for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
       {/* Hero Section */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-[#7CD734]/10 via-transparent to-[#4DC614]/5" />
