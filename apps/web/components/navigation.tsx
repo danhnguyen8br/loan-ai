@@ -3,11 +3,12 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 export function Navigation() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -24,6 +25,24 @@ export function Navigation() {
     return () => {
       document.body.style.overflow = '';
     };
+  }, [isMobileMenuOpen]);
+
+  // Focus management for accessibility
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      mobileMenuRef.current?.focus();
+    }
+  }, [isMobileMenuOpen]);
+
+  // Escape key handler for panel
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isMobileMenuOpen) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
   }, [isMobileMenuOpen]);
 
   return (
@@ -121,7 +140,9 @@ export function Navigation() {
 
       {/* Mobile menu panel */}
       <div
-        className={`fixed top-16 right-0 bottom-0 w-72 bg-white z-40 sm:hidden shadow-xl transform transition-transform duration-300 ease-out ${
+        ref={mobileMenuRef}
+        tabIndex={-1}
+        className={`fixed top-0 right-0 bottom-0 w-72 max-w-[85vw] bg-white z-40 sm:hidden shadow-xl transform transition-transform duration-300 ease-out pt-16 ${
           isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
@@ -170,15 +191,6 @@ export function Navigation() {
               <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-primary-dark rounded-r-full" />
             )}
           </Link>
-        </div>
-
-        {/* Bottom branding in mobile menu */}
-        <div className="absolute bottom-8 left-0 right-0 px-4">
-          <div className="pt-4 border-t border-gray-100">
-            <p className="text-sm text-gray-400 text-center">
-              Powered by Leadity AI
-            </p>
-          </div>
         </div>
       </div>
     </>
