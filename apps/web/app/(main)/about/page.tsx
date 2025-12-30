@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import logoImage from '@/public/assets/leadity-logo.png';
 
 // Structured data for SEO
@@ -202,7 +203,7 @@ export default function AboutPage() {
               Liên hệ với chúng tôi ngay hôm nay để được tư vấn miễn phí về các gói vay thế chấp phù hợp nhất.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
+              <Link
                 href="/"
                 className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#7CD734] to-[#4DC614] text-white font-semibold px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all hover:scale-105"
               >
@@ -210,7 +211,7 @@ export default function AboutPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                 </svg>
                 Tính Toán Gói Vay
-              </a>
+              </Link>
               <a
                 href="tel:0948386873"
                 className="inline-flex items-center justify-center gap-2 bg-white text-gray-900 font-semibold px-8 py-3 rounded-xl border-2 border-gray-200 hover:border-[#7CD734] transition-all hover:shadow-lg"
