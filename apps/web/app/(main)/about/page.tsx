@@ -110,7 +110,7 @@ export default function AboutPage() {
             <div className="grid sm:grid-cols-3 gap-8">
               <div className="text-center">
                 <div className="w-16 h-16 rounded-full bg-[#7CD734] flex items-center justify-center mx-auto mb-4">
-                  <span className="text-2xl font-bold text-gray-900">10+</span>
+                  <span className="text-2xl font-bold text-gray-900">20+</span>
                 </div>
                 <h3 className="font-semibold mb-2 text-white">Ngân Hàng Đối Tác</h3>
                 <p className="text-white text-sm">Hợp tác với các ngân hàng hàng đầu Việt Nam</p>
