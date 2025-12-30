@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 
 interface FloatingContactProps {
   phoneNumber?: string;
@@ -95,7 +96,7 @@ export function FloatingContact({
             Chat Zalo
           </span>
           <div className="w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-200 touch-target overflow-hidden">
-            <img src="/assets/zalo-logo.svg" alt="Zalo" className="w-14 h-14" />
+            <Image src="/assets/zalo-logo.svg" alt="Zalo" width={56} height={56} />
           </div>
         </a>
 

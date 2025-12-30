@@ -13,6 +13,9 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
 
+// Google Analytics configuration
+const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+
 // Collapsible details component
 function StrategyDetails({ 
   children, 
@@ -223,12 +226,14 @@ function MortgageForm({
     if (!isValid) return;
 
     // Track GA event for viewing loan packages
-    if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+    if (GA_MEASUREMENT_ID && typeof window !== 'undefined' && typeof window.gtag === 'function') {
       window.gtag('event', 'view_loan_packages', {
         event_category: 'Simulator',
         event_label: 'Mortgage',
         loan_amount: loanAmount,
         strategy_type: strategyType,
+        value: loanAmount * 1000000000, // Convert to VND for monetary tracking
+        currency: 'VND',
       });
     }
 
@@ -660,12 +665,14 @@ function RefinanceForm({
     if (!isValid) return;
 
     // Track GA event for viewing loan packages
-    if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+    if (GA_MEASUREMENT_ID && typeof window !== 'undefined' && typeof window.gtag === 'function') {
       window.gtag('event', 'view_loan_packages', {
         event_category: 'Simulator',
         event_label: 'Refinance',
         remaining_balance: remainingBalance,
         priority: priority,
+        value: remainingBalance * 1000000000, // Convert to VND for monetary tracking
+        currency: 'VND',
       });
     }
 
