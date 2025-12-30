@@ -14,12 +14,12 @@ export default function AboutPage() {
         
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
           <div className="text-center space-y-6">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight flex flex-col items-center justify-center gap-3">
               <span>Chào mừng đến với</span>
               <Image
                 src={logoImage}
                 alt="Leadity"
-                className="h-12 sm:h-14 lg:h-16 w-auto translate-y-1 sm:translate-y-2"
+                className="h-12 sm:h-14 lg:h-16 w-auto"
                 priority
               />
             </h1>
