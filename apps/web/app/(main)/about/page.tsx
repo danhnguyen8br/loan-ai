@@ -25,7 +25,7 @@ export default function AboutPage() {
             </h1>
             
             <p className="text-xl sm:text-2xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-              Đối tác tài chính đáng tin cậy, giúp bạn tìm được gói vay thế chấp tốt nhất
+              Chúng tôi là đại lý vay thế chấp chuyên nghiệp, kết nối bạn với các ngân hàng hàng đầu để tìm gói vay phù hợp nhất với nhu cầu và khả năng tài chính của bạn
             </p>
           </div>
         </div>
