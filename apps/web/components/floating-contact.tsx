@@ -95,8 +95,8 @@ export function FloatingContact({
           <span className="px-4 py-2 bg-white rounded-full text-sm font-semibold text-gray-700 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
             Chat Zalo
           </span>
-          <div className="w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-200 touch-target overflow-hidden">
-            <Image src="/assets/zalo-logo.svg" alt="Zalo" width={56} height={56} />
+          <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-200 touch-target">
+            <Image src="/assets/zalo-logo.svg" alt="Zalo" width={40} height={40} />
           </div>
         </a>
 
