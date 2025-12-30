@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import logoImage from '@/public/assets/leadity-logo.png';
 
 // Structured data for SEO
 const structuredData = {
@@ -45,8 +44,10 @@ export default function AboutPage() {
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight flex flex-col items-center justify-center gap-3">
               <span>Chào mừng đến với</span>
               <Image
-                src={logoImage}
+                src="/assets/leadity-logo.png"
                 alt="Leadity"
+                width={200}
+                height={60}
                 className="h-12 sm:h-14 lg:h-16 w-auto"
                 priority
               />
