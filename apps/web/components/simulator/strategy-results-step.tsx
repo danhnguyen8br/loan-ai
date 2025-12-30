@@ -619,7 +619,7 @@ function SimulationOptionsConfig({
               <option value="annuity">Gốc + lãi chia đều (Niên kim)</option>
               <option value="equal_principal">Gốc cố định, lãi giảm dần</option>
             </Select>
-            <p className="text-[10px] text-gray-400 mt-1">
+            <p className="text-[10px] text-muted mt-1">
               {formData.repayment_method === 'equal_principal' 
                 ? '💰 Tháng đầu cao nhất, giảm dần. Tổng lãi thấp hơn.'
                 : '💰 Trả đều mỗi tháng, dễ lập ngân sách. Tổng lãi cao hơn.'}
@@ -641,7 +641,7 @@ function SimulationOptionsConfig({
               <option value="2">Tăng vừa (+2%)</option>
               <option value="4">Tăng mạnh (+4%)</option>
             </Select>
-            <p className="text-[10px] text-gray-400 mt-1">
+            <p className="text-[10px] text-muted mt-1">
               Lãi suất sau kỳ ưu đãi sẽ tăng thêm {formData.stress_bump || 2}%
             </p>
           </div>
@@ -657,7 +657,7 @@ function SimulationOptionsConfig({
               />
               <span className="text-sm font-medium text-gray-700">Bao gồm bảo hiểm</span>
             </label>
-            <p className="text-[10px] text-gray-400 mt-0.5 ml-6">
+            <p className="text-[10px] text-muted mt-0.5 ml-6">
               Tính phí bảo hiểm theo quy định gói vay
             </p>
           </div>
@@ -1100,7 +1100,7 @@ function ClickableStrategyCell({
       )}
       {isBest && <div className="text-[10px] text-[#4DC614] font-medium">✓ Tốt nhất</div>}
       {isSelected && (
-        <div className="text-[10px] text-gray-400 mt-1">▼ Đang xem</div>
+        <div className="text-[10px] text-muted mt-1">▼ Đang xem</div>
       )}
     </button>
   );
@@ -1145,7 +1145,7 @@ function ClickableRefinanceCell({
       )}
       {isBest && <div className="text-[10px] text-[#4DC614] font-medium">✓ Tốt nhất</div>}
       {isSelected && (
-        <div className="text-[10px] text-gray-400 mt-1">▼ Đang xem</div>
+        <div className="text-[10px] text-muted mt-1">▼ Đang xem</div>
       )}
     </button>
   );
@@ -1241,25 +1241,25 @@ function SelectedCellDetail({
                     <span className="px-1.5 py-0.5 bg-teal-100 text-teal-700 rounded font-medium">
                       Lãi tham chiếu: {referenceRate}%
                     </span>
-                    <span className="text-gray-400">+</span>
+                    <span className="text-muted">+</span>
                     <span className="px-1.5 py-0.5 bg-[#F7FFF3] text-[#4DC614] rounded font-medium">
                       Biên độ: {marginRate}%
                     </span>
                     {stressBump > 0 && (
                       <>
-                        <span className="text-gray-400">+</span>
+                        <span className="text-muted">+</span>
                         <span className="px-1.5 py-0.5 bg-red-100 text-red-700 rounded font-medium">
                           Kịch bản lãi tăng: +{stressBump}%
                         </span>
                       </>
                     )}
-                    <span className="text-gray-400">=</span>
+                    <span className="text-muted">=</span>
                     <span className="px-2 py-0.5 bg-orange-200 text-orange-800 rounded font-bold">
                       {floatingRate.toFixed(1)}%/năm
                     </span>
                   </div>
                   {template.assumptions?.reference_rate_note && (
-                    <p className="text-[10px] text-gray-400 mt-1 italic">
+                    <p className="text-[10px] text-muted mt-1 italic">
                       * {template.assumptions.reference_rate_note}
                     </p>
                   )}
@@ -1338,7 +1338,7 @@ function SelectedCellDetail({
                 </div>
               </div>
               {template.assumptions?.fee_notes && (
-                <p className="text-[10px] text-gray-400 mt-1 ml-5 italic">
+                <p className="text-[10px] text-muted mt-1 ml-5 italic">
                   * {template.assumptions.fee_notes}
                 </p>
               )}
@@ -1507,25 +1507,25 @@ function SelectedRefinanceCellDetail({
                     <span className="px-1.5 py-0.5 bg-teal-100 text-teal-700 rounded font-medium">
                       Lãi tham chiếu: {referenceRate}%
                     </span>
-                    <span className="text-gray-400">+</span>
+                    <span className="text-muted">+</span>
                     <span className="px-1.5 py-0.5 bg-[#F7FFF3] text-[#4DC614] rounded font-medium">
                       Biên độ: {marginRate}%
                     </span>
                     {stressBump > 0 && (
                       <>
-                        <span className="text-gray-400">+</span>
+                        <span className="text-muted">+</span>
                         <span className="px-1.5 py-0.5 bg-red-100 text-red-700 rounded font-medium">
                           Kịch bản lãi tăng: +{stressBump}%
                         </span>
                       </>
                     )}
-                    <span className="text-gray-400">=</span>
+                    <span className="text-muted">=</span>
                     <span className="px-2 py-0.5 bg-orange-200 text-orange-800 rounded font-bold">
                       {floatingRate.toFixed(1)}%/năm
                     </span>
                   </div>
                   {template.assumptions?.reference_rate_note && (
-                    <p className="text-[10px] text-gray-400 mt-1 italic">
+                    <p className="text-[10px] text-muted mt-1 italic">
                       * {template.assumptions.reference_rate_note}
                     </p>
                   )}
@@ -1616,7 +1616,7 @@ function SelectedRefinanceCellDetail({
                 </div>
               </div>
               {template.assumptions?.fee_notes && (
-                <p className="text-[10px] text-gray-400 mt-1 ml-5 italic">
+                <p className="text-[10px] text-muted mt-1 ml-5 italic">
                   * {template.assumptions.fee_notes}
                 </p>
               )}
@@ -1850,7 +1850,7 @@ function MonthlyScheduleTable({
             <button
               type="button"
               onClick={() => setDisplayCount(prev => Math.min(prev + 24, schedule.length))}
-              className="text-xs text-primary font-medium hover:text-primary-dark px-3 py-1.5 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors"
+              className="text-xs text-primary font-medium hover:text-primary-700 px-3 py-1.5 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors"
             >
               Xem thêm {Math.min(24, schedule.length - displayCount)} tháng
             </button>
@@ -1883,7 +1883,7 @@ function MonthlyScheduleTable({
             <span className="text-gray-500">Có trả thêm gốc</span>
           </div>
         </div>
-        <p className="text-[10px] text-gray-400 italic">
+        <p className="text-[10px] text-muted italic">
           * Số liệu đã được làm tròn để dễ đọc. Tải CSV để xem chính xác từng đồng.
         </p>
       </div>

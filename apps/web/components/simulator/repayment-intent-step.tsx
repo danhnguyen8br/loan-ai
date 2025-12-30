@@ -167,7 +167,7 @@ function MortgageIntentForm({
                           className="pr-20 sm:pr-24 h-11 sm:h-auto"
                           placeholder="20"
                         />
-                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs sm:text-sm text-gray-400">
+                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs sm:text-sm text-muted">
                           triệu/tháng
                         </span>
                       </div>

@@ -122,7 +122,7 @@ function MortgageNeedsForm({
                 className="pr-12 text-base sm:text-lg h-12 sm:h-auto"
                 placeholder="2.5"
               />
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm sm:text-base">tỷ</span>
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted text-sm sm:text-base">tỷ</span>
             </div>
           </div>
 
@@ -142,7 +142,7 @@ function MortgageNeedsForm({
                 className="pr-12 text-base sm:text-lg h-12 sm:h-auto"
                 placeholder="2"
               />
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm sm:text-base">tỷ</span>
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted text-sm sm:text-base">tỷ</span>
             </div>
           </div>
 
@@ -202,7 +202,7 @@ function MortgageNeedsForm({
                     className="pr-20 sm:pr-24 text-base sm:text-lg h-12 sm:h-auto"
                     placeholder="20"
                   />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs sm:text-sm">
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted text-xs sm:text-sm">
                     triệu/tháng
                   </span>
                 </div>
@@ -308,7 +308,7 @@ function RefinanceNeedsForm({
                 className="pr-12 text-base sm:text-lg h-12 sm:h-auto"
                 placeholder="1.5"
               />
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm sm:text-base">tỷ</span>
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted text-sm sm:text-base">tỷ</span>
             </div>
           </div>
 
@@ -339,7 +339,7 @@ function RefinanceNeedsForm({
                 className="pr-12 text-base sm:text-lg h-12 sm:h-auto"
                 placeholder="10.5"
               />
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm sm:text-base">%</span>
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted text-sm sm:text-base">%</span>
             </div>
             <p className="text-[10px] sm:text-xs text-gray-500 mt-1">
               Xem hợp đồng vay hoặc app ngân hàng để biết lãi suất hiện tại
@@ -431,7 +431,7 @@ function RefinanceNeedsForm({
                     className="pr-20 sm:pr-24 text-base sm:text-lg h-12 sm:h-auto"
                     placeholder="15"
                   />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs sm:text-sm">
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted text-xs sm:text-sm">
                     triệu/tháng
                   </span>
                 </div>

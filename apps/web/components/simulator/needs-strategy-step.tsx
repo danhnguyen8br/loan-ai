@@ -26,7 +26,7 @@ function StrategyDetails({
   // Using design tokens for consistent colors
   const colorClasses = color === 'purple' 
     ? 'text-purple-600 hover:text-purple-700 border-purple-200' 
-    : 'text-primary-dark hover:text-primary-700 border-primary/30';
+    : 'text-primary-700 hover:text-primary-700 border-primary/30';
   
   return (
     <div className="mt-2">
@@ -118,7 +118,7 @@ export function NeedsStrategyStep({ initialData, onContinue }: NeedsStrategyStep
               : 'text-leadity-gray-muted hover:text-dark-darker active:bg-leadity-gray-light'
           }`}
         >
-          <Icons.Mortgage className={`w-5 h-5 ${mode === 'MORTGAGE_RE' ? 'text-primary-dark' : ''}`} />
+          <Icons.Mortgage className={`w-5 h-5 ${mode === 'MORTGAGE_RE' ? 'text-primary-700' : ''}`} />
           Vay Mua BĐS
         </button>
         <button
@@ -130,7 +130,7 @@ export function NeedsStrategyStep({ initialData, onContinue }: NeedsStrategyStep
               : 'text-leadity-gray-muted hover:text-dark-darker active:bg-leadity-gray-light'
           }`}
         >
-          <Icons.BankTransfer className={`w-5 h-5 ${mode === 'REFINANCE' ? 'text-primary-dark' : ''}`} />
+          <Icons.BankTransfer className={`w-5 h-5 ${mode === 'REFINANCE' ? 'text-primary-700' : ''}`} />
           Chuyển Ngân Hàng
         </button>
       </div>
@@ -252,7 +252,7 @@ function MortgageForm({
       <Card variant="bordered">
         <CardBody className="space-y-4 p-4 sm:p-5">
           <h3 className="text-base font-semibold text-dark flex items-center gap-2 my-2">
-            <span className="w-6 h-6 rounded-full bg-primary-dark text-text-inverse flex items-center justify-center text-sm">
+            <span className="w-6 h-6 rounded-full bg-primary-700 text-text-inverse flex items-center justify-center text-sm">
               1
             </span>
             Số tiền cần vay
@@ -283,7 +283,7 @@ function MortgageForm({
                 className="pr-12 text-lg h-12"
                 placeholder="2"
               />
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-base">
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted text-base">
                 tỷ
               </span>
             </div>
@@ -298,7 +298,7 @@ function MortgageForm({
                   }}
                   className={`px-3 py-1.5 text-sm rounded-full transition touch-manipulation ${
                     loanAmount === amount
-                      ? 'bg-primary-dark text-text-inverse'
+                      ? 'bg-primary-700 text-text-inverse'
                       : 'bg-leadity-gray-lighter text-leadity-gray hover:bg-leadity-gray-light'
                   }`}
                 >
@@ -312,7 +312,7 @@ function MortgageForm({
           {loanAmount > 0 && (
             <div className="bg-primary-50 rounded-xl p-4">
               <div className="flex gap-3">
-                <Icons.InfoCircle className="w-5 h-5 text-primary-dark flex-shrink-0 mt-0.5" />
+                <Icons.InfoCircle className="w-5 h-5 text-primary-700 flex-shrink-0 mt-0.5" />
                 <div className="text-sm text-leadity-gray leading-relaxed">
                   <p>
                     Giá trị BĐS thế chấp nên có giá thị trường tối thiểu{' '}
@@ -336,7 +336,7 @@ function MortgageForm({
       {/* Section 2: Strategy Selection */}
       <div className="space-y-3">
         <h3 className="text-base font-semibold text-dark flex items-center gap-2 px-1">
-          <span className="w-6 h-6 rounded-full bg-primary-dark text-text-inverse flex items-center justify-center text-sm">
+          <span className="w-6 h-6 rounded-full bg-primary-700 text-text-inverse flex items-center justify-center text-sm">
             2
           </span>
           Chiến lược trả nợ
@@ -417,7 +417,7 @@ function MortgageForm({
                           className="pr-24 h-11 text-base"
                           placeholder="50"
                         />
-                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">
+                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted">
                           triệu/tháng
                         </span>
                       </div>
@@ -432,7 +432,7 @@ function MortgageForm({
                             }}
                             className={`px-3 py-1.5 text-sm rounded-full transition touch-manipulation ${
                               monthlyIncome === amount
-                                ? 'bg-primary-dark text-text-inverse'
+                                ? 'bg-primary-700 text-text-inverse'
                                 : 'bg-white text-leadity-gray hover:bg-leadity-gray-lighter border border-leadity-gray-light'
                             }`}
                           >
@@ -468,7 +468,7 @@ function MortgageForm({
                           className="pr-24 h-11 text-base"
                           placeholder="0"
                         />
-                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">
+                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted">
                           triệu/tháng
                         </span>
                       </div>
@@ -599,7 +599,7 @@ function MortgageForm({
                             className="pr-14 h-11 text-base"
                             placeholder="3"
                           />
-                          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">năm</span>
+                          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted">năm</span>
                         </div>
                       </div>
                     )}
@@ -719,7 +719,7 @@ function RefinanceForm({
                 className="pr-12 text-lg h-12"
                 placeholder="1.5"
               />
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-base">
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted text-base">
                 tỷ
               </span>
             </div>
@@ -752,7 +752,7 @@ function RefinanceForm({
                 className="pr-12 text-lg h-12"
                 placeholder="10.5"
               />
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-base">
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted text-base">
                 %
               </span>
             </div>

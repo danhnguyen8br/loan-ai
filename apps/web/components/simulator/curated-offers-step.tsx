@@ -46,7 +46,7 @@ export function CuratedOffersStep({ onContinue }: CuratedOffersStepProps) {
               : 'text-leadity-gray-muted hover:text-dark-darker active:bg-leadity-gray-light'
           }`}
         >
-          <Icons.Mortgage className={`w-5 h-5 ${activeTab === 'MORTGAGE_RE' ? 'text-primary-dark' : ''}`} />
+          <Icons.Mortgage className={`w-5 h-5 ${activeTab === 'MORTGAGE_RE' ? 'text-primary-700' : ''}`} />
           Vay Mua BĐS
         </button>
         <button
@@ -58,7 +58,7 @@ export function CuratedOffersStep({ onContinue }: CuratedOffersStepProps) {
               : 'text-leadity-gray-muted hover:text-dark-darker active:bg-leadity-gray-light'
           }`}
         >
-          <Icons.BankTransfer className={`w-5 h-5 ${activeTab === 'REFINANCE' ? 'text-primary-dark' : ''}`} />
+          <Icons.BankTransfer className={`w-5 h-5 ${activeTab === 'REFINANCE' ? 'text-primary-700' : ''}`} />
           Chuyển Ngân Hàng
         </button>
       </div>
@@ -143,7 +143,7 @@ function OfferCard({
             <ul className="space-y-1.5 sm:space-y-2">
               {offer.highlights.map((highlight, i) => (
                 <li key={i} className="flex items-start gap-2 text-sm sm:text-base">
-                  <Icons.Check className="w-4 h-4 text-primary-dark mt-0.5 flex-shrink-0" />
+                  <Icons.Check className="w-4 h-4 text-primary-700 mt-0.5 flex-shrink-0" />
                   <span className="text-leadity-gray">{highlight}</span>
                 </li>
               ))}

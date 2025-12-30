@@ -27,7 +27,7 @@ export function StepIndicator({ currentStep, steps }: StepIndicatorProps) {
               <div
                 className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm transition-all duration-300 ${
                   index < currentStep
-                    ? 'bg-primary-dark text-text-inverse shadow-sm'
+                    ? 'bg-primary-700 text-text-inverse shadow-sm'
                     : index === currentStep
                     ? 'bg-primary text-dark-darker ring-4 ring-primary/25 shadow-sm'
                     : 'bg-leadity-gray-lighter text-text-muted border border-leadity-gray-light'
