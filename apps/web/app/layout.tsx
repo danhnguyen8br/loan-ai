@@ -54,6 +54,7 @@ export default function RootLayout({
           <FloatingContact
             phoneNumber={process.env.NEXT_PUBLIC_CONTACT_PHONE || "0948386873"}
             zaloUrl={process.env.NEXT_PUBLIC_ZALO_URL || "https://zalo.me/0948386873"}
+            whatsappNumber={process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+84948386873"}
           />
         </Providers>
         <Analytics />
