@@ -6,6 +6,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import { Providers } from "@/components/providers";
 import { Navigation } from "@/components/navigation";
+import { FloatingContact } from "@/components/floating-contact";
 
 // Google Analytics configuration from environment variables
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
@@ -50,6 +51,10 @@ export default function RootLayout({
       <body className={`${afacad.className} bg-white antialiased`}>
         <Providers>
           {children}
+          <FloatingContact 
+            phoneNumber="0909123456" 
+            zaloUrl="https://zalo.me/0909123456" 
+          />
         </Providers>
         <Analytics />
         <SpeedInsights />
