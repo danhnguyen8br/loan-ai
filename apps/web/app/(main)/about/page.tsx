@@ -105,7 +105,7 @@ export default function AboutPage() {
           </div>
 
           {/* Why Choose Us */}
-          <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-8 text-white">
+          <div className="bg-gradient-to-br from-[#1a472a] to-[#2d5a3d] rounded-2xl p-8 text-white">
             <h2 className="text-2xl font-bold mb-8 text-center">Tại Sao Chọn Leadity?</h2>
             <div className="grid sm:grid-cols-3 gap-8">
               <div className="text-center">
@@ -113,7 +113,7 @@ export default function AboutPage() {
                   <span className="text-2xl font-bold text-gray-900">10+</span>
                 </div>
                 <h3 className="font-semibold mb-2">Ngân Hàng Đối Tác</h3>
-                <p className="text-gray-400 text-sm">Hợp tác với các ngân hàng hàng đầu Việt Nam</p>
+                <p className="text-green-100 text-sm">Hợp tác với các ngân hàng hàng đầu Việt Nam</p>
               </div>
               
               <div className="text-center">
@@ -121,7 +121,7 @@ export default function AboutPage() {
                   <span className="text-2xl font-bold text-gray-900">0đ</span>
                 </div>
                 <h3 className="font-semibold mb-2">Phí Tư Vấn</h3>
-                <p className="text-gray-400 text-sm">Hoàn toàn miễn phí cho khách hàng cá nhân</p>
+                <p className="text-green-100 text-sm">Hoàn toàn miễn phí cho khách hàng cá nhân</p>
               </div>
               
               <div className="text-center">
@@ -129,7 +129,7 @@ export default function AboutPage() {
                   <span className="text-2xl font-bold text-gray-900">24h</span>
                 </div>
                 <h3 className="font-semibold mb-2">Phản Hồi Nhanh</h3>
-                <p className="text-gray-400 text-sm">Cam kết tư vấn trong vòng 24 giờ</p>
+                <p className="text-green-100 text-sm">Cam kết tư vấn trong vòng 24 giờ</p>
               </div>
             </div>
           </div>
