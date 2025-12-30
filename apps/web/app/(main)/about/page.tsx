@@ -112,24 +112,24 @@ export default function AboutPage() {
                 <div className="w-16 h-16 rounded-full bg-[#7CD734] flex items-center justify-center mx-auto mb-4">
                   <span className="text-2xl font-bold text-gray-900">10+</span>
                 </div>
-                <h3 className="font-semibold mb-2">Ngân Hàng Đối Tác</h3>
-                <p className="text-green-100 text-sm">Hợp tác với các ngân hàng hàng đầu Việt Nam</p>
+                <h3 className="font-semibold mb-2 text-white">Ngân Hàng Đối Tác</h3>
+                <p className="text-white text-sm">Hợp tác với các ngân hàng hàng đầu Việt Nam</p>
               </div>
               
               <div className="text-center">
                 <div className="w-16 h-16 rounded-full bg-[#7CD734] flex items-center justify-center mx-auto mb-4">
                   <span className="text-2xl font-bold text-gray-900">0đ</span>
                 </div>
-                <h3 className="font-semibold mb-2">Phí Tư Vấn</h3>
-                <p className="text-green-100 text-sm">Hoàn toàn miễn phí cho khách hàng cá nhân</p>
+                <h3 className="font-semibold mb-2 text-white">Phí Tư Vấn</h3>
+                <p className="text-white text-sm">Hoàn toàn miễn phí cho khách hàng cá nhân</p>
               </div>
               
               <div className="text-center">
                 <div className="w-16 h-16 rounded-full bg-[#7CD734] flex items-center justify-center mx-auto mb-4">
                   <span className="text-2xl font-bold text-gray-900">24h</span>
                 </div>
-                <h3 className="font-semibold mb-2">Phản Hồi Nhanh</h3>
-                <p className="text-green-100 text-sm">Cam kết tư vấn trong vòng 24 giờ</p>
+                <h3 className="font-semibold mb-2 text-white">Phản Hồi Nhanh</h3>
+                <p className="text-white text-sm">Cam kết tư vấn trong vòng 24 giờ</p>
               </div>
             </div>
           </div>
